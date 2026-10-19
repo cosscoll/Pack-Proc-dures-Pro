@@ -6,6 +6,12 @@ on:
       - 'index.html'
       - 'tests/sales-hero-browser.mjs'
       - '.github/workflows/verify-sales-hero.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/sales-hero-browser.mjs'
+      - '.github/workflows/verify-sales-hero.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,7 +36,20 @@ jobs:
             sleep 1
           done
           node tests/sales-hero-browser.mjs
-      - name: Vérifier la version réellement déployée, pas seulement la branche
+      - name: Attendre la publication de la version mobile réelle
+        if: github.event_name != 'pull_request'
+        run: |
+          for n in {1..18}; do
+            if curl -fsSL --max-time 15 https://cosscoll.github.io/Pack-Proc-dures-Pro/ | grep -q 'Mobile first impression'; then
+              echo 'PUBLIC_HERO_VERSION_FOUND'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Nouvelle version non publiée sur GitHub Pages"
+          exit 1
+      - name: Vérifier le site public après fusion et déploiement
+        if: github.event_name != 'pull_request'
         env:
           SALES_BASE: https://cosscoll.github.io/Pack-Proc-dures-Pro/
         run: node tests/sales-hero-browser.mjs
