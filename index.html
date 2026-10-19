@@ -234,6 +234,17 @@
 }
 
 
+
+/* Stronger read of the actual WebGL volume on first view, even without hovering */
+.hero-stage{--light-x:58%;--light-y:38%}
+.hero-stage .stage-aura{background:radial-gradient(circle at var(--light-x) var(--light-y),#d8edbf53,transparent 58%);transition:background .12s}
+.hero-stage .stage-grid{opacity:.8}
+.stage-chip-a{animation:heroChipFloat 5.7s ease-in-out infinite}
+.stage-chip-b{animation:heroChipFloat 6.3s ease-in-out -1.4s infinite}
+.stage-chip-c{animation:heroChipFloat 5.2s ease-in-out -2.7s infinite}
+@keyframes heroChipFloat{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@media(prefers-reduced-motion:reduce){.stage-chip-a,.stage-chip-b,.stage-chip-c{animation:none!important;translate:0 0!important}}
+
 </style>
 
 </head>
@@ -546,7 +557,7 @@
   const volume=document.getElementById('heroVolume');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   if(!stage||!canvas)return;
-  let targetX=-.19,targetY=.20,x=targetX,y=targetY,drag=false,dragStartX=0,dragStartY=0,dragTiltX=0,dragTiltY=0;
+  let targetX=-.40,targetY=.49,x=targetX,y=targetY,drag=false,dragStartX=0,dragStartY=0,dragTiltX=0,dragTiltY=0;
   let gl=null,shaders=null,program=null,meshes=[],raf=0,isNear=true,alive=false,dirty=true,lastFrame=0;
   const fallback=()=>{stage.classList.remove('webgl-active');canvas.style.opacity='0';};
   const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
@@ -558,8 +569,10 @@
   }
   function pointTilt(e){
     const r=stage.getBoundingClientRect();
-    targetX=clamp(((e.clientX-r.left)/r.width-.5)*.7,-.42,.42);
-    targetY=clamp((.5-(e.clientY-r.top)/r.height)*.6,-.33,.33);
+    targetX=clamp(-.40+((e.clientX-r.left)/r.width-.5)*.62,-.72,.10);
+    targetY=clamp(.49+(.5-(e.clientY-r.top)/r.height)*.55,.18,.77);
+    stage.style.setProperty('--light-x',Math.round(clamp((e.clientX-r.left)/r.width*100,0,100))+'%');
+    stage.style.setProperty('--light-y',Math.round(clamp((e.clientY-r.top)/r.height*100,0,100))+'%');
     dirty=true;
     if(!alive)updateFallback();
   }
@@ -578,14 +591,14 @@
   });
   stage.addEventListener('pointerup',()=>drag=false);
   stage.addEventListener('pointercancel',()=>drag=false);
-  stage.addEventListener('pointerleave',()=>{if(drag)return;targetX=-.19;targetY=.20;dirty=true;});
+  stage.addEventListener('pointerleave',()=>{if(drag)return;targetX=-.40;targetY=.49;dirty=true;});
   stage.addEventListener('keydown',e=>{
     const delta=.105;
     if(e.key==='ArrowLeft')targetX-=delta;
     else if(e.key==='ArrowRight')targetX+=delta;
     else if(e.key==='ArrowUp')targetY+=delta;
     else if(e.key==='ArrowDown')targetY-=delta;
-    else if(e.key==='Home'){targetX=-.19;targetY=.20;}
+    else if(e.key==='Home'){targetX=-.40;targetY=.49;}
     else return;
     e.preventDefault();targetX=clamp(targetX,-.68,.68);targetY=clamp(targetY,-.55,.55);
     updateFallback();dirty=true;
@@ -628,7 +641,7 @@
       [[.81,.82,.71],[.53,.55,.40]],
       [[.97,.94,.84],[.61,.59,.49]]
     ];
-    meshes=papers.map(([cover,edge])=>makeMesh(colorsToVertices(2.05,2.83,.105,cover,edge)));
+    meshes=papers.map(([cover,edge])=>makeMesh(colorsToVertices(2.05,2.83,.24,cover,edge)));
     meshes.push(makeMesh(colorsToVertices(1.45,.043,.018,[.30,.47,.37],[.2,.3,.23])));
     meshes.push(makeMesh(colorsToVertices(1.1,.043,.018,[.59,.66,.55],[.3,.35,.3])));
     meshes.push(makeMesh(colorsToVertices(.60,.20,.02,[.76,.57,.31],[.46,.35,.2])));
@@ -653,8 +666,8 @@
       gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
       const projection=perspective(Math.PI/4.25,w/h,.1,70);
       const vp=matMul(projection,translate(0,0,innerWidth<550?-9.8:-8.4));
-      const breath=Math.sin(now*.00045)*.055;
-      const rotation=matMul(rotateX(-.19+y),matMul(rotateY(.16+x),rotateZ(-.09)));
+      const breath=Math.sin(now*.00045)*.115;
+      const rotation=matMul(rotateX(-.19+y+Math.sin(now*.00032)*.024),matMul(rotateY(.16+x+Math.cos(now*.00028)*.035),rotateZ(-.09)));
       const anchors=[
         [-.95,.36,-1.24,-.18,-.20],
         [.64,.58,-.80,.12,.32],
