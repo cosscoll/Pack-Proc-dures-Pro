@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
-const root='http://127.0.0.1:8787/';
+const root=process.env.NAV_BASE||'http://127.0.0.1:8787/';
 try {
  for(const width of [320,390,750,768,1440]){
   const page=await browser.newPage({viewport:{width,height:900}});
