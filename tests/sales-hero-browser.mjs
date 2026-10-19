@@ -54,9 +54,10 @@ try {
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     assert.ok(overflow<=1,'horizontal overflow at '+width+': '+overflow);
     assert.deepEqual(errs,[],'no page runtime errors');
-    await page.locator('.opening').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-    await page.locator('.opening').screenshot({path:'screenshots/sales-hero-'+width+'.png',animations:'disabled'});
+    await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);});
+    await page.waitForFunction(()=>window.scrollY===0);
+    await page.waitForTimeout(400);
+    await page.screenshot({path:'screenshots/sales-hero-'+width+'.png',animations:'disabled',fullPage:false});
     console.log('SALES_HERO_PASS '+JSON.stringify({width,heroWebGL:!reduced,pointerMotion:before!==after,keyboard:true,compare:true,overflow,errors:errs.length}));
     await ctx.close();
   }
