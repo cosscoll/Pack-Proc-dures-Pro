@@ -1,0 +1,40 @@
+name: Recette de la procédure pilote — Business 01
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'exemple-procedure.html'
+      - 'tests/sample-browser.mjs'
+      - '.github/workflows/verify-sample.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sample-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Installer Chromium de recette (CI uniquement)
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Servir la branche statique et tester les interactions
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/preview-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl --silent --fail http://127.0.0.1:8787/exemple-procedure.html > /dev/null; then break; fi
+            sleep 1
+          done
+          node tests/sample-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: preuves-echantillon-P01
+          path: screenshots/procedure-*.png
+          if-no-files-found: ignore
+          retention-days: 7
