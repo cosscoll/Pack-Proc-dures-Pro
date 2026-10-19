@@ -12,6 +12,8 @@ test('storytelling, navigation et ancres métiers', () => {
   }
   assert.match(html, /<a href="#orientation">S’orienter<\/a>/);
   assert.match(html, /href="\.\/avancement\.html"/);
+  assert.match(html, /href="\.\/atelier-decisions\.html"/);
+  assert.match(html, /Jouer une rotation en 3 décisions/);
 });
 
 test('orientation professionnelle accessible et privée', () => {
