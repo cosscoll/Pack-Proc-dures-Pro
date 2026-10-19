@@ -12,7 +12,8 @@ try {
     const context=await browser.newContext({viewport:{width,height:850},isMobile:mobile,hasTouch:mobile,reducedMotion:width===320?'reduce':'no-preference'});
     const page=await context.newPage();
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
-    const response=await page.goto('http://127.0.0.1:8787/atelier-decisions.html',{waitUntil:'domcontentloaded'});
+    const base=process.env.DECISION_BASE||'http://127.0.0.1:8787/';
+    const response=await page.goto(base+'atelier-decisions.html',{waitUntil:'domcontentloaded'});
     assert.equal(response.status(),200);
     assert.equal(await page.locator('#choices .choice').count(),3);
     const orbit=page.locator('#visual');
