@@ -30,3 +30,6 @@ jobs:
             sleep 1
           done
           node tests/motion-browser.mjs
+
+      - name: Vérifier aussi le vrai site public GitHub Pages
+        run: MOTION_BASE=https://cosscoll.github.io/Pack-Proc-dures-Pro/ node tests/motion-browser.mjs
