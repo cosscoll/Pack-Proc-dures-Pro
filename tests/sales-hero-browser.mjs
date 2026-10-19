@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync } from 'node:fs';
 mkdirSync('screenshots',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const base='http://127.0.0.1:8787/';
+const base=process.env.SALES_BASE||'http://127.0.0.1:8787/';
 try {
   for(const width of [1440,1024,390,320]){
     const ctx=await browser.newContext({viewport:{width,height:900},reducedMotion:width===320?'reduce':'no-preference'});
