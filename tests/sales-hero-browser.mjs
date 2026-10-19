@@ -32,10 +32,14 @@ try {
       await page.mouse.move(bounds.x+bounds.width*.25,bounds.y+bounds.height*.45);
       await page.waitForTimeout(140);
       before=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--ry'));
+      const lightBefore=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--light-x'));
       await page.mouse.move(bounds.x+bounds.width*.75,bounds.y+bounds.height*.55);
       await page.waitForTimeout(190);
       after=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--ry'));
+      const lightAfter=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--light-x'));
       assert.notEqual(before,after,'hero follows pointer within its bounds '+width);
+      assert.ok(lightBefore.endsWith('%')&&lightAfter.endsWith('%'),'hero spotlight follows the pointer');
+      assert.notEqual(lightBefore,lightAfter,'hero lighting changes with pointer position');
     } else {
       assert.equal(await page.locator('#heroVolume').isVisible(),true,'accessible 2D alternative with reduced motion');
     }
