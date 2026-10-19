@@ -21,7 +21,15 @@ try {
     assert.equal(response?.status(),200,'Public homepage must respond 200');
     await page.waitForSelector('#laboratoire [data-scenario="incident"]');
     assert.equal(await page.locator('#processCanvas').count(),1);
-    assert.equal(await page.locator('a[href="./avancement.html"]').first().isVisible(),true);
+    const toggle=page.locator('#menuToggle');
+    if(await toggle.isVisible()){
+      await toggle.click();
+      assert.equal(await toggle.getAttribute('aria-expanded'),'true');
+      assert.equal(await page.locator('#primaryNavigation a[href="./avancement.html"]').isVisible(),true);
+      await toggle.click();
+    }else{
+      assert.equal(await page.locator('a[href="./avancement.html"]').first().isVisible(),true);
+    }
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
     assert.ok(overflow<=1,'horizontal overflow at '+width+': '+overflow);
     await page.locator('.orientation-option summary').first().click();
