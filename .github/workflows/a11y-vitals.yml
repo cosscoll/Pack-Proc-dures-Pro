@@ -23,5 +23,11 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
-      - name: Vérifier WCAG et mesurer LCP/CLS en laboratoire
-        run: node tests/a11y-vitals-public.mjs
+      - name: Auditer la version de la branche, pas une ancienne page publique
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/qa-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl --silent --fail http://127.0.0.1:8787/exemple-procedure.html >/dev/null; then break; fi
+            sleep 1
+          done
+          AUDIT_BASE=http://127.0.0.1:8787/ node tests/a11y-vitals-public.mjs
