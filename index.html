@@ -138,7 +138,7 @@
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const mix = (a,b,t) => a+(b-a)*t;
   const ease = t => t*t*(3-2*t);
-  function schedule() {if (scheduled) return;scheduled = true;requestAnimationFrame(() => {scheduled = false; renderer?.render(progress);});}
+  function schedule() {if (scheduled) return;scheduled = true;requestAnimationFrame(() => {scheduled = false; if(!reduced.matches) renderer?.render(progress);});}
   function sync() {
     if (!narrative) return;
     const rect = narrative.getBoundingClientRect();
@@ -154,7 +154,7 @@
   }
   addEventListener('scroll', sync, {passive:true});
   addEventListener('resize', sync, {passive:true});
-  reduced.addEventListener?.('change', sync);
+  // Motion preference is handled by the renderer lifecycle below.
 
   function matMul(a,b) {const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)for(let k=0;k<4;k++)o[4*c+r]+=a[4*k+r]*b[4*c+k];return o;}
   const id = () => new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
@@ -224,14 +224,42 @@
       if(t>.12){const vertices=[],colors=[];for(let i=0;i<3;i++){const a=coords[i],b=coords[i+1],p1=[a[0]+.70*(mobile?.70:1),a[1],a[2]+.14],p2=[b[0]-.70*(mobile?.70:1),b[1],b[2]+.14];vertices.push(...p1,...p2);colors.push(.87,.72,.46,.87,.72,.46)}gl.bindBuffer(gl.ARRAY_BUFFER,lines);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,lineColor);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(colors),gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(color);gl.vertexAttribPointer(color,3,gl.FLOAT,false,0,0);gl.uniformMatrix4fv(uniform,false,vp);gl.drawArrays(gl.LINES,0,vertices.length/3);}
     }
     canvas.classList.add('is-active');$('#sceneFallback').style.display='none';
-    canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();canvas.classList.remove('is-active');$('#sceneFallback').style.display='grid';});
     return {render};
   }
-  if(canvas && !reduced.matches && 'WebGL2RenderingContext' in window && 'IntersectionObserver' in window){
-    // Deferred until the immersive chapter comes near the viewport.
-    let initiated=false;
-    const observer=new IntersectionObserver(items=>{if(!items.some(i=>i.isIntersecting)||initiated)return;initiated=true;observer.disconnect();try{renderer=createRenderer();}catch(error){console.warn('Fallback visuel: WebGL indisponible',error);renderer=null;}sync();},{rootMargin:'300px 0px'});
+  if(canvas && 'WebGL2RenderingContext' in window && 'IntersectionObserver' in window){
+    // Keep the static diagram available when the user changes accessibility preferences
+    // mid-session or the GPU context is lost. Do not allocate WebGL before scroll.
+    let nearScene=false;
+    const fallback=$('#sceneFallback');
+    const showFallback=()=>{canvas.classList.remove('is-active');fallback.style.display='grid';};
+    const showRenderer=()=>{canvas.classList.add('is-active');fallback.style.display='none';};
+    function tryInitialize(){
+      if(reduced.matches || !nearScene || renderer)return;
+      try{renderer=createRenderer();if(renderer)showRenderer();else showFallback();}
+      catch(error){console.warn('Fallback visuel: WebGL indisponible',error);renderer=null;showFallback();}
+      sync();
+    }
+    reduced.addEventListener?.('change',()=>{
+      if(reduced.matches)showFallback();
+      else if(renderer)showRenderer();
+      else tryInitialize();
+      sync();
+    });
+    canvas.addEventListener('webglcontextlost',e=>{
+      e.preventDefault();
+      renderer=null;
+      showFallback();
+    });
+    canvas.addEventListener('webglcontextrestored',()=>tryInitialize());
+    const observer=new IntersectionObserver(items=>{
+      if(!items.some(i=>i.isIntersecting))return;
+      nearScene=true;
+      observer.disconnect();
+      tryInitialize();
+    },{rootMargin:'300px 0px'});
     observer.observe($('#vision'));
+  } else {
+    reduced.addEventListener?.('change',sync);
   }
   sync();
 })();
