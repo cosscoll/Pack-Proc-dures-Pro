@@ -1,0 +1,39 @@
+name: Vitrine commerciale 3D — recette navigateur
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/sales-hero-browser.mjs'
+      - '.github/workflows/verify-sales-hero.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sales-hero:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Installer Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Contrôler l'interface de la branche et son comportement réel
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/hero-server.log 2>&1 &
+          for n in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8787/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/sales-hero-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captures-refonte-commerciale
+          path: screenshots/sales-hero-*.png
+          if-no-files-found: ignore
+          retention-days: 7
