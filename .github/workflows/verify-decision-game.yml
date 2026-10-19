@@ -36,6 +36,30 @@ jobs:
             sleep 1
           done
           node tests/decision-game-browser.mjs
+      - name: Attendre l'atelier et son CTA sur GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          for attempt in {1..15}; do
+            home=$(curl -fLsS --max-time 20 "$base" || true)
+            game=$(curl -fLsS --max-time 20 "${base}atelier-decisions.html" || true)
+            if [[ "$home" == *'Jouer une rotation en 3 décisions'* ]] &&
+               [[ "$game" == *'id="choices"'* ]] &&
+               [[ "$game" == *'id="restart"'* ]]; then
+              echo 'DECISION_PUBLIC_HTML_VERIFIED HTTP=200'
+              break
+            fi
+            if [[ "$attempt" -eq 15 ]]; then
+              echo "::error::Le jeu et son lien ne sont pas encore en ligne."
+              exit 1
+            fi
+            sleep 10
+          done
+      - name: Tester les choix sur le véritable site public
+        env:
+          DECISION_BASE: https://cosscoll.github.io/Pack-Proc-dures-Pro/
+        run: node tests/decision-game-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
