@@ -34,6 +34,12 @@ try{
      const metrics=await page.evaluate(()=>({pageWidth:document.documentElement.scrollWidth,viewport:innerWidth,headings:document.querySelectorAll('h1').length}));
      if(metrics.pageWidth>metrics.viewport+4||metrics.headings!==1)throw Error('Viewport/heading regression '+JSON.stringify(metrics));
      if(kind==='pack-pro'){
+      const playable=page.locator('a.hero-secondary[href="./atelier-decisions.html"]');
+      if(!(await playable.isVisible()))throw Error('Decision-game hero CTA is not visible');
+      const sample=await page.request.get(url+'atelier-decisions.html',{timeout:20000});
+      if(sample.status()!==200)throw Error('Public decision game HTTP '+sample.status());
+      const sampleText=await sample.text();
+      if(!sampleText.includes('id="choices"')||!sampleText.includes('id="restart"'))throw Error('Incomplete public decision game');
       await page.locator('[data-scenario="pending"]').click();
       if(await page.locator('[data-scenario="pending"]').getAttribute('aria-pressed')!=='true')throw Error('Scenario button did not update aria-pressed');
       if(!(await page.locator('#flowStatus').innerText()).includes('EN ATTENTE'))throw Error('Scenario did not update business flow status');
