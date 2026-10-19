@@ -1,0 +1,33 @@
+name: Vérification HTTP GitHub Pages — Business 01
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - '.github/workflows/check-live-pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Contrôler le HTML réellement servi par GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          echo "Vérification de $url"
+          for attempt in {1..12}; do
+            code=$(curl --location --silent --show-error --max-time 12 --output /tmp/pack-pro.html --write-out '%{http_code}' "$url" || true)
+            bytes=$(wc -c </tmp/pack-pro.html 2>/dev/null || echo 0)
+            if [[ "$code" == '200' ]] && grep -q 'id="processCanvas"' /tmp/pack-pro.html && grep -q 'id="orientation"' /tmp/pack-pro.html && grep -q 'id="laboratoire"' /tmp/pack-pro.html; then
+              echo "PUBLIC_SITE_VERIFIED: HTTP=$code bytes=$bytes; nouvelle scène et orientation présentes."
+              exit 0
+            fi
+            echo "Tentative $attempt/12 : HTTP=$code; bytes=$bytes; contenu encore absent ou inaccessible."
+            sleep 10
+          done
+          echo "::error::GitHub Pages ne sert pas encore la refonte. Vérifier la configuration Settings > Pages, la branche publiée et les journaux de déploiement."
+          exit 1
