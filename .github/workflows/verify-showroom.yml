@@ -6,6 +6,12 @@ on:
       - 'index.html'
       - 'tests/showroom-browser.mjs'
       - '.github/workflows/verify-showroom.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/showroom-browser.mjs'
+      - '.github/workflows/verify-showroom.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,6 +36,27 @@ jobs:
             sleep 1
           done
           node tests/showroom-browser.mjs
+      - name: Contrôler les pages effectivement servies par GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          for n in {1..15}; do
+            code=$(curl -L -sS --max-time 20 -o /tmp/showroom-live.html -w '%{http_code}' "$url" || true)
+            if [[ "$code" == '200' ]] &&
+               grep -q 'id="showroomStage"' /tmp/showroom-live.html &&
+               grep -q 'data-view="pilotage"' /tmp/showroom-live.html &&
+               grep -q 'Mobile first impression' /tmp/showroom-live.html; then
+              echo 'SHOWROOM_LIVE_HTML_VERIFIED HTTP=200'
+              break
+            fi
+            if [[ "$n" == '15' ]]; then
+              echo '::error::Le présentoir ou la correction mobile ne sont pas encore servis depuis GitHub Pages.'
+              exit 1
+            fi
+            sleep 10
+          done
+          SHOWROOM_BASE="$url" node tests/showroom-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
