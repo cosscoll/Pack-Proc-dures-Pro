@@ -1,0 +1,33 @@
+name: Audit accessibilité et performances — Business 01
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'exemple-procedure.html'
+      - 'tests/a11y-vitals-public.mjs'
+      - '.github/workflows/a11y-vitals.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Préparer axe-core et Chromium sans licence commerciale
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+      - name: Auditer la version de la branche, pas une ancienne page publique
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/qa-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl --silent --fail http://127.0.0.1:8787/exemple-procedure.html >/dev/null; then break; fi
+            sleep 1
+          done
+          AUDIT_BASE=http://127.0.0.1:8787/ node tests/a11y-vitals-public.mjs
