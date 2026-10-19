@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 
-const base='https://cosscoll.github.io/Pack-Proc-dures-Pro/';
+const base=process.env.AUDIT_BASE||'https://cosscoll.github.io/Pack-Proc-dures-Pro/';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 let failures=0;
 try {
