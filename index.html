@@ -137,6 +137,26 @@
 @media(max-width:500px){.opening-layout{padding:25px 18px 87px}.opening h1{font-size:clamp(48px,11.5vw,69px);margin:27px 0 23px}.hero-pitch{font-size:14px}.hero-ctas{align-items:stretch}.hero-primary{width:100%;justify-content:space-between;padding:17px 18px}.hero-secondary{font-size:12px}.hero-evidence{gap:12px 22px;margin-top:26px}.hero-evidence span{font-size:9px}.hero-evidence b{font-size:19px}.hero-stage{height:375px;min-height:375px;margin-top:3px}.hero-volume{inset:18% 9%}.volume-page{left:18%;width:67%;padding:10%}.volume-page b{font-size:23px}.stage-chip{font-size:7px;padding:7px 9px}.stage-chip strong{font-size:8px}.stage-chip-a{left:1%;top:16%}.stage-chip-b{right:-1%;top:44%}.stage-chip-c{left:2%;bottom:17%}.stage-caption{font-size:7px;right:1%;bottom:0}.opening-index span:nth-child(2){display:none}.opening-index{font-size:8px;bottom:15px}.impact{padding:60px 17px}.impact h2{font-size:clamp(38px,10vw,56px)}.compare-btn{padding:15px 13px;font-size:11px;flex:1}.compare-btn span{margin-left:7px}.impact-screen{padding:26px 21px}.impact-screen-top{font-size:9px}.impact-headline{font-size:29px}.impact-line{gap:7px;grid-template-columns:20px 1fr auto}.impact-line strong{font-size:11px}.impact-line em{font-size:10px}.impact-insight{padding:27px}.impact-insight .impact-big{font-size:72px}.impact-footer{gap:8px}.impact-footer span{font-size:8px}.impact-footer span[aria-hidden]{display:none}.product-feature{margin-inline:0}}
 @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}.hero-volume,.stage-chip,#heroCanvas{transition:none}.hero-stage{cursor:default}.impact-headline,.impact-line,.product-sheet{transition:none}}
 
+/* Mobile first impression: showcase the real 3D object before the copy, not below the fold. */
+@media(max-width:850px){
+  .opening-layout{display:flex;flex-direction:column;gap:0}
+  .hero-stage{order:-1;height:275px;min-height:275px;max-width:560px;margin-top:0}
+  .opening-content{padding-top:10px}
+}
+@media(max-width:500px){
+  .opening-layout{padding-top:13px}
+  .hero-stage{height:242px;min-height:242px;margin:0 auto -8px}
+  .hero-volume{inset:7% 15%}
+  .volume-page{padding:10%;max-height:260px}
+  .stage-chip-a{top:10%}.stage-chip-b{top:43%}.stage-chip-c{bottom:10%}
+  .stage-caption{bottom:0}
+  .opening-content{padding:12px 0}
+  .opening h1{font-size:clamp(42px,10.7vw,60px);margin:18px 0 17px}
+  .hero-pitch{font-size:13px;line-height:1.55;margin-bottom:17px}
+  .hero-primary{min-height:50px;padding:12px 15px}
+  .hero-evidence{margin-top:18px;padding-top:16px}
+}
+
 </style>
 
 </head>

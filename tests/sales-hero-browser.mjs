@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync } from 'node:fs';
 mkdirSync('screenshots',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const base='http://127.0.0.1:8787/';
+const base=process.env.SALES_BASE||'http://127.0.0.1:8787/';
 try {
   for(const width of [1440,1024,390,320]){
     const ctx=await browser.newContext({viewport:{width,height:900},reducedMotion:width===320?'reduce':'no-preference'});
@@ -14,6 +14,8 @@ try {
     assert.match(await page.locator('#opening-title').innerText(),/Chaque arrivée/);
     assert.equal(await page.locator('a.hero-primary[href="./exemple-procedure.html"]').isVisible(),true,'free sample CTA is visible');
     assert.equal(await page.locator('#heroCanvas').count(),1);
+    const firstView=await page.locator('#heroStage').evaluate(el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,vh:innerHeight};});
+    assert.ok(firstView.top < firstView.vh*.75 && firstView.bottom > 0,'3D product must be visible within the first screen '+width+': '+JSON.stringify(firstView));
     await page.locator('#heroStage').scrollIntoViewIfNeeded();
     const reduced=width===320;
     if(!reduced){
@@ -52,8 +54,10 @@ try {
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     assert.ok(overflow<=1,'horizontal overflow at '+width+': '+overflow);
     assert.deepEqual(errs,[],'no page runtime errors');
-    await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(230);
-    await page.screenshot({path:'screenshots/sales-hero-'+width+'.png',animations:'disabled'});
+    await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0);});
+    await page.waitForFunction(()=>window.scrollY===0);
+    await page.waitForTimeout(400);
+    await page.screenshot({path:'screenshots/sales-hero-'+width+'.png',animations:'disabled',fullPage:false});
     console.log('SALES_HERO_PASS '+JSON.stringify({width,heroWebGL:!reduced,pointerMotion:before!==after,keyboard:true,compare:true,overflow,errors:errs.length}));
     await ctx.close();
   }
