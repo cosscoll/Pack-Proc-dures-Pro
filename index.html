@@ -234,6 +234,29 @@
 }
 
 
+/* Responsive editorial navigation: compact, keyboard accessible and JS-optional. */
+.nav-mobile{background:transparent;border:1px solid #91a699;color:#173b2d;font-size:11px;letter-spacing:.07em;font-weight:800;align-items:center;justify-content:center;gap:16px;padding:11px 15px;cursor:pointer}
+.menu-lines{display:flex;width:17px;height:15px;flex-direction:column;justify-content:center;gap:5px}
+.menu-lines i{width:17px;height:1.5px;background:currentColor;display:block;transform-origin:center;transition:transform .25s}
+.nav-mobile[aria-expanded="true"] .menu-lines i:first-child{transform:translateY(3.2px) rotate(45deg)}
+.nav-mobile[aria-expanded="true"] .menu-lines i:last-child{transform:translateY(-3.2px) rotate(-45deg)}
+@media(max-width:750px){
+  .topbar{min-height:73px;height:73px;padding:11px 20px;flex-wrap:nowrap;gap:9px}
+  .identity{min-width:0}
+  .js-nav .nav-mobile{display:flex}
+  .js-nav .navigation{position:absolute;inset:100% 0 auto;display:flex;flex-direction:column;align-items:stretch;gap:5px;z-index:55;background:#eeeae1;padding:19px 22px 24px;border-top:1px solid #d0d8cb;border-bottom:1px solid #c3d0c2;box-shadow:0 22px 45px #11281f30;opacity:0;visibility:hidden;transform:translateY(-13px);pointer-events:none;transition:opacity .24s,transform .24s,visibility .24s}
+  .js-nav .navigation.is-open{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+  .js-nav .navigation a{width:100%;font-size:15px;line-height:1.5;padding:11px 12px;white-space:normal;letter-spacing:-.01em}
+  .js-nav .navigation a:hover,.js-nav .navigation a:focus-visible{background:#d8e4d8}
+  .js-nav .navigation .nav-progress{border-color:#a8b9aa;display:flex;justify-content:space-between;align-items:center}
+}
+@media(max-width:380px){
+  .topbar{padding-inline:14px}
+  .js-nav .nav-mobile{padding:11px 12px;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .js-nav .navigation,.menu-lines i{transition:none!important}
+}
 </style>
 
 </head>
@@ -241,8 +264,8 @@
 <a class="skip" href="#main">Aller au contenu</a>
 <header class="topbar" id="haut">
   <a class="identity" href="#haut" aria-label="Pack Procédures Pro — accueil"><span class="identity-mark" aria-hidden="true">P<span class="mark-dot">.</span></span><span>PACK<br>PROCÉDURES <em>PRO</em></span></a>
-  <nav class="navigation" aria-label="Navigation principale"><a href="#vision">La vision</a><a href="#solutions">Les solutions</a><a href="#orientation">S’orienter</a><a href="#laboratoire">Le laboratoire</a><a class="nav-progress" href="./avancement.html">Avancement <span aria-hidden="true">↗</span></a></nav>
-  <a class="nav-mobile" href="#solutions">Explorer <span aria-hidden="true">↗</span></a>
+  <nav class="navigation" id="primaryNavigation" aria-label="Navigation principale"><a href="#vision">La vision</a><a href="#solutions">Les solutions</a><a href="#orientation">S’orienter</a><a href="#laboratoire">Le laboratoire</a><a class="nav-progress" href="./avancement.html">Avancement <span aria-hidden="true">↗</span></a></nav>
+  <button class="nav-mobile" id="menuToggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="primaryNavigation">Menu <span class="menu-lines" aria-hidden="true"><i></i><i></i></span></button>
 </header>
 <main id="main">
   <section class="opening" aria-labelledby="opening-title" id="accueil">
@@ -815,6 +838,30 @@
     e.preventDefault();tilt(x,y);
   });
   activate('procedures');
+})();
+
+/* Mobile nav: full access to each link, no tracking, progressive enhancement. */
+(() => {
+ 'use strict';
+ const button=document.getElementById('menuToggle');
+ const nav=document.getElementById('primaryNavigation');
+ const header=document.querySelector('.topbar');
+ if(!button||!nav||!header)return;
+ document.documentElement.classList.add('js-nav');
+ function toggle(open){
+   const active=!!open;
+   nav.classList.toggle('is-open',active);
+   button.setAttribute('aria-expanded',String(active));
+   button.setAttribute('aria-label',active?'Fermer le menu':'Ouvrir le menu');
+ }
+ button.addEventListener('click',()=>toggle(button.getAttribute('aria-expanded')!=='true'));
+ nav.addEventListener('click',e=>{if(e.target.closest('a'))toggle(false)});
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'&&button.getAttribute('aria-expanded')==='true'){toggle(false);button.focus();}
+ });
+ document.addEventListener('pointerdown',e=>{if(!header.contains(e.target))toggle(false)});
+ const mq=matchMedia('(min-width:751px)');
+ mq.addEventListener?.('change',e=>{if(e.matches)toggle(false)});
 })();
 
 </script>
