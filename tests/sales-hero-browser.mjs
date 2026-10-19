@@ -23,11 +23,15 @@ try {
       assert.equal(await page.locator('#heroStage').evaluate(x=>x.classList.contains('webgl-active')),false);
       assert.equal(await page.locator('#heroVolume').isVisible(),true);
     }
-    await page.locator('#heroStage').hover({force:true});
+    const bounds=await page.locator('#heroStage').boundingBox();
+    assert.ok(bounds && bounds.width>0,'hero stage must have dimensions');
+    await page.mouse.move(bounds.x+bounds.width*.25,bounds.y+bounds.height*.45);
+    await page.waitForTimeout(150);
     const before=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--ry'));
-    await page.mouse.move(width-80,280);await page.waitForTimeout(110);
+    await page.mouse.move(bounds.x+bounds.width*.75,bounds.y+bounds.height*.55);
+    await page.waitForTimeout(180);
     const after=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--ry'));
-    assert.notEqual(before,after,'hero rotation should respond to pointer on '+width);
+    assert.notEqual(before,after,'hero rotation should respond to pointer within its bounds '+width);
     await page.locator('#heroStage').focus();
     await page.keyboard.press('ArrowRight');
     const keyboardTilt=await page.locator('#heroStage').evaluate(x=>x.style.getPropertyValue('--ry'));
