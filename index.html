@@ -137,6 +137,82 @@
 @media(max-width:500px){.opening-layout{padding:25px 18px 87px}.opening h1{font-size:clamp(48px,11.5vw,69px);margin:27px 0 23px}.hero-pitch{font-size:14px}.hero-ctas{align-items:stretch}.hero-primary{width:100%;justify-content:space-between;padding:17px 18px}.hero-secondary{font-size:12px}.hero-evidence{gap:12px 22px;margin-top:26px}.hero-evidence span{font-size:9px}.hero-evidence b{font-size:19px}.hero-stage{height:375px;min-height:375px;margin-top:3px}.hero-volume{inset:18% 9%}.volume-page{left:18%;width:67%;padding:10%}.volume-page b{font-size:23px}.stage-chip{font-size:7px;padding:7px 9px}.stage-chip strong{font-size:8px}.stage-chip-a{left:1%;top:16%}.stage-chip-b{right:-1%;top:44%}.stage-chip-c{left:2%;bottom:17%}.stage-caption{font-size:7px;right:1%;bottom:0}.opening-index span:nth-child(2){display:none}.opening-index{font-size:8px;bottom:15px}.impact{padding:60px 17px}.impact h2{font-size:clamp(38px,10vw,56px)}.compare-btn{padding:15px 13px;font-size:11px;flex:1}.compare-btn span{margin-left:7px}.impact-screen{padding:26px 21px}.impact-screen-top{font-size:9px}.impact-headline{font-size:29px}.impact-line{gap:7px;grid-template-columns:20px 1fr auto}.impact-line strong{font-size:11px}.impact-line em{font-size:10px}.impact-insight{padding:27px}.impact-insight .impact-big{font-size:72px}.impact-footer{gap:8px}.impact-footer span{font-size:8px}.impact-footer span[aria-hidden]{display:none}.product-feature{margin-inline:0}}
 @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}.hero-volume,.stage-chip,#heroCanvas{transition:none}.hero-stage{cursor:default}.impact-headline,.impact-line,.product-sheet{transition:none}}
 
+
+/* Showroom métier: mise en scène documentaire en profondeur, navigation par format */
+.showroom{background:#e4e9e1;padding:110px clamp(23px,6vw,115px) 60px;border-top:1px solid #cad8c9;overflow:hidden}
+.showroom-intro{display:grid;grid-template-columns:1.1fr .7fr;gap:55px;align-items:end;margin-bottom:47px}
+.showroom h2{font:normal clamp(43px,5.5vw,82px)/1.05 Georgia,'Times New Roman',serif;letter-spacing:-.065em;margin:22px 0 8px}
+.showroom h2 em{font-style:italic;color:#456f55}
+.showroom-intro p{font-size:15px;line-height:1.85;color:#3f5f4d;max-width:450px;margin:0 0 12px}
+.showroom-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid #b7cab8;border-bottom:0}
+.showroom-tab{display:flex;align-items:center;gap:13px;justify-content:space-between;min-height:78px;padding:20px 28px;background:#e7ebe4;color:#214638;border:0;border-bottom:2px solid transparent;cursor:pointer;position:relative;font-size:16px;font-weight:800;transition:background .3s,color .3s,transform .3s;text-align:left}
+.showroom-tab:not(:last-child){border-right:1px solid #c3d1c2}
+.showroom-tab>span{font-size:11px;letter-spacing:.1em;font-weight:850;color:#516f5c}
+.showroom-tab b{font-size:10px;letter-spacing:.05em;border:1px solid #a6baa7;padding:6px 8px}
+.showroom-tab:hover{background:#d7e3d7}
+.showroom-tab.is-active{background:#173c2f;color:#f5f1e6;border-bottom-color:#bfa16b}
+.showroom-tab.is-active>span{color:#c3decc}
+.showroom-tab.is-active b{border-color:#658f76;color:#e2ebdc}
+.showroom-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);border:1px solid #b9cbb8;min-height:620px}
+.showroom-stage{background:radial-gradient(circle at 55% 47%,#476f53 0%,#244a37 32%,#102a23 83%);min-height:620px;position:relative;isolation:isolate;perspective:1100px;overflow:hidden;outline-offset:5px;touch-action:pan-y;cursor:grab;--local-x:0deg;--local-y:0deg}
+.showroom-stage:active{cursor:grabbing}
+.showroom-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent,transparent 64px,#bcd3ac0d 65px),repeating-linear-gradient(0deg,transparent,transparent 64px,#bcd3ac0d 65px);opacity:.7}
+.showroom-glow{position:absolute;inset:13% 13%;border:1px solid #bdd6c929;border-radius:50%;box-shadow:0 0 0 74px #d0e0c006,0 0 0 165px #d0e0c005;transform:rotateY(-19deg);pointer-events:none}
+.showroom-world{position:absolute;z-index:2;inset:16% 20% 14%;transform-style:preserve-3d;transform:rotateX(calc(13deg + var(--local-x))) rotateY(calc(-20deg + var(--local-y)));transition:transform .5s cubic-bezier(.18,.82,.25,1);pointer-events:none}
+.showroom-paper{position:absolute;left:12%;top:7%;width:79%;height:85%;min-height:380px;max-height:475px;display:flex;flex-direction:column;background:#f5f0e5;color:#15372b;border:1px solid #faf5e8;box-shadow:26px 34px 45px #041d19bd,12px 16px 22px #09251d88;transform-style:preserve-3d;padding:clamp(17px,2.4vw,34px);overflow:hidden}
+.showroom-paper:after{content:"";position:absolute;left:100%;top:0;width:13px;height:100%;background:#a3b6a4;transform:skewY(42deg);transform-origin:top left}
+.showroom-paper-back{transform:translate3d(52px,-27px,-122px) rotateZ(14deg);background:#bdd0bd}
+.showroom-paper-mid{transform:translate3d(-29px,27px,-42px) rotateZ(-8deg);background:#d8dfcc}
+.showroom-paper-front{transform:translate3d(-10px,-14px,48px) rotateZ(-5deg)}
+.showroom-paper-back>span,.showroom-paper-mid>span{font-size:11px;letter-spacing:.1em;font-weight:800;margin-bottom:60px}
+.showroom-paper-back i,.showroom-paper-mid i{display:block;background:#56746144;height:3px;margin-bottom:18px;width:100%}
+.showroom-paper-back i:nth-of-type(2),.showroom-paper-mid i:nth-of-type(3){width:66%}
+.showroom-paper-back small,.showroom-paper-mid small{margin-top:auto;font-size:9px;letter-spacing:.1em}
+.showroom-paper-top{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #4965527f;padding-bottom:16px;font-size:9px;letter-spacing:.14em;font-weight:800}
+.showroom-paper-main{margin:52px 0 20px}
+.showroom-paper-main small{font-size:10px;font-weight:800;letter-spacing:.13em;color:#3f684f}
+.showroom-paper-main strong{display:block;font:normal clamp(26px,3.2vw,48px)/1.04 Georgia,serif;letter-spacing:-.055em;margin-top:16px;min-height:2em;white-space:normal}
+.showroom-paper-rule{height:1px;background:#a4b8a5}
+.showroom-paper-lines{padding-top:30px}
+.showroom-paper-lines i{height:4px;background:#69866f49;display:block;margin-bottom:14px;width:92%}
+.showroom-paper-lines i:nth-child(2){width:64%}.showroom-paper-lines i:nth-child(3){width:83%}.showroom-paper-lines i:nth-child(4){width:44%}
+.showroom-paper-bottom{display:flex;justify-content:space-between;align-items:end;margin-top:auto;border-top:1px solid #b3c6b3;padding-top:13px;gap:12px}
+.showroom-paper-bottom b{font:normal 62px/.9 Georgia,serif;letter-spacing:-.08em}
+.showroom-paper-bottom span{font-size:10px;font-weight:800;letter-spacing:.1em;text-align:right}
+.showroom-floating-note{position:absolute;z-index:3;color:#123a29;background:#edf2e8ee;border:1px solid #b4c7b4;box-shadow:0 16px 35px #051c1688;padding:14px 17px;letter-spacing:.09em;font-size:10px;font-weight:800;transition:transform .4s}
+.showroom-note-top{top:17%;left:4%}
+.showroom-note-bottom{bottom:19%;right:3%}
+.showroom-status-dot{display:inline-block;width:8px;height:8px;background:#417951;border-radius:50%;margin-right:7px;box-shadow:0 0 0 4px #4179512a}
+.showroom-stage:hover .showroom-note-top{transform:translate(-4px,-12px)}
+.showroom-stage:hover .showroom-note-bottom{transform:translate(5px,9px)}
+.showroom-stage-footer{position:absolute;z-index:4;bottom:19px;left:22px;right:22px;border-top:1px solid #d3e3d53e;padding-top:12px;color:#d5e5d3;font-size:9px;font-weight:800;letter-spacing:.12em;display:flex;justify-content:space-between}
+.showroom-stage-footer span{padding-inline:5px}
+.showroom-stage[data-view="registres"] .showroom-paper-front{background:#d5e3d5}
+.showroom-stage[data-view="registres"] .showroom-paper-back{background:#a6c7a9}
+.showroom-stage[data-view="pilotage"] .showroom-paper-front{background:#e6e0c9}
+.showroom-stage[data-view="pilotage"] .showroom-paper-back{background:#c8af80}
+.showroom-panel{background:#f7f5ed;padding:clamp(29px,4vw,62px);display:flex;flex-direction:column;align-items:start}
+.showroom-panel-counter{font-size:11px;color:#46634e;font-weight:800;letter-spacing:.16em}
+.showroom-panel h3{font:normal clamp(36px,3.45vw,57px)/1.07 Georgia,serif;letter-spacing:-.055em;margin:38px 0 24px;color:#16392d}
+.showroom-panel>p{font-size:15px;line-height:1.85;color:#435d4b;max-width:490px;margin:0 0 31px}
+.showroom-list{width:100%;border-top:1px solid #becdbc}
+.showroom-list>div{padding:15px 0;display:flex;align-items:center;gap:14px;border-bottom:1px solid #becdbc;transition:padding .3s,background .3s;cursor:default}
+.showroom-list>div:hover{padding-left:9px;background:#e8efe5}
+.showroom-list span{font:normal 20px Georgia,serif;color:#52745d}
+.showroom-list p{font-size:13px;font-weight:700;margin:0;flex:1;color:#213f30}
+.showroom-list b{font:normal 15px Georgia,serif;color:#416c4b}
+.showroom-bottom{display:flex;align-items:start;gap:25px;flex-direction:column;margin-top:auto;padding-top:35px}
+.showroom-availability{font-size:10px;font-weight:800;color:#526d58;letter-spacing:.08em}
+.showroom-link{display:flex;align-items:center;gap:20px;color:#f6f1e7;background:#17412f;text-decoration:none;font-size:12px;font-weight:800;padding:18px 20px;transition:transform .2s,background .2s}
+.showroom-link:hover{transform:translateY(-4px);background:#2a6446}
+.showroom-link span{font-size:21px;font-weight:400;transition:transform .2s}
+.showroom-link:hover span{transform:translate(3px,-3px)}
+.showroom-trust{display:flex;justify-content:space-between;align-items:center;gap:13px;flex-wrap:wrap;padding-top:25px;border-top:1px solid #b7cbbb;margin-top:34px;color:#355641;font-size:10px;font-weight:800;letter-spacing:.14em}
+@media(max-width:1050px){.showroom-intro{grid-template-columns:1fr .85fr;gap:20px}.showroom-grid{grid-template-columns:1fr 1fr}.showroom-stage{min-height:550px}.showroom-world{inset:16% 12% 18%}.showroom-panel{padding:34px}.showroom-paper{min-height:350px}.showroom-paper-main strong{font-size:clamp(24px,3vw,39px)}.showroom-paper-main{margin-top:37px}}
+@media(max-width:760px){.showroom{padding:76px 23px 50px}.showroom-intro{grid-template-columns:1fr;gap:14px;margin-bottom:26px}.showroom h2{font-size:clamp(46px,8vw,72px)}.showroom-tabs{grid-template-columns:1fr 1fr 1fr}.showroom-tab{padding:16px 12px;min-height:66px;font-size:13px;gap:6px;flex-wrap:wrap}.showroom-tab b{font-size:9px;padding:3px 5px}.showroom-tab>span{font-size:10px}.showroom-grid{grid-template-columns:1fr}.showroom-stage{min-height:570px}.showroom-world{inset:15% 21% 17%}.showroom-panel{padding:35px}.showroom-panel h3{font-size:clamp(39px,7vw,57px)}.showroom-bottom{margin-top:20px}.showroom-trust{font-size:9px}}
+@media(max-width:480px){.showroom{padding:57px 15px 38px}.showroom h2{font-size:clamp(39px,10vw,55px)}.showroom-intro p{font-size:14px}.showroom-tab{font-size:11px;padding:12px 8px;display:grid;grid-template-columns:auto 1fr;gap:6px}.showroom-tab b{grid-column:2;text-align:center;max-width:max-content}.showroom-stage{min-height:405px}.showroom-world{inset:16% 15% 19%}.showroom-paper{padding:15px;min-height:270px}.showroom-paper-back,.showroom-paper-mid{height:84%}.showroom-paper-top{font-size:7px;padding-bottom:8px}.showroom-paper-main{margin:30px 0 12px}.showroom-paper-main small{font-size:8px}.showroom-paper-main strong{font-size:clamp(20px,6vw,28px);margin-top:11px}.showroom-paper-lines{padding-top:16px}.showroom-paper-lines i{height:2px;margin-bottom:9px}.showroom-paper-bottom b{font-size:42px}.showroom-paper-bottom span{font-size:8px}.showroom-floating-note{font-size:8px;padding:8px 9px}.showroom-note-top{top:13%;left:2%}.showroom-note-bottom{right:2%;bottom:18%}.showroom-stage-footer{font-size:8px;left:12px;right:12px}.showroom-panel{padding:26px 22px}.showroom-panel h3{font-size:39px;margin:26px 0 18px}.showroom-panel>p{font-size:14px}.showroom-trust span[aria-hidden]{display:none}.showroom-trust{gap:11px}}
+@media(prefers-reduced-motion:reduce){.showroom-world,.showroom-floating-note,.showroom-link,.showroom-tab,.showroom-list>div{transition:none!important}}
+
 /* Mobile first impression: showcase the real 3D object before the copy, not below the fold. */
 @media(max-width:850px){
   .opening-layout{display:flex;flex-direction:column;gap:0}
@@ -156,6 +232,7 @@
   .hero-primary{min-height:50px;padding:12px 15px}
   .hero-evidence{margin-top:18px;padding-top:16px}
 }
+
 
 </style>
 
@@ -231,8 +308,51 @@
 
   <section class="solutions" id="solutions" aria-labelledby="solutions-title"><div class="solutions-head"><div><span class="section-label">03 / LA BIBLIOTHÈQUE</span><h2 id="solutions-title">Des outils conçus<br><i>pour le terrain.</i></h2></div><p>Pour les petites conciergeries qui gèrent les départs, les équipes et les imprévus. Une méthode reproductible, sans perdre le contrôle. Collection pilote en validation : aucun achat n’est ouvert.</p></div>
     <div class="product-feature"><div class="product-visual" aria-hidden="true"><div class="product-sheet back"><span>REGISTRE — 07</span><div></div><div></div><div></div></div><div class="product-sheet front"><span class="sheet-top">COLLECTION 01 <small>PROCÉDURES</small></span><b>ROTATION<br>SÉRÉNITÉ</b><span class="sheet-rule"></span><span class="sheet-corner">15<br><small>PROCÉDURES</small></span></div><span class="visual-stamp">DOCUMENTATION<br>OPÉRATIONNELLE</span></div>
-      <div class="product-details"><div class="overline">01 — CONCIERGERIES / LOCATIONS COURTE DURÉE</div><h3>Rotation<br><em>Sérénité.</em></h3><p>Arrêtez de courir après les confirmations et les informations manquantes. Ce kit pilote organise le départ, les interventions, le contrôle du logement et la résolution des incidents dans un même langage opérationnel.</p><div class="product-spec"><span>15 PROCÉDURES</span><span>7 REGISTRES</span><span>FORMATS MODIFIABLES</span></div><div class="product-status"><span class="status-dot"></span> VERSION PILOTE — VALIDATION MÉTIER EN COURS</div><p class="product-benefit">À l’intérieur : qui fait quoi, dans quel ordre, que vérifier et à quel moment bloquer une décision.</p><a class="text-link" href="./exemple-procedure.html">Lire et tester une procédure gratuite <span aria-hidden="true">↗</span></a><a class="text-link" href="#laboratoire">Explorer un cas d'usage <span aria-hidden="true">↗</span></a><p class="product-disclaimer">Prix indicatif en étude : 49 €. Aucun achat possible : le pack complet est en préparation, sans paiement actif. Test gratuit de la fiche P01 disponible immédiatement.</p></div></div>
+      <div class="product-details"><div class="overline">01 — CONCIERGERIES / LOCATIONS COURTE DURÉE</div><h3>Rotation<br><em>Sérénité.</em></h3><p>Arrêtez de courir après les confirmations et les informations manquantes. Ce kit pilote organise le départ, les interventions, le contrôle du logement et la résolution des incidents dans un même langage opérationnel.</p><div class="product-spec"><span>15 PROCÉDURES</span><span>7 REGISTRES</span><span>FORMATS MODIFIABLES</span></div><div class="product-status"><span class="status-dot"></span> VERSION PILOTE — VALIDATION MÉTIER EN COURS</div><p class="product-benefit">À l’intérieur : qui fait quoi, dans quel ordre, que vérifier et à quel moment bloquer une décision.</p><a class="text-link" href="./exemple-procedure.html">Lire et tester une procédure gratuite <span aria-hidden="true">↗</span></a><a class="text-link" href="#contenu-pack">Explorer le contenu du pack <span aria-hidden="true">↗</span></a><a class="text-link" href="#laboratoire">Explorer un cas d'usage <span aria-hidden="true">↗</span></a><p class="product-disclaimer">Prix indicatif en étude : 49 €. Aucun achat possible : le pack complet est en préparation, sans paiement actif. Test gratuit de la fiche P01 disponible immédiatement.</p></div></div>
     <div class="solutions-foot"><div><strong>01.</strong> <span>Décrire sans ambiguïté</span></div><div><strong>02.</strong> <span>Attribuer sans confusion</span></div><div><strong>03.</strong> <span>Vérifier sans supposer</span></div></div>
+  </section>
+
+  <section class="showroom" id="contenu-pack" aria-labelledby="showroom-title">
+    <div class="showroom-intro">
+      <div><span class="section-label">04 / OUVREZ LE SYSTÈME</span><h2 id="showroom-title">Pas un PDF<br>de plus. <em>Une méthode.</em></h2></div>
+      <p>Explorez ce que nous préparons pour les conciergeries. Survolez les documents, changez de vue et découvrez ce que chaque support apporte à une rotation. Le contenu reste en phase de validation professionnelle.</p>
+    </div>
+    <div class="showroom-tabs" role="tablist" aria-label="Explorer les formats du pack">
+      <button type="button" role="tab" aria-selected="true" aria-controls="showroomPanel" id="showroom-tab-procedures" tabindex="0" class="showroom-tab is-active" data-view="procedures"><span>01 /</span> Procédures <b>15</b></button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="showroomPanel" id="showroom-tab-registres" tabindex="-1" class="showroom-tab" data-view="registres"><span>02 /</span> Registres <b>07</b></button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="showroomPanel" id="showroom-tab-pilotage" tabindex="-1" class="showroom-tab" data-view="pilotage"><span>03 /</span> Pilotage <b>PILOTE</b></button>
+    </div>
+    <div class="showroom-grid">
+      <div class="showroom-stage" id="showroomStage" role="group" aria-label="Prévisualisation 3D interactive des supports documentaires. Déplacez le pointeur ou glissez horizontalement pour incliner les documents." tabindex="0">
+        <div class="showroom-glow" aria-hidden="true"></div>
+        <div class="showroom-world" id="showroomWorld" aria-hidden="true">
+          <div class="showroom-paper showroom-paper-back"><span>ATELIER / FICHES</span><i></i><i></i><i></i><i></i><small>TRACER CHAQUE ÉTAPE</small></div>
+          <div class="showroom-paper showroom-paper-mid"><span>VALIDATION / P01</span><i></i><i></i><i></i><i></i><small>LE STATUT DOIT ÊTRE CLAIR</small></div>
+          <div class="showroom-paper showroom-paper-front">
+            <div class="showroom-paper-top"><span id="showroomGraphicKicker">PROCÉDURE / P01</span><span>PACK PRO</span></div>
+            <div class="showroom-paper-main"><small id="showroomGraphicCategory">ROTATION / CONCIERGERIE</small><strong id="showroomGraphicTitle">PLANIFIER.<br>CONFIRMER.<br>CONTRÔLER.</strong></div>
+            <div class="showroom-paper-rule"></div>
+            <div class="showroom-paper-lines"><i></i><i></i><i></i><i></i></div>
+            <div class="showroom-paper-bottom"><b id="showroomGraphicNumber">01.</b><span>UNE DÉCISION<br>À LA FOIS</span></div>
+          </div>
+        </div>
+        <div class="showroom-floating-note showroom-note-top" aria-hidden="true"><span class="showroom-status-dot"></span> UN RESPONSABLE</div>
+        <div class="showroom-floating-note showroom-note-bottom" aria-hidden="true">UNE VALIDATION <span aria-hidden="true">↗</span></div>
+        <div class="showroom-stage-footer" aria-hidden="true">OBJET / 3D INTERACTIVE <span>—</span> DÉPLACEZ LE POINTEUR ↗</div>
+      </div>
+      <div class="showroom-panel" id="showroomPanel" role="tabpanel" aria-labelledby="showroom-tab-procedures" aria-live="polite">
+        <span class="showroom-panel-counter" id="showroomCounter">01 / CE QUE VOUS ALLEZ UTILISER</span>
+        <h3 id="showroomHeading">Les gestes ne devraient pas dépendre de la mémoire.</h3>
+        <p id="showroomDescription">Des fiches qui indiquent le déclencheur, la personne responsable, les étapes à réaliser, les contrôles et les exceptions. La procédure P01 permet déjà d’essayer ce principe gratuitement.</p>
+        <div class="showroom-list" id="showroomList">
+          <div><span>01</span><p>Préparer une rotation</p><b aria-hidden="true">↗</b></div>
+          <div><span>02</span><p>Faire confirmer l’intervention</p><b aria-hidden="true">↗</b></div>
+          <div><span>03</span><p>Valider l’état du logement</p><b aria-hidden="true">↗</b></div>
+        </div>
+        <div class="showroom-bottom"><span class="showroom-availability" id="showroomAvailability">15 procédures · brouillons à faire valider</span><a class="showroom-link" href="./exemple-procedure.html">Essayer la fiche P01 gratuitement <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </div>
+    <div class="showroom-trust"><span>UNE MÉTHODE UTILISABLE SUR LE TERRAIN</span><span aria-hidden="true">/</span><span>DES SUPPORTS MODIFIABLES</span><span aria-hidden="true">/</span><span>AUCUNE PROMESSE DE GAIN NON MESURÉ</span></div>
   </section>
 
   <section class="orientation" id="orientation" aria-labelledby="orientation-title">
@@ -444,7 +564,7 @@
     if(!alive)updateFallback();
   }
   stage.addEventListener('pointermove',e=>{
-    if(e.pointerType==='touch')return;
+    if(e.pointerType==='touch'&&!drag)return;
     if(drag){
       targetX=clamp(dragTiltX+(e.clientX-dragStartX)/stage.clientWidth*1.5,-.68,.68);
       targetY=clamp(dragTiltY-(e.clientY-dragStartY)/stage.clientHeight*1.2,-.55,.55);
@@ -452,9 +572,9 @@
     }else pointTilt(e);
   },{passive:true});
   stage.addEventListener('pointerdown',e=>{
-    if(e.pointerType!=='mouse'||e.button!==0)return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
     drag=true;dragStartX=e.clientX;dragStartY=e.clientY;dragTiltX=targetX;dragTiltY=targetY;
-    stage.setPointerCapture?.(e.pointerId);
+    try {stage.setPointerCapture?.(e.pointerId);} catch (_) { /* Pointer annulé ou événement de test synthétique. */ }
   });
   stage.addEventListener('pointerup',()=>drag=false);
   stage.addEventListener('pointercancel',()=>drag=false);
@@ -592,6 +712,109 @@
     const reveal=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting){e.target.classList.add('is-visible');reveal.unobserve(e.target);}}},{threshold:.12,rootMargin:'0px 0px -35px 0px'});
     nodes.forEach(n=>{n.setAttribute('data-reveal','');reveal.observe(n);});
   }
+})();
+
+/* Présentoir interactif, sans stockage, CDN ni accès au pack premium. */
+(()=>{
+  'use strict';
+  const stage=document.getElementById('showroomStage');
+  const panel=document.getElementById('showroomPanel');
+  if(!stage||!panel)return;
+  const tabs=[...document.querySelectorAll('.showroom-tab')];
+  const views={
+    procedures:{
+      kicker:'PROCÉDURE / P01',category:'ROTATION / CONCIERGERIE',title:'PLANIFIER.<br>CONFIRMER.<br>CONTRÔLER.',number:'01.',
+      counter:'01 / CE QUE VOUS ALLEZ UTILISER',
+      heading:'Les gestes ne devraient pas dépendre de la mémoire.',
+      description:'Des fiches qui indiquent le déclencheur, la personne responsable, les étapes à réaliser, les contrôles et les exceptions. La procédure P01 permet déjà d’essayer ce principe gratuitement.',
+      bullets:['Préparer une rotation','Faire confirmer l’intervention','Valider l’état du logement'],
+      status:'15 procédures · brouillons à faire valider'
+    },
+    registres:{
+      kicker:'REGISTRE / SUIVI',category:'TRACE / CONCIERGERIE',title:'SUIVRE.<br>ATTRIBUER.<br>CLOTÛRER.',number:'07.',
+      counter:'02 / LES INFORMATIONS QUI RESTENT',
+      heading:'Les décisions ne devraient pas disparaître dans les messages.',
+      description:'Sept modèles CSV de suivi ont été préparés : ils rendent explicites les horaires, les responsables, les confirmations et les anomalies. Les formats et leurs usages attendent encore des essais en situation réelle.',
+      bullets:['Horaires et statuts de rotation','Incidents et corrections à suivre','État des stocks et transmissions'],
+      status:'7 registres CSV · modèles pilotes modifiables'
+    },
+    pilotage:{
+      kicker:'TABLEUR / PILOTE',category:'SYNTHÈSE / CONCIERGERIE',title:'VOIR.<br>ARBITRER.<br>AVANCER.',number:'03.',
+      counter:'03 / RELIER LES OPÉRATIONS',
+      heading:'Un tableau utile fait ressortir les blocages, pas seulement des chiffres.',
+      description:'Un tableur interne de pilotage permet de visualiser les rotations non confirmées, les incidents bloquants et les stocks à vérifier. Cet outil est encore au stade pilote : sa présence dans l’offre finale n’est pas garantie.',
+      bullets:['Repérer une mission non confirmée','Distinguer prêt, à corriger, bloqué','Organiser une vérification responsable'],
+      status:'Tableur pilote interne · non validé et non promis dans l’offre'
+    }
+  };
+  const get=id=>document.getElementById(id);
+  function activate(name,focus=false){
+    const info=views[name];if(!info)return;
+    const tab=tabs.find(t=>t.dataset.view===name);
+    tabs.forEach(t=>{
+      const selected=t===tab;
+      t.classList.toggle('is-active',selected);
+      t.setAttribute('aria-selected',String(selected));
+      t.tabIndex=selected?0:-1;
+    });
+    if(focus)tab.focus();
+    panel.setAttribute('aria-labelledby',tab.id);
+    stage.dataset.view=name;
+    get('showroomGraphicKicker').textContent=info.kicker;
+    get('showroomGraphicCategory').textContent=info.category;
+    get('showroomGraphicTitle').innerHTML=info.title;
+    get('showroomGraphicNumber').textContent=info.number;
+    get('showroomCounter').textContent=info.counter;
+    get('showroomHeading').textContent=info.heading;
+    get('showroomDescription').textContent=info.description;
+    [...get('showroomList').querySelectorAll('p')].forEach((p,i)=>p.textContent=info.bullets[i]);
+    get('showroomAvailability').textContent=info.status;
+  }
+  tabs.forEach((tab,i)=>{
+    tab.addEventListener('click',()=>activate(tab.dataset.view));
+    tab.addEventListener('keydown',e=>{
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+      e.preventDefault();
+      const index=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
+      activate(tabs[index].dataset.view,true);
+    });
+  });
+  let dragging=false,startX=0,startY=0,originX=0,originY=0,currentX=0,currentY=0;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+  function tilt(a,b){
+    currentX=Math.min(15,Math.max(-15,a));
+    currentY=Math.min(20,Math.max(-20,b));
+    stage.style.setProperty('--local-x',currentX+'deg');
+    stage.style.setProperty('--local-y',currentY+'deg');
+  }
+  stage.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    dragging=true;startX=e.clientX;startY=e.clientY;originX=currentX;originY=currentY;
+    try {stage.setPointerCapture?.(e.pointerId);} catch (_) { /* Pointer annulé ou événement de test synthétique. */ }
+  });
+  stage.addEventListener('pointermove',e=>{
+    const bounds=stage.getBoundingClientRect();
+    if(dragging){
+      tilt(originX+(startY-e.clientY)/bounds.height*28,originY+(e.clientX-startX)/bounds.width*45);
+    }else if(e.pointerType==='mouse'&&!reduce.matches){
+      tilt((.5-(e.clientY-bounds.top)/bounds.height)*16,((e.clientX-bounds.left)/bounds.width-.5)*25);
+    }
+  },{passive:true});
+  const stop=()=>dragging=false;
+  stage.addEventListener('pointerup',stop);
+  stage.addEventListener('pointercancel',stop);
+  stage.addEventListener('pointerleave',()=>{if(!dragging&&!reduce.matches)tilt(0,0);});
+  stage.addEventListener('keydown',e=>{
+    let x=currentX,y=currentY;
+    if(e.key==='ArrowLeft')y-=4;
+    else if(e.key==='ArrowRight')y+=4;
+    else if(e.key==='ArrowUp')x+=4;
+    else if(e.key==='ArrowDown')x-=4;
+    else if(e.key==='Home'){x=0;y=0;}
+    else return;
+    e.preventDefault();tilt(x,y);
+  });
+  activate('procedures');
 })();
 
 </script>
