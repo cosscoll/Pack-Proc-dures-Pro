@@ -43,3 +43,13 @@ La page montre la transformation d’opérations fragmentées en procédure coh�
 - **Tests Chromium locaux DOM injecté :** 320/390/768/1440 px, aucun débordement, aucune exception JS, ouverture des trois questions, statut EN ATTENTE et Avancement visible.
 - **GitHub Actions PR #4 :** workflow historique « Verify public preview » (run 39222747269, success) et « Vérification site immersif — Business 01 » (run 39222747424, success). Le premier échec temporaire concernait les assertions codant l’ancien site sans JavaScript ; celles-ci ont été réécrites pour vérifier la nouvelle UX et sa conformité, pas neutralisées.
 - **Limites résiduelles :** rendu WebGL GPU non prouvé dans Chromium local où getContext('webgl2') retourne null ; tests HTTP 200 GitHub Pages, Safari mobile, LCP et CLS réels requis pour recette complète.
+
+## Recette publique Chromium et WebGL2 — 19 octobre 2026, 10h40 Paris
+
+**Correction de l’état initial « GPU non vérifié » :** le premier environnement Chromium local renvoyait `getContext('webgl2') = null`, puis une recette navigateur sur **le site public** depuis GitHub Actions a validé **WebGL2 actif** en 1440, 768 et 390 px (Chromium avec SwiftShader), et un repli 2D volontaire avec `prefers-reduced-motion` en 320 px.
+
+Preuve : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/39224305285 . Le journal du job signale `PUBLIC_BROWSER_ACCEPTANCE_OK`, 0 erreur JavaScript, 0 débordement aux quatre largeurs, navigation Avancement disponible, accordéons métier et états du laboratoire validés. Les captures PNG sont attachées à cette exécution sous `captures-site-public` (7 jours). La PR #7 a été fusionnée : https://github.com/cosscoll/Pack-Proc-dures-Pro/pull/7 ; commit 54083fe20491cda76855641652b0d78c92129da6.
+
+**Nuance :** SwiftShader n’est pas un test GPU physique Android/iPhone ; les seuils LCP et CLS sur mobile physique ainsi que l’audit WCAG 2.2 AA restent ouverts. Le site ne propose toujours pas de vente ; seuls des contenus de pré-lancement sont publics.
+
+**Prochain sprint :** 1) mesure mobile LCP/CLS avec traces reproductibles ; 2) audit clavier/lecteur d’écran et Safari iPhone réel si accès ; 3) corrections UX selon preuves, sans nouveau module purement décoratif ni achat.
