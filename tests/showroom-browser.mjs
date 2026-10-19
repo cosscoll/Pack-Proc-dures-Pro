@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync } from 'node:fs';
 mkdirSync('screenshots',{recursive:true});
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-const root='http://127.0.0.1:8787/';
+const root=process.env.SHOWROOM_BASE||'http://127.0.0.1:8787/';
 try{
  for(const width of [1440,768,390,320]){
   const mobile=width<500;
