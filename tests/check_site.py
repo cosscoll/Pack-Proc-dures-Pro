@@ -63,7 +63,7 @@ class SiteChecks(unittest.TestCase):
             self.assertNotIn(marker,HTML)
         self.assertNotIn("@import url",HTML)
     def test_mobile_breakpoints_and_focus(self):
-        for marker in ("max-width:750px","max-width:380px",".navigation{display:flex;gap:5px",":focus-visible"):
+        for marker in ("max-width:750px","max-width:380px",".navigation{display:flex;gap:4px 11px",":focus-visible"):
             self.assertIn(marker,HTML)
     def test_inline_javascript_syntax(self):
         matches = re.findall(r"<script(?: [^>]*)?>(.*?)</script>",HTML,re.S|re.I)
