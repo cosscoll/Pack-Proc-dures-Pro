@@ -53,3 +53,15 @@ Preuve : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/3922430528
 **Nuance :** SwiftShader n’est pas un test GPU physique Android/iPhone ; les seuils LCP et CLS sur mobile physique ainsi que l’audit WCAG 2.2 AA restent ouverts. Le site ne propose toujours pas de vente ; seuls des contenus de pré-lancement sont publics.
 
 **Prochain sprint :** 1) mesure mobile LCP/CLS avec traces reproductibles ; 2) audit clavier/lecteur d’écran et Safari iPhone réel si accès ; 3) corrections UX selon preuves, sans nouveau module purement décoratif ni achat.
+
+## Sprint P01 + accessibilité (19 octobre 2026)
+
+**AVANT :** le site expliquait les procédures mais ne proposait pas de fiche consultable et manipulable. **APRÈS :** `exemple-procedure.html` — une seule procédure pilote P01 publique et gratuite, reliée depuis le catalogue et le laboratoire, avec sept étapes à cocher, indicateur de progression, réinitialisation et impression PDF via le navigateur. Aucun stockage ni envoi de la progression, aucune vente et aucun fichier premium exposé. Le brouillon ne vaut pas norme métier.
+
+**Preuves fonctionnelles :** PR #8 fusionnée `f52b548c567788b36b4245268f23122f9d94e62b` ; GitHub Actions `39226393913` : quatre résolutions (320,390,768,1440), 0 débordement, 0 erreur JavaScript, étapes, réinitialisation et impression testées dans Chromium. PR #9 : HTTP 200 sur la page P01 ET sur l'accueil, lien vers l'échantillon vérifié depuis le HTML public ; run `39226628934`.
+
+**Autocritique :** le premier audit axe-core sur le site public a révélé du contraste de petits textes sous le seuil WCAG AA (et l'outil exigeait un contexte navigateur dédié). Correctifs de contraste appliqués à l'accueil et à P01, script rectifié et cible de l'audit remplacée par la version PR réelle ; seconde passe de correction après diagnostics détaillés. PR #10 fusionnée `a76f01c12b6f317402883a69d9002ed897e76cc2`. GitHub Actions `39227519176` : axe-core WCAG 2 A/AA, 2.1 AA, 2.2 AA — **zéro violation automatique** sur accueil et échantillon (navigateur Chromium en CI), quatre workflows réussis. Le CLS en laboratoire ressort à 0, mais les chiffres LCP mesurés sur runner ne démontrent PAS la performance d'un mobile physique.
+
+**Recette public supplémentaire :** PR #11 (à vérifier) exige que l'audit axe-core s'applique aussi aux URLs réellement servies par GitHub Pages, et pas uniquement au code de la branche. Garder les états CI/public distincts.
+
+**Restent ouverts :** tests Safari iPhone et Android matériels, WCAG manuel (clavier, zoom 200–400 %, lecteur d'écran, navigation sans JavaScript selon fonctionnalité), métriques de terrain LCP/CLS/INP, stabilité GPU sur appareils modestes ; analyse de nom commercial et conformité avant vente. Priorité : corriger les éventuelles anomalies concrètes, puis affiner l'expérience de consultation produit sans diffuser le pack complet ni activer de paiement.
