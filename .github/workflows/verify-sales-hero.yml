@@ -30,6 +30,10 @@ jobs:
             sleep 1
           done
           node tests/sales-hero-browser.mjs
+      - name: Vérifier la version réellement déployée, pas seulement la branche
+        env:
+          SALES_BASE: https://cosscoll.github.io/Pack-Proc-dures-Pro/
+        run: node tests/sales-hero-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
