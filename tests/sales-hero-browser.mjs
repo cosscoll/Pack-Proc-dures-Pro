@@ -14,6 +14,8 @@ try {
     assert.match(await page.locator('#opening-title').innerText(),/Chaque arrivée/);
     assert.equal(await page.locator('a.hero-primary[href="./exemple-procedure.html"]').isVisible(),true,'free sample CTA is visible');
     assert.equal(await page.locator('#heroCanvas').count(),1);
+    const firstView=await page.locator('#heroStage').evaluate(el=>{const r=el.getBoundingClientRect();return {top:r.top,bottom:r.bottom,vh:innerHeight};});
+    assert.ok(firstView.top < firstView.vh*.75 && firstView.bottom > 0,'3D product must be visible within the first screen '+width+': '+JSON.stringify(firstView));
     await page.locator('#heroStage').scrollIntoViewIfNeeded();
     const reduced=width===320;
     if(!reduced){
