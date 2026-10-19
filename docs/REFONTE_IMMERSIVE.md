@@ -35,3 +35,11 @@ La page montre la transformation d’opérations fragmentées en procédure coh�
 5. Préserver les restrictions : **zéro dépense**, aucun Work/Codex ni quotas limités pour automatisations, aucune vente réelle et aucun document premium exposé.
 
 **La présence d’un commit, d’une PR ou d’un statut CI vert ne vaut pas preuve de disponibilité HTTP publique.**
+
+## Correction de continuité et vérifications CI — 19 octobre 2026
+
+- **Régression traitée :** le guide « S’orienter » du site précédent est conservé sous forme de trois accordéons éditoriaux accessibles et sans collecte, avec des conseils métier, en plus du laboratoire 3D.
+- **Navigation mobile :** liens « Les solutions », « S’orienter », « Le laboratoire » et « Avancement » accessibles sans débordement ; le menu s’adapte en lignes sur petit écran.
+- **Tests Chromium locaux DOM injecté :** 320/390/768/1440 px, aucun débordement, aucune exception JS, ouverture des trois questions, statut EN ATTENTE et Avancement visible.
+- **GitHub Actions PR #4 :** workflow historique « Verify public preview » (run 39222747269, success) et « Vérification site immersif — Business 01 » (run 39222747424, success). Le premier échec temporaire concernait les assertions codant l’ancien site sans JavaScript ; celles-ci ont été réécrites pour vérifier la nouvelle UX et sa conformité, pas neutralisées.
+- **Limites résiduelles :** rendu WebGL GPU non prouvé dans Chromium local où getContext('webgl2') retourne null ; tests HTTP 200 GitHub Pages, Safari mobile, LCP et CLS réels requis pour recette complète.
