@@ -1,0 +1,40 @@
+name: Verify live website after deployment
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'scripts/verify-live.mjs'
+      - '.github/workflows/verify-live.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: live-browser-smoke
+  cancel-in-progress: true
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install browser
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify deployed version and interactions
+        env:
+          SITE_URL: https://cosscoll.github.io/Pack-Proc-dures-Pro/
+          SITE_KIND: pack-pro
+        run: node scripts/verify-live.mjs
+      - name: Evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-browser-evidence
+          path: artifacts/public-browser-smoke/
+          if-no-files-found: warn
+          retention-days: 7
