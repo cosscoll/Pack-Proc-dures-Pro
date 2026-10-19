@@ -65,3 +65,13 @@ Preuve : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/3922430528
 **Recette public supplémentaire :** PR #11 (à vérifier) exige que l'audit axe-core s'applique aussi aux URLs réellement servies par GitHub Pages, et pas uniquement au code de la branche. Garder les états CI/public distincts.
 
 **Restent ouverts :** tests Safari iPhone et Android matériels, WCAG manuel (clavier, zoom 200–400 %, lecteur d'écran, navigation sans JavaScript selon fonctionnalité), métriques de terrain LCP/CLS/INP, stabilité GPU sur appareils modestes ; analyse de nom commercial et conformité avant vente. Priorité : corriger les éventuelles anomalies concrètes, puis affiner l'expérience de consultation produit sans diffuser le pack complet ni activer de paiement.
+
+## Robustesse WebGL : changement d'accessibilité à chaud — 19 octobre 2026
+
+**Avant :** le paramètre `prefers-reduced-motion` n'était consulté qu'à l'initialisation de la scène. Le modifier pendant une session laissait la 3D active ; le retour d'un contexte GPU perdu ne réinitialisait pas automatiquement la scène.
+
+**Après :** l'interface observe les changements de cette préférence : elle cache immédiatement le canvas et montre le schéma statique pour les mouvements réduits, puis réactive la 3D sans rechargement lorsque l'utilisateur remet les animations. La perte de contexte affiche l'alternative ; la restauration demande une reconstruction autorisée, et le chargement WebGL reste différé au chapitre utile.
+
+**Tests GitHub Actions :** PR #12, job `Cycle de vie WebGL et animations réduites — Business 01`, run `39228627206` ; navigateur Chromium WebGL2 avec SwiftShader à 1440 et 390 px. Résultat `MOTION_LIFECYCLE_ACCEPTANCE_OK`, bascule réduite et reprise, interruption graphique simulée/restauration, aucune erreur JS ni débordement ; les quatre autres workflows CI ont aussi réussi.
+
+**Autocritique :** ce test sur contexte graphique interrompu est synthétique et ne démontre ni la récupération sur un GPU matériel, ni Safari iOS. Un test physique/longue durée reste nécessaire avant d'affirmer une robustesse universelle. En cas d'impossibilité WebGL, l'alternative 2D assure une consultation continue des textes et contrôles.
