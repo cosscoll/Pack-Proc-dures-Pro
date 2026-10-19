@@ -23,7 +23,7 @@ try {
     fullHtmlChars:document.documentElement.outerHTML.length,
     overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth
   }));
-  const details=outcome.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,targets:v.nodes.slice(0,4).map(n=>n.target.join(' '))}));
+  const details=outcome.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,targets:v.nodes.slice(0,30).map(n=>({target:n.target.join(' '),contrast:n.any.find(a=>a.id==='color-contrast')?.data?.contrastRatio||null,summary:n.failureSummary?.slice(0,170)}))}));
   console.log('A11Y_AUDIT_RESULT '+JSON.stringify({route:route||'index.html',http:response?.status(),metrics,errors,violations:details}));
   if(response?.status()!==200||errors.length||details.length||metrics.overflow>1)failures++;
   await page.close();await context.close();
