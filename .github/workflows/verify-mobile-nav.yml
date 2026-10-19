@@ -6,6 +6,12 @@ on:
       - 'index.html'
       - 'tests/mobile-nav-browser.mjs'
       - '.github/workflows/verify-mobile-nav.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/mobile-nav-browser.mjs'
+      - '.github/workflows/verify-mobile-nav.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -30,3 +36,20 @@ jobs:
             sleep 1
           done
           node tests/mobile-nav-browser.mjs
+      - name: Vérifier le menu et l'atelier sur GitHub Pages réel
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          for i in {1..15}; do
+            html=$(curl -fLsS --max-time 20 "$base" || true)
+            if [[ "$html" == *'id="menuToggle"'* ]] &&
+               [[ "$html" == *'atelier-decisions.html'* ]] &&
+               [[ "$html" == *'id="heroCanvas"'* ]]; then
+              echo 'PUBLIC_MOBILE_MENU_VERIFIED HTTP=200'
+              break
+            fi
+            if [[ "$i" == 15 ]]; then echo "::error::Menu mobile ou atelier non publié"; exit 1; fi
+            sleep 10
+          done
+          NAV_BASE="$base" node tests/mobile-nav-browser.mjs
