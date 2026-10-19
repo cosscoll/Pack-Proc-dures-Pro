@@ -1,13 +1,14 @@
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 
+const base=process.env.MOTION_BASE||'http://127.0.0.1:8787/';
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const results=[];
 try{
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'no-preference'});
   const errors=[];page.on('pageerror',e=>errors.push(String(e)));
-  const response=await page.goto('http://127.0.0.1:8787/',{waitUntil:'domcontentloaded',timeout:30000});
+  const response=await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
   assert.equal(response?.status(),200);
   await page.locator('#vision').scrollIntoViewIfNeeded();
   await page.waitForFunction(()=>document.querySelector('#processCanvas').classList.contains('is-active'),{timeout:15000});
