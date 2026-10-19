@@ -10,6 +10,12 @@ try {
   assert.equal(response?.status(),200);
   const button=page.locator('#menuToggle'),nav=page.locator('#primaryNavigation');
   if(width<=750){
+    const debug=await page.evaluate(()=>{
+      const menu=document.getElementById('primaryNavigation');
+      const style=getComputedStyle(menu);
+      return {root:document.documentElement.className,navClass:menu.className,visibility:style.visibility,opacity:style.opacity,display:style.display,errors:[],hasToggle:!!document.getElementById('menuToggle')};
+    });
+    console.log('NAV_DEBUG '+JSON.stringify({width,...debug}));
     assert.equal(await button.isVisible(),true,'compact menu visible');
     assert.equal(await nav.isVisible(),false,'drawer initially hidden');
     assert.equal(await button.getAttribute('aria-expanded'),'false');
