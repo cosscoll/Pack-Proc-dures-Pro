@@ -49,13 +49,36 @@
   <a class="nav-mobile" href="#solutions">Explorer <span aria-hidden="true">↗</span></a>
 </header>
 <main id="main">
-  <section class="opening" aria-labelledby="opening-title">
+  <section class="opening" aria-labelledby="opening-title" id="accueil">
     <div class="opening-backdrop" aria-hidden="true"><div class="opening-orb"></div><div class="opening-sheen"></div></div>
-    <div class="opening-content"><span class="eyebrow"><span class="eyebrow-line"></span> ÉDITION 001 <span class="eyebrow-sep">/</span> L'ATELIER DES PROCESSUS</span>
-      <h1 id="opening-title">Le désordre<br>n'est <em>pas</em><br>une méthode<span class="period">.</span></h1>
-      <div class="opening-bottom"><p>Transformez les gestes dispersés en opérations maîtrisées. Une procédure après l'autre, les équipes retrouvent un langage commun.</p><a class="round-link" href="#vision" aria-label="Découvrir la transformation">↘</a></div>
+    <div class="opening-layout">
+      <div class="opening-content">
+        <span class="eyebrow"><span class="eyebrow-line"></span> ÉDITION 001 <span class="eyebrow-sep">/</span> CONCIERGERIES INDÉPENDANTES</span>
+        <h1 id="opening-title">Chaque arrivée<br>se joue <em>avant</em><br>l'arrivée<span class="period">.</span></h1>
+        <p class="hero-pitch">Une mission oubliée. Un ménage non confirmé. Un incident découvert trop tard. <strong>Ce sont les zones grises qui coûtent cher.</strong> Donnez à vos intervenants une méthode commune, de la demande jusqu'à la validation.</p>
+        <div class="hero-ctas">
+          <a class="hero-primary" href="./exemple-procedure.html"><span>Tester une procédure gratuitement</span><span aria-hidden="true">↗</span></a>
+          <a class="hero-secondary" href="#laboratoire">Voir une rotation déraper <span aria-hidden="true">↘</span></a>
+        </div>
+        <div class="hero-evidence" aria-label="Contenu du pack pilote"><span><b>15</b> procédures opérationnelles</span><span><b>07</b> registres de suivi</span><span><b>0 €</b> pour tester l'échantillon</span></div>
+        <p class="hero-disclaimer">Pack complet en validation métier · nom et prix non définitifs · aucune vente ouverte.</p>
+      </div>
+      <div class="hero-stage" id="heroStage" tabindex="0" role="group" aria-label="Maquette 3D de quatre documents qui se structurent. Déplacez le pointeur, faites glisser ou utilisez les flèches du clavier pour faire pivoter les documents.">
+        <div class="stage-aura" aria-hidden="true"></div>
+        <div class="stage-grid" aria-hidden="true"></div>
+        <canvas id="heroCanvas" aria-hidden="true"></canvas>
+        <div class="hero-volume" id="heroVolume" aria-hidden="true">
+          <div class="volume-page page-back"><span>OP / 04</span><b>VALIDER.</b><i></i><i></i><i></i></div>
+          <div class="volume-page page-mid"><span>OP / 03</span><b>CONTRÔLER.</b><i></i><i></i><i></i></div>
+          <div class="volume-page page-front"><span>OP / 01</span><b>PLANIFIER<br>LA ROTATION.</b><i></i><i></i><i></i><small>ÉDITION 001 / P01</small></div>
+        </div>
+        <div class="stage-chip stage-chip-a"><span class="chip-led"></span><span>01 / ATTRIBUER<br><strong>UNE MISSION</strong></span></div>
+        <div class="stage-chip stage-chip-b"><span class="chip-led"></span><span>02 / VÉRIFIER<br><strong>CHAQUE PASSAGE</strong></span></div>
+        <div class="stage-chip stage-chip-c"><span class="chip-led"></span><span>03 / DÉCIDER<br><strong>SANS SUPPOSER</strong></span></div>
+        <span class="stage-caption">VRAIE SCÈNE WEBGL2 · SURVOL / GLISSER / FLÈCHES <span aria-hidden="true">⤢</span></span>
+      </div>
     </div>
-    <div class="opening-index" aria-hidden="true"><span>PROTOCOL / 01</span><span>DE LA FRICTION À LA FLUIDITÉ</span></div>
+    <div class="opening-index" aria-hidden="true"><span>PACK PROCÉDURES PRO / 01</span><span>UN PROCESSUS LISIBLE DE BOUT EN BOUT</span><span>FAIRE DÉFILER ↓</span></div>
   </section>
 
   <section class="narrative" id="vision" aria-labelledby="vision-title">
@@ -74,11 +97,22 @@
     <div class="narrative-outro"><span>CLARIFIER</span><span class="outro-line"></span><span>EXÉCUTER</span><span class="outro-line"></span><span>VALIDER</span></div>
   </section>
 
+
+  <section class="impact" id="impact" aria-labelledby="impact-title">
+    <div class="impact-intro"><div><span class="section-label">LE COÛT DES ZONES GRISES / 01</span><h2 id="impact-title">Deux façons de gérer<br><em>la même rotation.</em></h2></div><p>Un cas d'usage fictif, inspiré d'une difficulté réelle du métier : une intervention demandée, mais jamais acceptée. Cliquez pour comparer les décisions.</p></div>
+    <div class="compare-switch" role="group" aria-label="Comparer les deux façons de travailler"><button type="button" class="compare-btn is-selected" data-compare="before" aria-pressed="true">Sans procédure <span aria-hidden="true">↗</span></button><button type="button" class="compare-btn" data-compare="after" aria-pressed="false">Avec procédure <span aria-hidden="true">↗</span></button></div>
+    <div class="impact-stage">
+      <div class="impact-screen"><div class="impact-screen-top"><span id="compareIndicator">SCÉNARIO / SANS MÉTHODE</span><span class="impact-live"><span></span> SIMULATION</span></div><div class="impact-headline" id="compareHeadline" aria-live="polite">Une demande envoyée.<br>Personne ne confirme.</div><div class="impact-timeline" id="compareTimeline" aria-label="Étapes de la rotation"><div class="impact-line"><span>01</span><strong>Demande transmise</strong><em>Envoyée</em></div><div class="impact-line"><span>02</span><strong>Acceptation inconnue</strong><em>Non vérifiée</em></div><div class="impact-line"><span>03</span><strong>Contrôle non attribué</strong><em>Oublié</em></div><div class="impact-line"><span>04</span><strong>Arrivée à risque</strong><em>Sans certitude</em></div></div></div>
+      <aside class="impact-insight"><span class="impact-insight-label">LE VRAI GAIN</span><div class="impact-big" id="compareResult">Moins<br>de flou<span>.</span></div><p id="compareDetail">Sans confirmation explicite, personne ne peut garantir que l'intervention aura lieu. La procédure oblige à traiter ce blocage avant de déclarer le logement prêt.</p><a href="./exemple-procedure.html">Ouvrir la fiche P01 et tester le processus <span aria-hidden="true">↗</span></a></aside>
+    </div>
+    <div class="impact-footer"><span>DES RESPONSABLES IDENTIFIÉS</span><span aria-hidden="true">✳</span><span>DES DÉCISIONS TRAÇABLES</span><span aria-hidden="true">✳</span><span>MOINS D'IMPROVISATION</span></div>
+  </section>
+
   <section class="statement" aria-label="La méthode"><span class="section-label">02 / NOTRE CONVICTION</span><p>Le bon document ne décrit pas simplement une tâche. <em>Il rend la prochaine décision évidente.</em></p><div class="statement-meta">MOINS D'INTERPRÉTATION <span>✦</span> PLUS DE FIABILITÉ</div></section>
 
-  <section class="solutions" id="solutions" aria-labelledby="solutions-title"><div class="solutions-head"><div><span class="section-label">03 / LA BIBLIOTHÈQUE</span><h2 id="solutions-title">Des outils conçus<br><i>pour le terrain.</i></h2></div><p>Une première collection en développement, pensée pour les petites équipes et leurs décisions quotidiennes. Aucun achat n'est ouvert.</p></div>
+  <section class="solutions" id="solutions" aria-labelledby="solutions-title"><div class="solutions-head"><div><span class="section-label">03 / LA BIBLIOTHÈQUE</span><h2 id="solutions-title">Des outils conçus<br><i>pour le terrain.</i></h2></div><p>Pour les petites conciergeries qui gèrent les départs, les équipes et les imprévus. Une méthode reproductible, sans perdre le contrôle. Collection pilote en validation : aucun achat n’est ouvert.</p></div>
     <div class="product-feature"><div class="product-visual" aria-hidden="true"><div class="product-sheet back"><span>REGISTRE — 07</span><div></div><div></div><div></div></div><div class="product-sheet front"><span class="sheet-top">COLLECTION 01 <small>PROCÉDURES</small></span><b>ROTATION<br>SÉRÉNITÉ</b><span class="sheet-rule"></span><span class="sheet-corner">15<br><small>PROCÉDURES</small></span></div><span class="visual-stamp">DOCUMENTATION<br>OPÉRATIONNELLE</span></div>
-      <div class="product-details"><div class="overline">01 — CONCIERGERIES / LOCATIONS COURTE DURÉE</div><h3>Rotation<br><em>Sérénité.</em></h3><p>Du départ d'un voyageur au contrôle final du logement : des procédures pour planifier, confirmer les interventions, gérer les incidents et tracer les décisions.</p><div class="product-spec"><span>15 PROCÉDURES</span><span>7 REGISTRES</span><span>FORMATS MODIFIABLES</span></div><div class="product-status"><span class="status-dot"></span> VERSION PILOTE — VALIDATION MÉTIER EN COURS</div><a class="text-link" href="./exemple-procedure.html">Lire et tester une procédure gratuite <span aria-hidden="true">↗</span></a><a class="text-link" href="#laboratoire">Explorer un cas d'usage <span aria-hidden="true">↗</span></a><p class="product-disclaimer">Prix indicatif en étude : 49 €. Aucun achat ni téléchargement du pack complet disponible.</p></div></div>
+      <div class="product-details"><div class="overline">01 — CONCIERGERIES / LOCATIONS COURTE DURÉE</div><h3>Rotation<br><em>Sérénité.</em></h3><p>Arrêtez de courir après les confirmations et les informations manquantes. Ce kit pilote organise le départ, les interventions, le contrôle du logement et la résolution des incidents dans un même langage opérationnel.</p><div class="product-spec"><span>15 PROCÉDURES</span><span>7 REGISTRES</span><span>FORMATS MODIFIABLES</span></div><div class="product-status"><span class="status-dot"></span> VERSION PILOTE — VALIDATION MÉTIER EN COURS</div><p class="product-benefit">À l’intérieur : qui fait quoi, dans quel ordre, que vérifier et à quel moment bloquer une décision.</p><a class="text-link" href="./exemple-procedure.html">Lire et tester une procédure gratuite <span aria-hidden="true">↗</span></a><a class="text-link" href="#laboratoire">Explorer un cas d'usage <span aria-hidden="true">↗</span></a><p class="product-disclaimer">Prix indicatif en étude : 49 €. Le pack complet est en préparation, sans paiement actif. Test gratuit de la fiche P01 disponible immédiatement.</p></div></div>
     <div class="solutions-foot"><div><strong>01.</strong> <span>Décrire sans ambiguïté</span></div><div><strong>02.</strong> <span>Attribuer sans confusion</span></div><div><strong>03.</strong> <span>Vérifier sans supposer</span></div></div>
   </section>
 
@@ -93,7 +127,7 @@
 
   <section class="lab" id="laboratoire" aria-labelledby="lab-title"><div class="lab-head"><div><span class="section-label">05 / LABORATOIRE INTERACTIF</span><h2 id="lab-title">Une procédure.<br><i>Trois issues possibles.</i></h2></div><p>Explorez comment une même rotation évolue selon les confirmations et les incidents. Cette simulation illustre les décisions ; elle ne traite aucune donnée réelle.</p></div><div class="lab-panel"><div class="lab-controls" role="group" aria-label="Choisir un scénario de rotation"><button type="button" class="scenario is-selected" data-scenario="ready" aria-pressed="true"><span>01</span> Rotation conforme</button><button type="button" class="scenario" data-scenario="pending" aria-pressed="false"><span>02</span> Intervention non confirmée</button><button type="button" class="scenario" data-scenario="incident" aria-pressed="false"><span>03</span> Incident bloquant</button></div><div class="lab-flow"><div class="flow-top"><span>SIMULATEUR / ROTATION R-001</span><span id="flowStatus" class="flow-status">PRÊT À VALIDER</span></div><ol class="flow-steps" id="flowSteps"><li><span>01</span><b>Départ constaté</b><em>Confirmé</em></li><li><span>02</span><b>Intervention</b><em>Confirmée</em></li><li><span>03</span><b>Contrôle logement</b><em>Conforme</em></li><li><span>04</span><b>Décision finale</b><em>Prêt</em></li></ol><div class="flow-decision"><div><small>DÉCISION OPÉRATIONNELLE</small><p id="flowDecision" aria-live="polite">Le logement peut être validé après vérification du responsable habilité.</p></div><span id="flowSymbol" aria-hidden="true">✓</span></div></div></div><p class="lab-notice">Démonstration fictive. Les procédures réelles exigent adaptation, contrôle humain et validation métier. <a href="./exemple-procedure.html">Consulter la procédure pilote P01 ↗</a></p></section>
 
-  <section class="prelaunch" id="contact"><span class="section-label">06 / LA SUITE</span><div class="prelaunch-grid"><h2>La méthode<br>avant <i>la vente.</i></h2><div><p>Les documents sont encore évalués avec des professionnels. Nous privilégions leur utilité réelle plutôt qu'un lancement prématuré.</p><a href="./avancement.html" class="cta-arrow">Suivre l'avancement <span>↗</span></a><a href="https://github.com/cosscoll/Pack-Proc-dures-Pro" class="quiet-link" target="_blank" rel="noopener noreferrer">Consulter le dépôt GitHub ↗</a></div></div><div class="ending-index">PACK PROCÉDURES PRO <span>—</span> LE TRAVAIL BIEN CADRÉ</div></section>
+  <section class="prelaunch" id="contact"><span class="section-label">06 / PASSER DE L'IDÉE AU TERRAIN</span><div class="prelaunch-grid"><h2>Arrêtez de<br><i>deviner.</i><br>Commencez<br>à vérifier.</h2><div><p>Un bon processus commence par une étape que tout le monde comprend. Découvrez la fiche pilote consacrée à la planification d'une rotation, puis jugez vous-même si la méthode mérite sa place dans votre conciergerie.</p><a href="./exemple-procedure.html" class="cta-arrow">Essayer gratuitement la procédure P01 <span>↗</span></a><a href="./avancement.html" class="quiet-link">Suivre la création du pack complet ↗</a><p class="hero-disclaimer">Pré-lancement : aucun paiement, aucune collecte de réponses sur le site. Produit et tarif non validés commercialement.</p></div></div><div class="ending-index">PACK PROCÉDURES PRO <span>—</span> DES DÉCISIONS MOINS AMBIGUËS</div></section>
 </main><footer><span>© 2026 PACK PROCÉDURES PRO</span><span>PRÉ-LANCEMENT / AUCUN PAIEMENT ACTIF</span><a href="#haut">RETOUR EN HAUT ↑</a></footer>
 <script>
 /* Pack Procédures Pro — Atelier des processus.
