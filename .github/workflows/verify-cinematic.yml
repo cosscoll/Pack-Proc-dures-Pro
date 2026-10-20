@@ -1,0 +1,66 @@
+name: Recette immersive appartement — Business 01
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/cinematic.css'
+      - 'assets/apartment-scene.js'
+      - 'assets/experience.js'
+      - 'tests/cinematic-browser.mjs'
+      - '.github/workflows/verify-cinematic.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/cinematic.css'
+      - 'assets/apartment-scene.js'
+      - 'assets/experience.js'
+      - 'tests/cinematic-browser.mjs'
+      - '.github/workflows/verify-cinematic.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Chromium et rendu WebGL2
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Recette 3D, chapitres, menus et interactions
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/cinematic-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8787/ >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/cinematic-browser.mjs
+      - name: Contrôler après fusion le vrai site GitHub Pages
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          for n in {1..20}; do
+            html=$(curl -fLsS --max-time 20 "$base" || true)
+            if [[ "$html" == *'id="worldCanvas"'* ]] && [[ "$html" == *'id="depart"'* ]] && [[ "$html" == *'assets/apartment-scene.js'* ]]; then
+              echo 'CINEMATIC_PUBLIC_HTTP_VERIFIED'
+              break
+            fi
+            if [[ "$n" == 20 ]]; then echo "::error::La nouvelle expérience n'est pas servie en ligne";exit 1;fi
+            sleep 10
+          done
+          CINEMATIC_BASE="$base" node tests/cinematic-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captures-nouvelle-direction-artistique
+          path: screenshots/cinematic-*.png
+          if-no-files-found: ignore
+          retention-days: 7

@@ -7,6 +7,13 @@ on:
       - 'exemple-procedure.html'
       - 'tests/a11y-vitals-public.mjs'
       - '.github/workflows/a11y-vitals.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/cinematic.css'
+      - 'assets/experience.js'
+      - '.github/workflows/a11y-vitals.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,4 +40,5 @@ jobs:
           AUDIT_BASE=http://127.0.0.1:8787/ node tests/a11y-vitals-public.mjs
 
       - name: Vérifier aussi la version publiée réellement sur GitHub Pages
+        if: github.event_name == 'push'
         run: AUDIT_BASE=https://cosscoll.github.io/Pack-Proc-dures-Pro/ node tests/a11y-vitals-public.mjs
