@@ -41,8 +41,10 @@ try {
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'overflow '+width+': '+overflow);
   assert.deepEqual(errs,[],'runtime errors');
-  await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0)});
-  await page.waitForTimeout(220);
+  await page.screenshot({path:'screenshots/cinematic-chapter-'+width+'.png',animations:'disabled'});
+  await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';document.body.style.scrollBehavior='auto';window.scrollTo({top:0,behavior:'instant'});});
+  await page.waitForFunction(()=>window.scrollY===0,{timeout:8000});
+  await page.waitForTimeout(350);
   await page.screenshot({path:'screenshots/cinematic-'+width+'.png',animations:'disabled'});
   console.log('CINEMATIC_QA_PASS '+JSON.stringify({width,engine,chapters:4,menu:true,scenario:true,overflow,jsErrors:0}));
   await ctx.close();
