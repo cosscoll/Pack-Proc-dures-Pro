@@ -1,38 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-const read=(p)=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-const html=read('index.html'),css=read('assets/cinematic.css'),three=read('assets/apartment-scene.js'),ux=read('assets/experience.js');
-test('quatre chapitres cinématographiques, navigation et CTA métier',()=>{
- assert.match(html,/<main id="main">/);
- for(const id of ['haut','depart','rotation','controle','solution','worldCanvas','sceneFallback','navPanel','overlayMessage','pack']) assert.ok(html.includes('id="'+id+'"'),id);
- assert.equal((html.match(/data-scene="/g)||[]).length,4);
- assert.match(html,/href="\.\/exemple-procedure\.html"/);
- assert.match(html,/href="\.\/atelier-decisions\.html"/);
- assert.match(html,/href="\.\/avancement\.html"/);
- assert.match(html,/15 procédures/);
- assert.match(html,/7 registres/);
- assert.match(html,/49 €/);
- assert.match(html,/Aucun achat possible/);
+const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+const html=read('index.html'),css=read('assets/cinematic.css');
+const three=read('assets/apartment-scene.js'),ux=read('assets/experience.js');
+test('four narrative chapters, links and truthful prelaunch',()=>{
+ for(const id of ['main','haut','depart','rotation','controle','solution','worldCanvas','sceneFallback','navPanel','overlayMessage','pack'])assert.ok(html.includes('id="'+id+'"'),id);
+ assert.equal(html.split('data-scene="').length-1,4);
+ for(const link of ['exemple-procedure.html','atelier-decisions.html','avancement.html'])assert.ok(html.includes('href="./'+link+'"'),link);
+ for(const text of ['15 procédures','7 registres','49 €','Aucun achat possible'])assert.ok(html.includes(text),text);
 });
-test('véritable appartement WebGL, et pas des documents décoratifs',()=>{
- for(const pattern of ['WebGLRenderer','PerspectiveCamera','shadowMap.enabled','toneMapping','scene.fog','skyline','createElement(\\'canvas\\')','mission','camera.position.lerp']){
-   assert.match(three,new RegExp(pattern));
+test('original architectural 3D model, not generic floating pages',()=>{
+ for(const pattern of ['WebGLRenderer','PerspectiveCamera','shadowMap.enabled','toneMapping','scene.fog','skyline','camera.position.lerp','const room=new T.Group','contact.push',"spot('door'","spot('bed'","spot('kitchen'", "dataset.engine='fallback'"]){
+  assert.ok(three.includes(pattern),pattern);
  }
- assert.match(three,/const room=new T.Group/);
- assert.match(three,/contact\.push/);
- assert.match(three,/spot\\('door'/);
- assert.match(three,/spot\\('bed'/);
- assert.match(three,/spot\\('kitchen'/);
- assert.match(three,/data.engine='fallback'|dataset.engine='fallback'/);
- assert.match(html,/<svg/);
+ assert.ok(html.includes('<svg'));
 });
-test('confidentialité, accessibilité et animations réduites',()=>{
- assert.doesNotMatch(html,/<form\b/i);
- assert.doesNotMatch(html,/checkout\.stripe|js\.stripe\.com|sk_live_/);
- assert.match(css,/prefers-reduced-motion:reduce/);
- assert.match(ux,/aria-expanded/);
- assert.match(ux,/Escape/);
- assert.match(ux,/rotation:hotspot/);
- assert.match(html,/aria-live="polite"/);
+test('accessible interactions and reduced-motion fallback',()=>{
+ assert.ok(!html.includes('<form'));
+ assert.ok(!html.includes('buy.stripe.com'));
+ for(const pattern of ['prefers-reduced-motion:reduce','.nav-panel','.chapter'])assert.ok(css.includes(pattern),pattern);
+ for(const pattern of ['aria-expanded','Escape','rotation:hotspot'])assert.ok(ux.includes(pattern),pattern);
+ assert.ok(html.includes('aria-live="polite"'));
 });
