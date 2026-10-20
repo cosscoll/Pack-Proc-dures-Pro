@@ -60,6 +60,31 @@
   box(.16,2.95,6.6,-4.42,1.42,0,mats.plaster);
   box(4.5,.018,6.50,-2.22,-.015,0,mat(0xb3a18b,.85));
   box(4.34,.018,6.50,2.26,-.013,0,mat(0xa99680,.82));
+  // Custom oak texture: every plank and scratch belongs to the room, not to a decorative UI shape.
+  const floorCanvas=document.createElement('canvas');
+  floorCanvas.width=768;floorCanvas.height=768;
+  const fctx=floorCanvas.getContext('2d');
+  fctx.fillStyle='#8b7f6c';fctx.fillRect(0,0,768,768);
+  let seed=18731;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  for(let row=0;row<12;row++){
+    for(let col=0;col<7;col++){
+      const x=col*120-(row%2)*60,y=row*64,base=Math.floor(114+random()*25);
+      fctx.fillStyle='rgb('+Math.floor(base*1.12)+','+Math.floor(base*1.02)+','+base+')';
+      fctx.fillRect(x+1,y+1,118,62);
+      fctx.strokeStyle='#5c554c88';fctx.lineWidth=1;fctx.strokeRect(x+.5,y+.5,119,63);
+      for(let i=0;i<19;i++){
+        const yy=y+5+random()*54;
+        fctx.strokeStyle=i%3?'#6d615322':'#ead4b51c';
+        fctx.beginPath();fctx.moveTo(x+random()*12,yy);
+        fctx.bezierCurveTo(x+45,yy+random()*3-1.5,x+70,yy+random()*3-1.5,x+115,yy+random()*3-1.5);fctx.stroke();
+      }
+    }
+  }
+  const woodTexture=new T.CanvasTexture(floorCanvas);
+  woodTexture.colorSpace=T.SRGBColorSpace;
+  woodTexture.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);
+  const oak=new T.Mesh(new T.PlaneGeometry(8.67,6.45),new T.MeshStandardMaterial({map:woodTexture,roughness:.88,metalness:0}));
+  oak.rotation.x=-Math.PI/2;oak.position.set(0,.009,0);oak.receiveShadow=true;room.add(oak);
   // Fine repeating floor joins and accent skirting.
   for(let x=-4.25;x<4.30;x+=.62){box(.009,.007,6.43,x,.012,0,mat(0x796f64,.95),room,false);}
   for(let z=-3.02;z<3.1;z+=.72){box(8.65,.006,.01,0,.018,z,mat(0x9b8e7e,.98),room,false);}
