@@ -21,7 +21,7 @@
   renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=T.PCFSoftShadowMap;
   renderer.toneMapping=T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.48;
+  renderer.toneMappingExposure=1.02;
   renderer.outputColorSpace=T.SRGBColorSpace;
   const mat=(hex,roughness=.72,metalness=0)=>new T.MeshStandardMaterial({color:hex,roughness,metalness});
   const mats={
@@ -144,7 +144,7 @@
   box(.10,1.06,1.75,.97,.52,-1.60,mats.chalk);
   box(.33,.03,.80,.97,1.07,-1.60,mats.wood);
   for(const [x,z] of [[-2.1,-1.85],[.4,1.8],[2.58,-2.3]]){
-    const l=new T.PointLight(0xffd7a0,10,4.7,2);l.position.set(x,2.5,z);room.add(l);
+    const l=new T.PointLight(0xffd7a0,4.5,4.7,2);l.position.set(x,2.5,z);room.add(l);
     cyl(.15,.13,.07,x,2.63,z,mats.gold);
   }
   // Botanical details: real shapes and shadows, not arbitrary hero prisms.
@@ -164,11 +164,11 @@
   // Architectural presentation: pedestal shadow and halo surfaces.
   const ground=new T.Mesh(new T.CircleGeometry(20,80),new T.MeshBasicMaterial({color:0x131b19,transparent:true,opacity:.23}));
   ground.rotation.x=-Math.PI/2;ground.position.y=-.36;scene.add(ground);
-  const ambient=new T.AmbientLight(0xeff5dc,1.8);scene.add(ambient);
-  const hemisphere=new T.HemisphereLight(0xb8d1ca,0x76604d,2.3);scene.add(hemisphere);
-  const key=new T.DirectionalLight(0xf6ead4,4.4);
+  const ambient=new T.AmbientLight(0xeff5dc,.86);scene.add(ambient);
+  const hemisphere=new T.HemisphereLight(0xb8d1ca,0x76604d,1.15);scene.add(hemisphere);
+  const key=new T.DirectionalLight(0xf6ead4,2.6);
   key.position.set(1,10,10);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-9;key.shadow.bias=-.00035;scene.add(key);
-  const rim=new T.DirectionalLight(0x96bbb5,2.4);rim.position.set(-7,6,-8);scene.add(rim);
+  const rim=new T.DirectionalLight(0x96bbb5,1.25);rim.position.set(-7,6,-8);scene.add(rim);
   // Dust in the shaft of light: atmospheric, never detached cubes.
   const dustGeo=new T.BufferGeometry(),coords=new Float32Array(480);
   for(let i=0;i<160;i++){coords[i*3]=(Math.random()-.5)*17;coords[i*3+1]=Math.random()*8;coords[i*3+2]=(Math.random()-.5)*14;}
@@ -178,7 +178,7 @@
   const pointer={x:0,y:0},current={x:0,y:0};
   let chapter=0,running=true,last=0,hoverId='',selectedId='';
   const path=[
-    {pos:[11.8,9.3,13.6],look:[0,.20,0],zoom:1},
+    {pos:[13.8,10.8,16.4],look:[.20,.20,0],zoom:1},
     {pos:[10.0,7.3,10.1],look:[1.0,.25,1.0],zoom:1},
     {pos:[4.0,8.3,10.5],look:[-1.6,.21,-.8],zoom:1.10},
     {pos:[10.5,9.6,12.5],look:[0,.2,0],zoom:.99}
