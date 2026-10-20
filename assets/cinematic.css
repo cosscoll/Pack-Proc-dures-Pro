@@ -23,3 +23,11 @@ main{position:relative;z-index:9;pointer-events:none}.chapter{height:100svh;min-
 body:has(.chapter-control.is-current) .world:before{background:linear-gradient(90deg,rgba(8,14,13,.12) 0%,rgba(8,14,13,.29) 38%,rgba(8,14,13,.91) 67%,rgba(8,14,13,.96) 100%),linear-gradient(0deg,#070d0cb0,transparent 22%)}
 .world-label{padding:10px 12px;background:linear-gradient(90deg,transparent,#0c1613a8);border-radius:2px}
 @media(max-width:750px){body:has(.chapter-control.is-current) .world:before{background:linear-gradient(180deg,rgba(8,14,13,.65),transparent 20%,transparent 34%,rgba(8,14,13,.91) 73%,rgba(8,14,13,.98))}}
+
+/* Mobile composition: give the apartment its own upper frame and an opaque reading zone. */
+@media(max-width:750px){
+ .world canvas{transform:translateY(-74px) scale(.94);transform-origin:50% 0}
+ .world-fallback{transform:translateY(-56px) scale(.94);transform-origin:50% 0}
+ .world:before{background:linear-gradient(180deg,rgba(8,14,13,.35),transparent 19%,transparent 30%,rgba(8,14,13,.78) 53%,rgba(8,14,13,.98) 76%,#080e0d 100%)}
+ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(180deg,rgba(8,14,13,.43),transparent 19%,transparent 32%,rgba(8,14,13,.84) 54%,#080e0d 77%)}
+}
