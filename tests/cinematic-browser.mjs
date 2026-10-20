@@ -14,7 +14,7 @@ try {
   assert.match(await page.locator('h1').innerText(),/Le logement/);
   assert.equal(await page.locator('#worldCanvas').count(),1);
   assert.equal(await page.locator('.chapter').count(),4);
-  assert.equal(await page.locator('a[href="./exemple-procedure.html"]').first().isVisible(),true);
+  assert.equal(await page.locator('.hero-chapter a[href="./exemple-procedure.html"]').isVisible(),true);
   assert.ok(await page.locator('a[href="./atelier-decisions.html"]').count()>0);
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world').dataset.engine),{timeout:30000});
   const engine=await page.locator('#world').getAttribute('data-engine');
