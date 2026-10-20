@@ -1,0 +1,51 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { mkdirSync } from 'node:fs';
+const base=process.env.CINEMATIC_BASE||'http://127.0.0.1:8787/';
+mkdirSync('screenshots',{recursive:true});
+const browser=await chromium.launch({headless:true,args:['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+try {
+ for(const width of [1440,768,390,320]){
+  const ctx=await browser.newContext({viewport:{width,height:900},reducedMotion:width===320?'reduce':'no-preference'});
+  const page=await ctx.newPage(),errs=[];
+  page.on('pageerror',e=>errs.push(String(e)));
+  const res=await page.goto(base,{waitUntil:'domcontentloaded',timeout:35000});
+  assert.equal(res?.status(),200);
+  assert.match(await page.locator('h1').innerText(),/Le logement/);
+  assert.equal(await page.locator('#worldCanvas').count(),1);
+  assert.equal(await page.locator('.chapter').count(),4);
+  assert.equal(await page.locator('a[href="./exemple-procedure.html"]').first().isVisible(),true);
+  assert.ok(await page.locator('a[href="./atelier-decisions.html"]').count()>0);
+  await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world').dataset.engine),{timeout:30000});
+  const engine=await page.locator('#world').getAttribute('data-engine');
+  if(width!==320)assert.equal(engine,'webgl2','real 3D apartment must load for '+width);
+  else assert.equal(engine,'fallback','reduced-motion shows static architectural model');
+  await page.locator('#menuToggle').click();
+  assert.equal(await page.locator('#menuToggle').getAttribute('aria-expanded'),'true');
+  assert.equal(await page.locator('#navPanel a[href="./avancement.html"]').isVisible(),true);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#menuToggle').getAttribute('aria-expanded'),'false');
+  await page.locator('#rotation').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
+  assert.equal(await page.locator('#rotation').evaluate(el=>el.classList.contains('is-current')),true);
+  await page.locator('[data-scenario="pending"]').click();
+  assert.equal(await page.locator('#overlayMessage').isVisible(),true);
+  assert.match(await page.locator('#overlayHeading').innerText(),/mission reste non confirmée/);
+  await page.locator('#overlayClose').click();
+  assert.equal(await page.locator('#overlayMessage').isVisible(),false);
+  await page.locator('#controle').scrollIntoViewIfNeeded();
+  await page.locator('[data-scenario="incident"]').click();
+  assert.match(await page.locator('#overlayHeading').innerText(),/ne signifie pas/);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#overlayMessage').isVisible(),false);
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+  assert.ok(overflow<=1,'overflow '+width+': '+overflow);
+  assert.deepEqual(errs,[],'runtime errors');
+  await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0)});
+  await page.waitForTimeout(220);
+  await page.screenshot({path:'screenshots/cinematic-'+width+'.png',animations:'disabled'});
+  console.log('CINEMATIC_QA_PASS '+JSON.stringify({width,engine,chapters:4,menu:true,scenario:true,overflow,jsErrors:0}));
+  await ctx.close();
+ }
+ console.log('CINEMATIC_QA_ACCEPTANCE_OK');
+}finally{await browser.close()}
