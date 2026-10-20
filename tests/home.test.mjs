@@ -1,48 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-const html = readFileSync(new URL('../index.html',import.meta.url),'utf8');
-
-test('storytelling, navigation et ancres métiers', () => {
-  assert.match(html, /<!doctype html>/i);
-  assert.match(html, /<main id="main">/);
-  assert.match(html, /aria-label="Navigation principale"/);
-  for(const id of ['haut','vision','solutions','orientation','laboratoire']) {
-    assert.ok(html.includes('id="'+id+'"'), id);
-  }
-  assert.match(html, /<a href="#orientation">S’orienter<\/a>/);
-  assert.match(html, /href="\.\/avancement\.html"/);
-  assert.match(html, /href="\.\/atelier-decisions\.html"/);
-  assert.match(html, /Jouer une rotation en 3 décisions/);
+import {readFileSync} from 'node:fs';
+const read=(p)=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
+const html=read('index.html'),css=read('assets/cinematic.css'),three=read('assets/apartment-scene.js'),ux=read('assets/experience.js');
+test('quatre chapitres cinématographiques, navigation et CTA métier',()=>{
+ assert.match(html,/<main id="main">/);
+ for(const id of ['haut','depart','rotation','controle','solution','worldCanvas','sceneFallback','navPanel','overlayMessage','pack']) assert.ok(html.includes('id="'+id+'"'),id);
+ assert.equal((html.match(/data-scene="/g)||[]).length,4);
+ assert.match(html,/href="\.\/exemple-procedure\.html"/);
+ assert.match(html,/href="\.\/atelier-decisions\.html"/);
+ assert.match(html,/href="\.\/avancement\.html"/);
+ assert.match(html,/15 procédures/);
+ assert.match(html,/7 registres/);
+ assert.match(html,/49 €/);
+ assert.match(html,/Aucun achat possible/);
 });
-
-test('orientation professionnelle accessible et privée', () => {
-  assert.equal((html.match(/<details class="orientation-option">/g)||[]).length,3);
-  assert.equal((html.match(/<\/details>/g)||[]).length,3);
-  assert.match(html,/aria-labelledby="orientation-title"/);
-  assert.match(html,/:focus-visible/);
-  assert.match(html,/prefers-reduced-motion:reduce/);
-  assert.doesNotMatch(html,/<form\b/i);
-  assert.doesNotMatch(html,/https:\/\/(?:js\.stripe|www\.googletagmanager|fonts\.googleapis)/);
+test('véritable appartement WebGL, et pas des documents décoratifs',()=>{
+ for(const pattern of ['WebGLRenderer','PerspectiveCamera','shadowMap.enabled','toneMapping','scene.fog','skyline','createElement(\\'canvas\\')','mission','camera.position.lerp']){
+   assert.match(three,new RegExp(pattern));
+ }
+ assert.match(three,/const room=new T.Group/);
+ assert.match(three,/contact\.push/);
+ assert.match(three,/spot\\('door'/);
+ assert.match(three,/spot\\('bed'/);
+ assert.match(three,/spot\\('kitchen'/);
+ assert.match(three,/data.engine='fallback'|dataset.engine='fallback'/);
+ assert.match(html,/<svg/);
 });
-
-test('conseils distincts et promesse commerciale prudente', () => {
-  for(const term of ['procédure opérationnelle','check-list de contrôle','registre de passation']) {
-    assert.ok(html.includes(term),term);
-  }
-  assert.match(html,/Aucun achat/);
-  assert.match(html,/VALIDATION MÉTIER EN COURS/);
-  assert.match(html,/49 €/);
-});
-
-test('vraie scène 3D et repli, simulation des blocages', () => {
-  assert.match(html,/getContext\('webgl2'/);
-  assert.match(html,/createShader/);
-  assert.match(html,/gl\.drawArrays/);
-  assert.match(html,/sceneFallback/);
-  assert.match(html,/webglcontextlost/);
-  for(const code of ['ready','pending','incident']) assert.match(html,new RegExp('data-scenario="'+code+'"'));
-  assert.match(html,/EN ATTENTE/);
-  assert.match(html,/BLOQUÉ/);
-  assert.match(html,/aria-live="polite"/);
+test('confidentialité, accessibilité et animations réduites',()=>{
+ assert.doesNotMatch(html,/<form\b/i);
+ assert.doesNotMatch(html,/checkout\.stripe|js\.stripe\.com|sk_live_/);
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(ux,/aria-expanded/);
+ assert.match(ux,/Escape/);
+ assert.match(ux,/rotation:hotspot/);
+ assert.match(html,/aria-live="polite"/);
 });
