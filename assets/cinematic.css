@@ -15,3 +15,6 @@ main{position:relative;z-index:9;pointer-events:none}.chapter{height:100svh;min-
 
 /* Contrast corrections verified against axe-core WCAG AA on the new editorial offer. */
 .legal-note,.offer-line b,.offer-line span{color:#344e3a!important}
+
+/* Narrow-device typography must not introduce sideways scrolling at 320px. */
+@media(max-width:360px){.offer-intro h2{font-size:clamp(42px,13vw,52px);overflow-wrap:anywhere}.offer-cta{font-size:10px;overflow-wrap:anywhere}.chapter-meta{overflow-wrap:anywhere}}
