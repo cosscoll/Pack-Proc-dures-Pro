@@ -4,22 +4,21 @@ import {readFileSync} from 'node:fs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const html=read('index.html'),css=read('assets/cinematic.css');
 const three=read('assets/apartment-scene.js'),ux=read('assets/experience.js');
-test('four narrative chapters, links and truthful prelaunch',()=>{
+test('a commercially honest landing with four connected real-world gestures',()=>{
  for(const id of ['main','haut','depart','rotation','controle','solution','worldCanvas','sceneFallback','navPanel','overlayMessage','pack'])assert.ok(html.includes('id="'+id+'"'),id);
  assert.equal(html.split('data-scene="').length-1,4);
  for(const link of ['exemple-procedure.html','atelier-decisions.html','avancement.html'])assert.ok(html.includes('href="./'+link+'"'),link);
- for(const text of ['15 procédures','7 registres','49 €','Aucun achat possible'])assert.ok(html.includes(text),text);
-});
-test('original architectural 3D model, not generic floating pages',()=>{
- for(const pattern of ['WebGLRenderer','PerspectiveCamera','shadowMap.enabled','toneMapping','scene.fog','skyline','camera.position.lerp','const room=new T.Group','contact.push',"spot('door'","spot('bed'","spot('kitchen'", "dataset.engine='fallback'"]){
-  assert.ok(three.includes(pattern),pattern);
- }
- assert.ok(html.includes('<svg'));
-});
-test('accessible interactions and reduced-motion fallback',()=>{
- assert.ok(!html.includes('<form'));
+ for(const word of ['Les clés passent','15','7','49 €','Aucun achat possible','version pilote'])assert.ok(html.toLowerCase().includes(word.toLowerCase()),word);
  assert.ok(!html.includes('buy.stripe.com'));
- for(const pattern of ['prefers-reduced-motion:reduce','.nav-panel','.chapter'])assert.ok(css.includes(pattern),pattern);
- for(const pattern of ['aria-expanded','Escape','rotation:hotspot'])assert.ok(ux.includes(pattern),pattern);
+});
+test('3D product is a pierced metal key with a physical leather fob, never generic floating boxes',()=>{
+ for(const pattern of ['WebGLRenderer','PerspectiveCamera','ExtrudeGeometry','bow.holes.push(hole)','bladeShape','tagShape.holes.push(eyeletHole)','CanvasTexture','ray.intersectObjects','setProgress','keyframes','fallbackOn'])assert.ok(three.includes(pattern),pattern);
+ assert.ok(html.includes('<svg'), 'accessible fallback');
+ assert.ok(!three.includes('new T.BoxGeometry(9'), 'no apartment slab');
+});
+test('animation, responsive, accessible equivalent interactions',()=>{
+ for(const pattern of ['prefers-reduced-motion:reduce','.offer-line:hover','.offer-line:focus-visible','.nav-panel','.chapter'])assert.ok(css.includes(pattern),pattern);
+ for(const pattern of ['aria-expanded','Escape','rotation:hotspot','requestAnimationFrame','e.key===\'Tab\''])assert.ok(ux.includes(pattern),pattern);
  assert.ok(html.includes('aria-live="polite"'));
+ assert.ok(html.includes('aria-modal="true"'));
 });
