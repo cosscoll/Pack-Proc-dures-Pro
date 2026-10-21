@@ -1,0 +1,71 @@
+/* Shared editorial vocabulary for the subsidiary pages. Each page keeps its existing working tools. */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap');
+body.page--sample,body.page--atelier,body.page--status{--paper:#eae5d8;--ink:#1b2922;--dark:#15211c;--copper:#a67652;--line:#b0b5a9;--muted:#506154;background:#eae5d8;color:#1b2922;font-family:'DM Sans',Arial,sans-serif}
+body.page--sample :is(h1,h2,h3),body.page--atelier :is(h1,h2,h3),body.page--status :is(h1,h2,h3){font-family:'Instrument Serif',Georgia,serif;font-weight:400;letter-spacing:-.035em}
+body.page--sample :is(.eyebrow,.strip,.sheet-heading,.step small),body.page--atelier :is(.eyebrow,.label,.round-id,.visual-caption),body.page--status .eyebrow{font-family:'DM Mono',monospace}
+body.page--sample :is(.hero,.monitor,.exception,footer),body.page--atelier :is(.hero,.rail),body.page--status footer{background:#16231d;color:#eee9db}
+body.page--sample .hero,body.page--atelier .hero{background:radial-gradient(ellipse at 70% 30%,#354138,#15231c 66%);color:#eee9db}
+body.page--sample :is(.hero h1 em,.hero .eyebrow),body.page--atelier :is(.hero h1 em,.hero .eyebrow){color:#e4b98b}
+body.page--sample :is(.hero .lead,.hero p),body.page--atelier .hero p{color:#e0dfd2}
+body.page--sample .brand b,body.page--atelier .brand-mark{border-radius:0;background:#1d2d24;color:#ecd4b5;font-family:'Instrument Serif',Georgia,serif}
+body.page--sample .container,body.page--atelier .container{width:min(1330px,calc(100% - 70px))}
+body.page--sample :is(.lab,.hint,.warning),body.page--atelier :is(.game,.result){background:#e3dfd3}
+body.page--sample .sheet{background:#faf7ef}
+body.page--sample :is(.btn,.monitor,.reset),body.page--atelier :is(.next,.rail){border-radius:0}
+body.page--sample .label-card{border-color:#b99d7b;position:relative}
+body.page--sample .label-card:after{content:'ÉTUDE 001';position:absolute;right:13px;top:13px;font:9px 'DM Mono',monospace;color:#e5cba7;writing-mode:vertical-rl}
+body.page--sample .step:focus-within{background:#f1eee5}
+body.page--sample .step h3{font-family:'Instrument Serif',Georgia,serif}
+body.page--sample .back,body.page--atelier .nav-links a{font-family:'DM Mono',monospace;font-weight:400;font-size:11px}
+body.page--sample .hero{border-bottom:1px solid #ad9270}
+body.page--sample .value,body.page--sample .label-card strong{font-family:'Instrument Serif',Georgia,serif}
+body.page--sample .monitor{border-top:4px solid #aa7c55}
+body.page--sample .intro h2,body.page--sample .proof h2{font-size:clamp(42px,5.4vw,83px);line-height:1}
+body.page--sample .warning{border-left:3px solid #a47b54;color:#354c3c}
+body.page--sample .step small{color:#34513e}
+body.page--atelier .hero h1{font-size:clamp(64px,8.4vw,140px);line-height:.86}
+body.page--atelier .hero-layout{grid-template-columns:1.1fr .9fr;gap:3vw}
+body.page--atelier .primary{background:#e5cda9;border-radius:0;color:#1b2922}
+body.page--atelier .rail{background:#192b23}
+body.page--atelier .round-id{border-color:#b5b5a5;color:#3a5642}
+body.page--atelier .game{background:#f2efe6;border:1px solid #b8b7ac}
+body.page--atelier .game-body{background:#faf7ef}
+body.page--atelier .choice{background:#eeede4;border-radius:0;border-color:#b9c1b1}
+body.page--atelier .choice:hover{background:#e5e7dc}
+body.page--atelier .question{font-size:clamp(40px,5.2vw,75px);line-height:.98}
+body.page--atelier .intro h2{font-size:clamp(48px,6vw,90px);line-height:.95}
+body.page--atelier .result h2{font-size:clamp(48px,6vw,90px)}
+/* The decisions dial is an informative instrument, not fake floating UI sheets. */
+body.page--atelier .visual{--tilt-x:7deg;--tilt-y:-15deg;min-height:450px;height:min(40vw,560px);perspective:1100px;cursor:crosshair}
+body.page--atelier .decision-dial{position:absolute;inset:7% 8% 13%;transform-style:preserve-3d;transform:rotateX(calc(var(--tilt-x) * .36)) rotateY(calc(var(--tilt-y) * .4));transition:transform .22s ease}
+body.page--atelier .dial-track{position:absolute;inset:12%;border:1px solid #eed2ae85;border-radius:50%;box-shadow:0 0 0 35px #f1e4c30b,0 0 0 70px #f1e4c308;transform:rotate(-22deg)}
+body.page--atelier .dial-track:before,body.page--atelier .dial-track:after{content:'';position:absolute;inset:12%;border-radius:50%;border:1px solid #f5e0c23e}
+body.page--atelier .dial-track:after{inset:31%}
+body.page--atelier .dial-axis{position:absolute;left:50%;top:50%;width:1px;height:110%;background:#d9b48e5c;transform:translate(-50%,-50%) rotate(29deg)}
+body.page--atelier .dial-axis:after{content:'';position:absolute;width:1px;height:100%;left:0;background:#d9b48e5c;transform:rotate(70deg)}
+body.page--atelier .dial-core{position:absolute;top:50%;left:50%;width:39%;aspect-ratio:1;transform:translate(-50%,-50%);background:#bd976b;color:#162b22;border:2px solid #e5caa6;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;font:clamp(90px,10vw,160px)/.8 'Instrument Serif',Georgia,serif;box-shadow:0 27px 80px #0005, inset 0 0 0 8px #1d352322;letter-spacing:-.08em}
+body.page--atelier .dial-core small{font:10px 'DM Mono',monospace;letter-spacing:.14em;margin:23px 0 0}
+body.page--atelier .dial-label{position:absolute;color:#f0e4cf;font:11px 'DM Mono',monospace;letter-spacing:.08em;padding:12px 15px;border-bottom:1px solid #d8b387a6;background:#17251dc0;display:flex;gap:12px;align-items:center;transition:transform .25s,color .25s}
+body.page--atelier .dial-label b{font:normal clamp(21px,2vw,30px) 'Instrument Serif',Georgia,serif;letter-spacing:0}
+body.page--atelier .dial-label:nth-of-type(1){top:7%;left:0}
+body.page--atelier .dial-label:nth-of-type(2){right:0;top:43%}
+body.page--atelier .dial-label:nth-of-type(3){left:12%;bottom:5%}
+body.page--atelier .dial-label:hover{transform:translateY(-5px);color:#f4cf9f}
+body.page--atelier .visual-caption{position:absolute;right:10%;bottom:0;text-align:right;font-size:9px;color:#dbd2bf;max-width:300px}
+body.page--status{background:#e9e4d7;color:#192820}
+body.page--status header{border-color:#9caa9e}
+body.page--status header>a{font:38px 'Instrument Serif',Georgia,serif;letter-spacing:-.03em}
+body.page--status nav a{border-radius:0;color:#243a2d;border-color:#899789;font:11px 'DM Mono',monospace}
+body.page--status nav a:hover,body.page--status nav a[aria-current]{background:#1d3226;color:#f6ead8}
+body.page--status .eyebrow{color:#5e6d57}
+body.page--status h1{font-size:clamp(66px,9vw,138px);line-height:.86}
+body.page--status .lead{color:#465e4b}
+body.page--status .panel{border-radius:0;background:#f4efe5;border-color:#aab5a5;color:#192820;border-top:3px solid #b08461}
+body.page--status .panel p,body.page--status .panel li{color:#425747}
+body.page--status .pill{border-radius:0;color:#744b32;border-color:#b08461}
+body.page--status .action{border-radius:0;background:#1d3127;color:#f3eada}
+body.page--status .action.secondary{color:#23402c;border-color:#889d8b}
+body.page--status footer{color:#d9decf;padding:25px;background:#18291f;width:100%;text-align:center}
+@media(max-width:850px){body.page--atelier .hero-layout{grid-template-columns:1fr}body.page--atelier .visual{height:400px;min-height:400px;max-width:550px;width:100%;margin:auto}body.page--sample .container,body.page--atelier .container{width:calc(100% - 46px)}}
+@media(max-width:450px){body.page--sample .container,body.page--atelier .container{width:calc(100% - 34px)}body.page--atelier .visual{height:335px;min-height:335px}body.page--atelier .dial-core{font-size:79px}body.page--atelier .dial-core small{font-size:7px;margin-top:16px}body.page--atelier .dial-label{font-size:8px;padding:8px}body.page--atelier .dial-label b{font-size:19px}body.page--atelier .hero h1{font-size:clamp(58px,14vw,85px)}body.page--status h1{font-size:64px}}
+@media(prefers-reduced-motion:reduce){body.page--atelier .decision-dial{transform:none!important;transition:none!important}}
