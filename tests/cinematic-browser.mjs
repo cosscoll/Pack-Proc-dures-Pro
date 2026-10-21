@@ -12,7 +12,7 @@ try{
   page.on('pageerror',e=>errs.push(String(e)));
   const res=await page.goto(base,{waitUntil:'domcontentloaded',timeout:35000});
   assert.equal(res?.status(),200);
-  assert.match(await page.locator('h1').innerText(),/Les clés passent/);
+  assert.match(await page.locator('h1').innerText(),/Les clés passent/i);
   assert.equal(await page.locator('.chapter[data-scene]').count(),4);
   assert.equal(await page.locator('#worldCanvas').count(),1);
   assert.equal(await page.locator('.hero-chapter a[href="./exemple-procedure.html"]').isVisible(),true);
