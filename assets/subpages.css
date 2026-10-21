@@ -140,3 +140,7 @@ body:is(.page--sample,.page--atelier,.page--status) .world-fallback{opacity:1!im
 body.page--atelier .decision-dial{transform:none!important}
 }
 @media print{body.page--sample{width:100%}body.page--sample .world{display:none!important}body.page--sample .hero{padding:10px 0!important;background:#fff!important}}
+
+/* Résultats axe-core — contraste des petites légendes et du lien de retour. */
+body.page--sample .lab-head>p{color:#344b3e}
+body.page--sample .btn.alt{color:#872c1a;border-color:#872c1a}
