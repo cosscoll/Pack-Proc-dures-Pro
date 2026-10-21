@@ -94,7 +94,7 @@ main{width:calc(100% - var(--dock));position:relative;pointer-events:none;z-inde
 .object-plus{display:inline-grid;place-items:center;border:1px solid currentColor;border-radius:0;width:29px;height:29px;font-size:20px;transition:transform .25s}
 .object-trigger:hover .object-plus{transform:rotate(90deg)}
 .chapter-side{position:absolute;bottom:35px;right:30px;font:10px var(--technical);letter-spacing:.02em;opacity:.7}
-.chapter-meta{margin:25px 0 0;font:11px var(--technical);color:#566357}
+.chapter-meta{margin:25px 0 0;font:11px var(--technical);color:#344539}
 .chapter-meta span{padding:0 7px;color:var(--red-ink)}
 .chapter-method .chapter-meta{color:#cbd5c7}
 .chapter-method .chapter-meta span{color:#e7ac93}
@@ -105,7 +105,7 @@ main{width:calc(100% - var(--dock));position:relative;pointer-events:none;z-inde
 .interlude::before{content:'02 / NOTE DE SERVICE';position:absolute;right:30px;top:48%;writing-mode:vertical-rl;font:10px var(--technical);opacity:.7}
 .interlude-top{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid #e8cab9a8;padding-bottom:14px;font:10px var(--technical)}
 .interlude p{font:700 clamp(54px,6.8vw,112px)/.91 var(--display);text-transform:uppercase;max-width:900px;letter-spacing:-.017em;margin:70px 0}
-.interlude p em{font-style:normal;color:#1d251e}
+.interlude p em{font-style:normal;color:#fff1de}
 .interlude-sign{font:10px var(--technical)}
 .offer-section{width:100%;background:var(--sheet);pointer-events:auto;padding:50px 35px 80px;color:var(--ink)}
 .offer-top,.offer-bottom{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:12px;font:11px var(--technical)}
@@ -140,7 +140,7 @@ main{width:calc(100% - var(--dock));position:relative;pointer-events:none;z-inde
 .footer div{display:flex;gap:22px;flex-wrap:wrap}
 .footer div a{font:700 12px var(--body);text-decoration:none;border-bottom:1px solid}
 .footer small{align-self:flex-end;font:10px var(--technical)}
-.overlay-message{position:fixed;inset:0;z-index:150;background:#161f1dd9;display:grid;place-items:center;padding:20px}
+.overlay-message{position:fixed;inset:0 var(--dock) 0 0;z-index:150;background:#161f1dd9;display:grid;place-items:center;padding:20px}
 .overlay-message[hidden]{display:none}
 .overlay-inner{width:min(560px,100%);background:var(--sheet);color:var(--ink);border-top:9px solid var(--red);padding:32px 38px;position:relative}
 .overlay-inner>span{font:11px var(--technical);color:#555e51}
