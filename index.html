@@ -1,116 +1,150 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101414"><meta name="robots" content="noindex,nofollow">
-<meta name="description" content="Pack Procédures Pro : parcourez une rotation de location courte durée, du départ au contrôle du logement. Découvrez une procédure gratuite.">
-<title>Une rotation, de l'intérieur. — Pack Procédures Pro</title>
-<link rel="preload" href="./assets/cinematic.css" as="style">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#151c1c">
+<meta name="description" content="Pack Procédures Pro : un premier kit opérationnel pour les conciergeries et locations courte durée. 15 procédures, 7 registres et une procédure pilote gratuite.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Pack Procédures Pro — Les clés passent. La méthode reste.">
+<meta property="og:description" content="Une méthode de travail claire entre deux arrivées. Découvrez gratuitement une procédure de rotation.">
+<title>Les clés passent. La méthode reste. — Procédures Pro</title>
 <link rel="stylesheet" href="./assets/cinematic.css">
 <script type="module" src="./assets/apartment-scene.js"></script>
-<script src="./assets/experience.js" defer></script>
+<script defer src="./assets/experience.js"></script>
 </head>
 <body>
-<a href="#main" class="skip">Passer au contenu</a>
-<div class="screen-noise" aria-hidden="true"></div>
-<div class="world" id="world" role="group" aria-label="Logement miniature en trois dimensions, dont les zones se mettent en lumière au fil des étapes d'une rotation.">
-  <div id="sceneFallback" class="world-fallback" aria-hidden="true">
-    <svg viewBox="0 0 640 520" role="presentation" xmlns="http://www.w3.org/2000/svg">
-      <defs><linearGradient id="floor" x2="1" y2="1"><stop stop-color="#8e958a"/><stop offset="1" stop-color="#414e49"/></linearGradient><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#ded9c9"/><stop offset="1" stop-color="#a5ae9e"/></linearGradient><filter id="shadow"><feGaussianBlur stdDeviation="12"/></filter></defs>
-      <ellipse cx="320" cy="420" rx="247" ry="47" fill="#000" opacity=".38" filter="url(#shadow)"/>
-      <path d="M72 207 361 74 572 221 286 377Z" fill="url(#floor)" stroke="#d2c3a3" stroke-width="3"/>
-      <path d="M72 207 72 104 361 -24 361 74Z" fill="url(#wall)" opacity=".9"/>
-      <path d="M361 74 572 221 572 127 361 -24Z" fill="#abb8aa"/>
-      <path d="M72 207 286 377 286 396 72 228Z" fill="#4d5850"/>
-      <path d="M286 377 572 221 572 242 286 396Z" fill="#303d37"/>
-      <path d="M96 208 245 141 337 206 186 280Z" fill="#cfbfa5" stroke="#eee4d6" stroke-width="3"/>
-      <path d="M104 206 217 154 301 209 187 259Z" fill="#eeeae0"/>
-      <path d="M130 178 204 146 237 166 163 202Z" fill="#fff9ef"/>
-      <path d="M231 223 330 174 415 226 318 274Z" fill="#485e58"/>
-      <path d="M246 205 322 167 388 208 312 248Z" fill="#cfd0c0"/>
-      <path d="M257 245 334 208 368 233 290 270Z" fill="#d1c3aa"/>
-      <path d="M377 111 461 170 530 132 448 73Z" fill="#8e9c87"/>
-      <path d="M396 138 469 188 536 155 464 107Z" fill="#d7d1c3"/>
-      <path d="M442 91 455 83 542 141 528 149Z" fill="#56665d"/>
-      <path d="M328 252 369 274 409 253 369 231Z" fill="#d1ab6d"/>
-      <path d="M123 110 153 98 153 153 123 165Z" fill="#d0d5c6" opacity=".6"/>
-      <path d="M167 93 195 80 195 135 167 148Z" fill="#d0d5c6" opacity=".6"/>
-      <circle cx="325" cy="252" r="6" fill="#efca87"/><circle cx="478" cy="177" r="6" fill="#efca87"/><circle cx="203" cy="222" r="6" fill="#efca87"/>
-    </svg>
-  </div>
-  <canvas id="worldCanvas" aria-hidden="true"></canvas>
-  <div class="model-aura" aria-hidden="true"></div>
-  <div class="world-label" id="worldLabel" aria-live="polite"><span class="world-label-index" id="worldIndex">SCÈNE 01 — DÉPART</span><strong id="worldTitle">La rotation commence ici.</strong><span id="worldHint">Déplacez la souris pour explorer le logement.</span></div>
-  <div class="scene-axis" aria-hidden="true"><span>ISOMÉTRIE / 35°</span><span>MODÈLE INTERACTIF</span></div>
+<a class="skip" href="#main">Passer au contenu</a>
+<div class="grain" aria-hidden="true"></div>
+<div class="world" id="world" data-engine="loading" data-ready="false" aria-label="Objet 3D interactif : une clé de conciergerie et son porte-clés de passation.">
+ <div class="world-fallback" id="sceneFallback" aria-hidden="true">
+  <svg viewBox="0 0 480 720" xmlns="http://www.w3.org/2000/svg" role="presentation">
+   <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8e3ac"/><stop offset=".26" stop-color="#ab8450"/><stop offset=".52" stop-color="#ecd3a1"/><stop offset=".8" stop-color="#78603a"/><stop offset="1" stop-color="#dbc18c"/></linearGradient>
+    <linearGradient id="tag" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#493f31"/><stop offset="1" stop-color="#171f1d"/></linearGradient>
+    <filter id="cast"><feDropShadow dx="26" dy="35" stdDeviation="23" flood-color="#080c0b" flood-opacity=".7"/></filter>
+   </defs>
+   <g transform="translate(230 355) rotate(-24)" filter="url(#cast)">
+    <path d="M70 -150 Q110 -205 148 -188 L228 -143 Q250 -132 245 -110 L179 14 Q172 28 152 20 L72 -20 Q50 -36 54 -58Z" fill="url(#tag)" stroke="#997c58" stroke-width="4"/>
+    <text x="147" y="-89" transform="rotate(27 147 -89)" fill="#c4ab82" font-family="serif" font-size="49">P.</text>
+    <text x="120" y="-42" transform="rotate(27 120 -42)" fill="#c4ab82" font-size="13" letter-spacing="4">001</text>
+    <circle cx="78" cy="-151" r="18" fill="none" stroke="#d9bb83" stroke-width="10"/>
+    <path d="M-51 -123 A72 72 0 1 1 50 -123 L25 -96 A32 32 0 1 0 -26 -96Z" fill="url(#gold)" stroke="#f1d4a2" stroke-width="3"/>
+    <rect x="-21" y="-86" width="42" height="315" rx="6" fill="url(#gold)" stroke="#eccd8d" stroke-width="3"/>
+    <path d="M20 110 H60 V143 H20 V169 H49 V199 H20 V229 H-21 V110Z" fill="url(#gold)" stroke="#eccd8d" stroke-width="3"/>
+    <path d="M-8 -73 V216" stroke="#fff0c2" stroke-opacity=".52" stroke-width="3"/>
+    <ellipse cx="0" cy="-137" rx="15" ry="15" fill="#1c2925"/>
+   </g>
+  </svg>
+ </div>
+ <canvas id="worldCanvas" aria-hidden="true"></canvas>
+ <div class="world-light" aria-hidden="true"></div>
+ <div class="world-label" aria-live="polite"><span id="worldIndex">OBJET 01 / LA CLÉ</span><strong id="worldTitle">Un passage de relais.</strong><small id="worldHint">Déplacez le pointeur ou faites défiler.</small></div>
+ <div class="model-caption" aria-hidden="true"><span>LA ROTATION / ÉTUDE N° 001</span><span>MATIÈRE &amp; MÉTHODE</span></div>
 </div>
 <header class="header" id="haut">
-  <a class="brand" href="#depart" aria-label="Pack Procédures Pro, retour au début"><span class="brand-sign">P<span>.</span></span><span>PROCÉDURES<br>PRO<small> / ROTATION 001</small></span></a>
-  <span class="header-context">L'ATELIER DES OPÉRATIONS <span class="header-star" aria-hidden="true">✳</span> CONCIERGERIES</span>
-  <div class="header-actions">
-    <a class="header-trial" href="./exemple-procedure.html">PROCÉDURE GRATUITE <span aria-hidden="true">↗</span></a>
-    <button class="menu-toggle" id="menuToggle" aria-controls="navPanel" aria-expanded="false" aria-label="Ouvrir le menu"><span>MENU</span><i></i><i></i></button>
-  </div>
+ <a href="#depart" class="brand" aria-label="Procédures Pro, retour à l'accueil">
+  <span class="brand-monogram">P<span class="brand-dot">·</span></span>
+  <span class="brand-name">PROCÉDURES<br><em>PRO.</em></span>
+ </a>
+ <div class="header-center">L'ATELIER DES OPÉRATIONS <span aria-hidden="true">/</span> ÉDITION 001</div>
+ <div class="header-actions">
+  <a class="header-trial magnetic" href="./exemple-procedure.html">ESSAYER UNE PROCÉDURE <span>↗</span></a>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-controls="navPanel" aria-expanded="false" aria-label="Ouvrir le menu"><span>MENU</span><i></i><i></i></button>
+ </div>
 </header>
-<nav class="nav-panel" id="navPanel" aria-label="Navigation principale" inert>
-  <div class="nav-panel-head">PARCOURIR <span>—</span> LE SITE</div>
-  <a href="#depart"><span>01</span> Le départ <em>↗</em></a>
-  <a href="#rotation"><span>02</span> La rotation <em>↗</em></a>
-  <a href="#controle"><span>03</span> Le contrôle <em>↗</em></a>
-  <a href="#solution"><span>04</span> La méthode <em>↗</em></a>
-  <a href="./atelier-decisions.html"><span>05</span> Atelier interactif <em>↗</em></a>
-  <a href="./avancement.html"><span>06</span> Avancement <em>↗</em></a>
-  <div class="nav-panel-foot">VERSION D'ESSAI · AUCUNE VENTE OUVERTE</div>
+<nav class="nav-panel" id="navPanel" inert aria-label="Navigation principale">
+ <p class="nav-label">SOMMAIRE / 001</p>
+ <a href="#depart"><small>01</small><span>L'entre-deux</span><b>↗</b></a>
+ <a href="#rotation"><small>02</small><span>La mission</span><b>↗</b></a>
+ <a href="#controle"><small>03</small><span>La vérification</span><b>↗</b></a>
+ <a href="#solution"><small>04</small><span>Le relais</span><b>↗</b></a>
+ <a href="#pack"><small>05</small><span>Le premier pack</span><b>↗</b></a>
+ <div class="nav-extras"><a href="./exemple-procedure.html">Procédure gratuite ↗</a><a href="./atelier-decisions.html">Atelier de décisions ↗</a><a href="./avancement.html">Avancement ↗</a></div>
+ <p class="nav-note">UNE VERSION PILOTE, PAS ENCORE EN VENTE.</p>
 </nav>
-<div class="progress-rail" aria-label="Chapitres de l'expérience">
-  <button class="rail-item is-active" data-go="depart" aria-current="step"><span>01</span><b>LE DÉPART</b></button>
-  <button class="rail-item" data-go="rotation"><span>02</span><b>LA ROTATION</b></button>
-  <button class="rail-item" data-go="controle"><span>03</span><b>LE CONTRÔLE</b></button>
-  <button class="rail-item" data-go="solution"><span>04</span><b>LA MÉTHODE</b></button>
+<div class="progress-rail" aria-label="Navigation par étapes">
+ <button type="button" class="rail-item is-active" data-go="depart" aria-current="step"><span>01</span><b>L'entre-deux</b></button>
+ <button type="button" class="rail-item" data-go="rotation"><span>02</span><b>Attribuer</b></button>
+ <button type="button" class="rail-item" data-go="controle"><span>03</span><b>Contrôler</b></button>
+ <button type="button" class="rail-item" data-go="solution"><span>04</span><b>Transmettre</b></button>
 </div>
 <main id="main">
-  <section class="chapter hero-chapter is-current" id="depart" data-scene="0">
-    <div class="chapter-copy hero-copy">
-      <div class="eyebrow"><span class="eyebrow-line"></span> UN DÉPART. UNE ARRIVÉE. TOUT SE JOUE ENTRE LES DEUX.</div>
-      <h1>Le logement<br>est vide.<br><em>Et maintenant ?</em></h1>
-      <p class="hero-lead">Derrière chaque arrivée réussie, il y a des décisions invisibles : qui intervient, quand, et qui vérifie. Entrez dans une rotation pour voir où tout peut basculer.</p>
-      <div class="hero-actions"><a href="#rotation" class="primary-link">ENTRER DANS LA ROTATION <span aria-hidden="true">↘</span></a><a href="./exemple-procedure.html" class="minor-link">VOIR UNE PROCÉDURE <span aria-hidden="true">↗</span></a></div>
-      <div class="hero-footnote"><span>01 — 04</span><span>UN PARCOURS INTERACTIF</span><span>FAITES DÉFILER ↓</span></div>
-    </div>
-  </section>
-  <section class="chapter chapter-rotation" id="rotation" data-scene="1">
-    <div class="chapter-copy">
-      <span class="eyebrow"><span class="eyebrow-line"></span> 02 / APRÈS LE DÉPART</span>
-      <h2>Un message<br>envoyé n'est pas<br><em>une mission confirmée.</em></h2>
-      <p>Le ménage a été demandé. Mais qui a accepté ? Combien de temps reste-t-il avant la prochaine arrivée ? Sans confirmation, la rotation reste incertaine.</p>
-      <button type="button" class="scene-choice" data-scenario="pending"><span class="choice-dot"></span> VOIR LA CONSÉQUENCE D'UNE MISSION NON CONFIRMÉE <span aria-hidden="true">↗</span></button>
-      <div class="chapter-meta">ZONE ACTIVE — L'ENTRÉE <span> / </span> PROCÉDURE P01</div>
-    </div>
-  </section>
-  <section class="chapter chapter-control" id="controle" data-scene="2">
-    <div class="chapter-copy">
-      <span class="eyebrow"><span class="eyebrow-line"></span> 03 / AVANT L'ARRIVÉE</span>
-      <h2>« Terminé »<br>ne veut pas dire<br><em>« prêt ».</em></h2>
-      <p>Un logement n'est prêt qu'après un contrôle. Linge, sanitaires, consommables, incidents : les détails deviennent visibles lorsque quelqu'un en est responsable.</p>
-      <button type="button" class="scene-choice" data-scenario="incident"><span class="choice-dot"></span> SIMULER UN INCIDENT AVANT L'ARRIVÉE <span aria-hidden="true">↗</span></button>
-      <div class="chapter-meta">ZONE ACTIVE — LA CHAMBRE <span> / </span> PROCÉDURES P05 + P08</div>
-    </div>
-  </section>
-  <section class="chapter chapter-method" id="solution" data-scene="3">
-    <div class="chapter-copy">
-      <span class="eyebrow"><span class="eyebrow-line"></span> 04 / REMETTRE DE L'ORDRE</span>
-      <h2>Ce qui manque<br>n'est pas un outil.<br><em>C'est une méthode.</em></h2>
-      <p>Des procédures simples pour attribuer, confirmer, vérifier et décider. Un même langage entre les personnes qui préparent le prochain séjour.</p>
-      <a class="primary-link" href="./exemple-procedure.html">ESSAYER GRATUITEMENT P01 <span aria-hidden="true">↗</span></a>
-      <div class="chapter-meta">15 PROCÉDURES <span> / </span> 7 REGISTRES <span> / </span> VERSION PILOTE</div>
-    </div>
-  </section>
-  <section class="offer-section" id="pack">
-    <div class="offer-top"><span>LE KIT / EN PRÉPARATION</span><span>ÉDITION 001 — LOCATION COURTE DURÉE</span></div>
-    <div class="offer-main"><div class="offer-intro"><span class="eyebrow">UNE BASE COMMUNE POUR VOTRE CONCIERGERIE</span><h2>Arrêtez<br>d'improviser.</h2><p>15 procédures opérationnelles et 7 registres de suivi : un pack conçu pour les équipes qui veulent savoir exactement quoi faire, dans quel ordre et quand demander une décision.</p><a href="./exemple-procedure.html" class="offer-cta">LIRE UN VRAI EXTRAIT GRATUITEMENT <span aria-hidden="true">↗</span></a><p class="legal-note">Pré-lancement. Modèles en validation métier, tarif de 49 € seulement à l'étude. Aucun achat possible.</p></div><div class="offer-outline" aria-label="Sommaire du pack en préparation"><div class="offer-line"><b>01</b><strong>PRÉPARER</strong><span>Planning / rotation / affectation</span><i>↗</i></div><div class="offer-line"><b>02</b><strong>EXÉCUTER</strong><span>Entretien / linge / stocks</span><i>↗</i></div><div class="offer-line"><b>03</b><strong>VÉRIFIER</strong><span>Contrôle / anomalies / incident</span><i>↗</i></div><div class="offer-line"><b>04</b><strong>TRANSMETTRE</strong><span>Passation / clôture / suivi</span><i>↗</i></div></div></div>
-    <div class="offer-bottom"><span>UN SYSTÈME POUR LES DÉCISIONS DU QUOTIDIEN.</span><a href="./atelier-decisions.html">PASSER À L'ATELIER DE DÉCISIONS ↗</a></div>
-  </section>
+ <section class="chapter hero-chapter is-current" id="depart" data-scene="0">
+  <div class="chapter-copy hero-copy">
+   <p class="eyebrow"><span class="eyebrow-mark">✳</span> LOCATION COURTE DURÉE / LE MOMENT INVISIBLE</p>
+   <h1>Les clés passent.<br><em>La méthode</em><br>reste.</h1>
+   <p class="hero-lead">Entre le départ d'un voyageur et l'arrivée du suivant, tout repose sur une poignée de décisions. Qui fait quoi ? Qui confirme ? Qui vérifie ?</p>
+   <div class="hero-actions">
+    <a href="#rotation" class="primary-link magnetic">DÉCOUVRIR CE QUI SE JOUE <span aria-hidden="true">↘</span></a>
+    <a href="./exemple-procedure.html" class="minor-link">Voir la procédure gratuite <span>↗</span></a>
+   </div>
+  </div>
+  <div class="chapter-foot"><span>UNE HISTOIRE EN QUATRE GESTES</span><span>FAITES DÉFILER <b aria-hidden="true">↓</b></span></div>
+  <button class="object-trigger" id="objectTrigger" type="button" aria-label="Explorer l'objet 3D et son rôle dans la rotation"><span class="object-plus">+</span><span>TOUCHER LA CLÉ</span></button>
+ </section>
+ <section class="chapter chapter-rotation" id="rotation" data-scene="1">
+  <div class="chapter-copy">
+   <p class="eyebrow"><span class="eyebrow-mark">01</span> ATTRIBUER, PUIS CONFIRMER</p>
+   <h2>Une consigne<br>envoyée n'est pas<br><em>une mission prise.</em></h2>
+   <p>Le ménage est demandé. Mais le créneau a-t-il été accepté ? Sans responsable identifié ni confirmation, personne ne sait vraiment où en est la rotation.</p>
+   <button class="scene-choice" data-scenario="pending" type="button"><span>EXPLORER LE POINT DE RUPTURE</span><b aria-hidden="true">↗</b></button>
+   <p class="chapter-meta">PROCÉDURE P01 <span>/</span> ATTRIBUTION &amp; CONFIRMATION</p>
+  </div>
+  <span class="chapter-side">01 / LA MISSION</span>
+ </section>
+ <section class="chapter chapter-control" id="controle" data-scene="2">
+  <div class="chapter-copy">
+   <p class="eyebrow"><span class="eyebrow-mark">02</span> CONTRÔLER, PAS SUPPOSER</p>
+   <h2>« Terminé »<br>ne veut pas dire<br><em>« prêt ».</em></h2>
+   <p>Le linge est en place, les surfaces sont propres. Une anomalie oubliée peut pourtant tout changer. La réception de la prestation et la validation du logement sont deux gestes différents.</p>
+   <button class="scene-choice" data-scenario="incident" type="button"><span>ET SI UN INCIDENT APPARAÎT ?</span><b aria-hidden="true">↗</b></button>
+   <p class="chapter-meta">PROCÉDURES P05 + P08 <span>/</span> CONTRÔLE &amp; ANOMALIES</p>
+  </div>
+  <span class="chapter-side">02 / LE CONTRÔLE</span>
+ </section>
+ <section class="chapter chapter-method" id="solution" data-scene="3">
+  <div class="chapter-copy">
+   <p class="eyebrow"><span class="eyebrow-mark">03</span> TRANSMETTRE SANS PERDRE L'INFORMATION</p>
+   <h2>La bonne personne.<br>Le bon geste.<br><em>Au bon moment.</em></h2>
+   <p>Une procédure utile ne remplace pas l'équipe. Elle rend le travail lisible : une action, un responsable, une preuve, puis une décision quand la situation l'exige.</p>
+   <a class="primary-link" href="./exemple-procedure.html">OUVRIR LA PROCÉDURE P01 <span>↗</span></a>
+   <p class="chapter-meta">VERSION PILOTE <span>/</span> UTILISABLE SANS COMPTE</p>
+  </div>
+  <span class="chapter-side">03 / LE RELAIS</span>
+ </section>
+ <section class="interlude" aria-label="Manifeste">
+  <div class="interlude-top"><span>UNE CONVICTION</span><span>PROCÉDURES PRO / 001</span></div>
+  <p>Le métier ne manque pas <em>de gens qui travaillent.</em><br>Il manque parfois d'un langage commun pour travailler ensemble.</p>
+  <span class="interlude-sign">NOTES D'ATELIER — ROTATION 001</span>
+ </section>
+ <section class="offer-section" id="pack">
+  <div class="offer-top"><span>LE PREMIER OUTIL / EN PRÉPARATION</span><span>CONCIERGERIES &amp; LOCATIONS COURTE DURÉE</span></div>
+  <div class="offer-main">
+   <div class="offer-intro">
+    <p class="eyebrow">01 / PREMIÈRE ÉDITION</p>
+    <h2>Moins de flou.<br><em>Plus de relais.</em></h2>
+    <p>Un premier kit de procédures pour donner un cadre concret aux rotations, interventions et vérifications quotidiennes. Conçu pour être compris, adapté puis utilisé par de vraies équipes.</p>
+    <div class="offer-stats" aria-label="Composition du pack pilote"><div><strong>15</strong><span>procédures opérationnelles</span></div><div><strong>7</strong><span>registres de suivi</span></div></div>
+    <a href="./exemple-procedure.html" class="offer-cta magnetic">ESSAYER LA PROCÉDURE GRATUITE <span>↗</span></a>
+    <p class="legal-note">Version pilote en cours de validation métier. Prix de 49 € à l'étude, sans engagement. Aucun achat possible.</p>
+   </div>
+   <div class="offer-outline" aria-label="Les quatre familles d'usages du pack">
+    <p class="outline-caption">CE QUE LE PACK CHERCHE À RENDRE SIMPLE <span>↙</span></p>
+    <div class="offer-line" tabindex="0"><b>01</b><div><strong>Attribuer.</strong><span>Un créneau, une personne, une confirmation.</span></div><i>↗</i></div>
+    <div class="offer-line" tabindex="0"><b>02</b><div><strong>Préparer.</strong><span>Linge, nettoyage, stocks, anticipation.</span></div><i>↗</i></div>
+    <div class="offer-line" tabindex="0"><b>03</b><div><strong>Vérifier.</strong><span>Contrôler les points sensibles, tracer les anomalies.</span></div><i>↗</i></div>
+    <div class="offer-line" tabindex="0"><b>04</b><div><strong>Transmettre.</strong><span>Faire circuler la bonne information à temps.</span></div><i>↗</i></div>
+    <div class="offer-stamp" aria-hidden="true">P.<small>OUTILLER LE RÉEL</small></div>
+   </div>
+  </div>
+  <div class="offer-bottom"><span>ENVIE DE VOIR COMMENT ÇA SE PASSE ?</span><a href="./atelier-decisions.html">ESSAYER L'ATELIER DE DÉCISIONS <span>↗</span></a></div>
+ </section>
 </main>
-<footer class="footer"><a href="#depart" class="footer-brand">PROCÉDURES PRO.</a><span>UN PRODUIT INDÉPENDANT EN CONSTRUCTION.</span><div><a href="./avancement.html">AVANCEMENT ↗</a><a href="./exemple-procedure.html">ÉCHANTILLON ↗</a></div></footer>
-<div class="overlay-message" id="overlayMessage" role="status" aria-live="polite" hidden><div><span id="overlayCategory">01 / ROTATION</span><strong id="overlayHeading">Intervention non confirmée.</strong><p id="overlayDetail">Une demande envoyée ne signifie pas qu'un prestataire a accepté.</p><button id="overlayClose" type="button">FERMER ×</button></div></div>
-<noscript><style>.world-fallback{opacity:1!important}.chapter{opacity:1!important}.chapter-copy{transform:none!important}</style><p class="noscript-note">La maquette 3D interactive nécessite JavaScript. Les informations et les liens restent accessibles.</p></noscript>
-</body></html>
+<footer class="footer"><a href="#depart" class="footer-brand">PROCÉDURES <em>PRO.</em></a><p>LE TRAVAIL BIEN TRANSMIS NE S'IMPROVISE PAS.</p><div><a href="./exemple-procedure.html">PROCÉDURE P01 ↗</a><a href="./avancement.html">AVANCEMENT ↗</a></div><small>© 2026 / VERSION PILOTE</small></footer>
+<div class="overlay-message" id="overlayMessage" role="dialog" aria-modal="true" aria-labelledby="overlayHeading" aria-describedby="overlayDetail" hidden>
+ <div class="overlay-inner"><span id="overlayCategory">POINT DE CONTRÔLE / 001</span><button id="overlayClose" type="button" aria-label="Fermer la fenêtre">×</button><strong id="overlayHeading">À qui revient la décision ?</strong><p id="overlayDetail">Une étape est à vérifier.</p><a href="./exemple-procedure.html">VOIR LA PROCÉDURE ASSOCIÉE ↗</a></div>
+</div>
+<noscript><style>.world-fallback{opacity:1!important}.chapter-copy{opacity:1!important;transform:none!important}</style><p class="noscript-note">La scène 3D demande JavaScript. Les informations et les liens restent accessibles.</p></noscript>
+</body>
+</html>
