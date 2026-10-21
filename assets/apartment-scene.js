@@ -1,280 +1,189 @@
-/* Original procedural apartment diorama. Cinematic camera: departure -> turnover -> inspection.
-   Three.js is used only for a real-time scene, with a fully readable static SVG fallback. */
+/* PASSATION 001 — original machined-key study. 3D narrative objects, not UI cubes.
+   Three.js r180 (MIT); runtime fallback: an inline architectural SVG, no model download. */
 (async()=>{
-  'use strict';
-  const canvas=document.getElementById('worldCanvas');
-  const wrapper=document.getElementById('world');
-  const fallback=document.getElementById('sceneFallback');
-  const motion=matchMedia('(prefers-reduced-motion: reduce)');
-  if(!canvas||!wrapper||motion.matches){wrapper.dataset.engine='fallback';return;}
-  let T;
-  try{T=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js');}
-  catch(err){console.warn('Scène 3D indisponible, vue architecturale conservée.',err);wrapper.dataset.engine='fallback';return;}
-  const scene=new T.Scene();
-  scene.background=null;
-  scene.fog=new T.FogExp2(0x202927,.025);
-  const camera=new T.PerspectiveCamera(30,innerWidth/innerHeight,.1,180);
-  camera.position.set(11,9,13);
-  const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<700?1.35:1.65));
-  renderer.setSize(innerWidth,innerHeight,false);
-  renderer.shadowMap.enabled=true;
-  renderer.shadowMap.type=T.PCFSoftShadowMap;
-  renderer.toneMapping=T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.02;
-  renderer.outputColorSpace=T.SRGBColorSpace;
-  const mat=(hex,roughness=.72,metalness=0)=>new T.MeshStandardMaterial({color:hex,roughness,metalness});
-  const mats={
-    plaster:mat(0xb5b7ac,.93),chalk:mat(0xdfdfd4,.84),wall:mat(0xb9bcae,.88),wood:mat(0x8f6549,.48),
-    walnut:mat(0x5d3c2f,.43),linen:mat(0xe6ddcf,.88),linenDark:mat(0xb0a999,.95),gold:mat(0xb9894f,.33,.58),
-    metal:mat(0x4a524e,.28,.65),black:mat(0x272e2b,.42),fabric:mat(0x727c6f,.94),
-    leaf:mat(0x425943,.79),ceramic:mat(0xd5d2c7,.28),glass:new T.MeshPhysicalMaterial({color:0x88a6a2,metalness:.05,roughness:.12,transparent:true,opacity:.45,clearcoat:1}),
-    amber:new T.MeshStandardMaterial({color:0xffc27f,emissive:0xe5a454,emissiveIntensity:1.7,roughness:.22}),
-    blue:new T.MeshStandardMaterial({color:0x9daea5,emissive:0x607b7f,emissiveIntensity:.2,roughness:.33})
-  };
-  const room=new T.Group();scene.add(room);
-  const contact=[];
-  function box(w,h,d,x,y,z,material,parent=room,shadow=true){
-    const mesh=new T.Mesh(new T.BoxGeometry(w,h,d),material);
-    mesh.position.set(x,y,z);
-    mesh.castShadow=shadow;mesh.receiveShadow=true;parent.add(mesh);
-    return mesh;
-  }
-  function cyl(rt,rb,h,x,y,z,material,parent=room,segments=18){
-    const mesh=new T.Mesh(new T.CylinderGeometry(rt,rb,h,segments),material);
-    mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-  }
-  const spot=(id,label,description,center,zone)=>{
-    const ring=new T.Mesh(new T.TorusGeometry(.19,.018,8,46),new T.MeshBasicMaterial({color:0xf3c590}));
-    ring.position.set(center[0],center[1],center[2]);ring.rotation.x=Math.PI/2;room.add(ring);
-    const core=new T.Mesh(new T.SphereGeometry(.055,12,10),new T.MeshBasicMaterial({color:0xffdb9d}));
-    core.position.copy(ring.position);room.add(core);
-    ring.userData={id,label,description,zone};core.userData=ring.userData;
-    contact.push({ring,core});
-    return ring;
-  };
-  // Architectural cutaway: an actual room, not a floating abstract ornament.
-  const block=box(9,.23,6.7,0,-.15,0,mat(0x777969,.94));
-  box(9,.32,.15,0,-.25,3.28,mats.wood);box(.15,.32,6.6,-4.44,-.25,0,mats.wood);
-  box(8.95,2.95,.16,0,1.42,-3.28,mats.plaster);
-  box(.16,2.95,6.6,-4.42,1.42,0,mats.plaster);
-  box(4.5,.018,6.50,-2.22,-.015,0,mat(0xb3a18b,.85));
-  box(4.34,.018,6.50,2.26,-.013,0,mat(0xa99680,.82));
-  // Custom oak texture: every plank and scratch belongs to the room, not to a decorative UI shape.
-  const floorCanvas=document.createElement('canvas');
-  floorCanvas.width=768;floorCanvas.height=768;
-  const fctx=floorCanvas.getContext('2d');
-  fctx.fillStyle='#8b7f6c';fctx.fillRect(0,0,768,768);
-  let seed=18731;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
-  for(let row=0;row<12;row++){
-    for(let col=0;col<7;col++){
-      const x=col*120-(row%2)*60,y=row*64,base=Math.floor(114+random()*25);
-      fctx.fillStyle='rgb('+Math.floor(base*1.12)+','+Math.floor(base*1.02)+','+base+')';
-      fctx.fillRect(x+1,y+1,118,62);
-      fctx.strokeStyle='#5c554c88';fctx.lineWidth=1;fctx.strokeRect(x+.5,y+.5,119,63);
-      for(let i=0;i<19;i++){
-        const yy=y+5+random()*54;
-        fctx.strokeStyle=i%3?'#6d615322':'#ead4b51c';
-        fctx.beginPath();fctx.moveTo(x+random()*12,yy);
-        fctx.bezierCurveTo(x+45,yy+random()*3-1.5,x+70,yy+random()*3-1.5,x+115,yy+random()*3-1.5);fctx.stroke();
-      }
-    }
-  }
-  const woodTexture=new T.CanvasTexture(floorCanvas);
-  woodTexture.colorSpace=T.SRGBColorSpace;
-  woodTexture.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),8);
-  const oak=new T.Mesh(new T.PlaneGeometry(8.67,6.45),new T.MeshStandardMaterial({map:woodTexture,roughness:.88,metalness:0}));
-  oak.rotation.x=-Math.PI/2;oak.position.set(0,.009,0);oak.receiveShadow=true;room.add(oak);
-  // Fine repeating floor joins and accent skirting.
-  for(let x=-4.25;x<4.30;x+=.62){box(.009,.007,6.43,x,.012,0,mat(0x796f64,.95),room,false);}
-  for(let z=-3.02;z<3.1;z+=.72){box(8.65,.006,.01,0,.018,z,mat(0x9b8e7e,.98),room,false);}
-  box(8.7,.10,.08,0,.07,-3.13,mats.chalk);
-  box(.08,.10,6.4,-4.3,.07,0,mats.chalk);
-  // Windows cutaway illusion on back wall: custom nighttime city image as canvas texture.
-  function skyline(){
-    const c=document.createElement('canvas');c.width=512;c.height=512;
-    const ctx=c.getContext('2d'),g=ctx.createLinearGradient(0,0,0,512);
-    g.addColorStop(0,'#748c90');g.addColorStop(.55,'#60717a');g.addColorStop(1,'#162f35');ctx.fillStyle=g;ctx.fillRect(0,0,512,512);
-    for(let i=0;i<44;i++){const x=(i*73+23)%530,h=110+(i*31)%220,w=22+(i*17)%48;
-      ctx.fillStyle=i%3?'#31494c':'#283b3e';ctx.fillRect(x,512-h,w,h);
-      for(let row=0;row<8;row++)for(let col=0;col<3;col++)if((i+row*3+col)%5<2){ctx.fillStyle='#d4a879';ctx.fillRect(x+4+col*10,512-h+10+row*18,4,5);}
-    }
-    const texture=new T.CanvasTexture(c);texture.colorSpace=T.SRGBColorSpace;return texture;
-  }
-  const city=skyline();
-  for(const x of [-2.6,-1.45,1.58,2.73]){
-    const glass=new T.Mesh(new T.PlaneGeometry(1.02,1.62),new T.MeshBasicMaterial({map:city,side:T.DoubleSide}));
-    glass.position.set(x,1.85,-3.182);room.add(glass);
-    box(1.12,.075,.09,x,2.70,-3.06,mats.wood);
-    box(1.12,.075,.09,x,.99,-3.06,mats.wood);
-    box(.065,1.79,.1,x-.54,1.85,-3.06,mats.wood);
-    box(.065,1.79,.1,x+.54,1.85,-3.06,mats.wood);
-    box(.04,1.68,.1,x,1.84,-3.045,mats.wood);
-  }
-  // Left bedroom: upholstered frame, oak headboard, layered bedding, pillow seam.
-  box(2.43,.24,2.38,-2.55,.30,-1.02,mats.walnut);
-  box(2.38,.24,.23,-2.55,.68,-2.16,mats.wood);
-  box(2.23,.27,2.10,-2.55,.53,-.97,mats.linen);
-  box(2.13,.065,1.31,-2.55,.71,-.39,mats.chalk);
-  box(2.0,.07,.36,-2.55,.75,.31,mats.linenDark);
-  box(.81,.14,.49,-3.10,.76,-1.77,mats.chalk);
-  box(.81,.14,.49,-2.03,.76,-1.77,mats.chalk);
-  for(const x of [-3.86,-1.23]){
-    box(.47,.46,.56,x,.26,-1.8,mats.walnut);
-    box(.36,.035,.42,x,.51,-1.8,mats.gold);
-    cyl(.06,.08,.27,x,.68,-1.8,mats.metal);
-    const shade=new T.Mesh(new T.ConeGeometry(.17,.24,22),new T.MeshStandardMaterial({color:0xf1deb9,emissive:0xe9c687,emissiveIntensity:.45}));
-    shade.position.set(x,.86,-1.8);room.add(shade);
-  }
-  box(2.23,.027,1.35,-2.54,.012,1.33,mat(0x797e71,.99));
-  // Bedside wardrobe and frame.
-  box(.77,1.54,.43,-3.79,.75,-2.7,mats.wood);
-  for(let i=0;i<2;i++)box(.035,.19,.035,-3.47,.85+i*.19,-2.45,mats.gold);
-  // Living: low sofa, rug, shelf, sculptural circular table and small reading lamp.
-  box(2.15,.13,1.37,.02,.09,1.39,mat(0xbec0b0,.96));
-  const sofa=box(2.15,.43,.78,-.15,.36,1.96,mats.fabric);
-  box(2.13,.64,.19,-.15,.80,2.34,mats.fabric);
-  box(.20,.48,.84,-1.17,.57,1.96,mats.fabric);
-  box(.20,.48,.84,.87,.57,1.96,mats.fabric);
-  box(1.95,.12,.60,-.15,.63,1.96,mats.linenDark);
-  for(const x of [-.73,.46])box(.53,.15,.45,x,.76,2.03,mat(0xa79d88,.92));
-  cyl(.57,.57,.11,1.48,.51,1.10,mats.wood);
-  cyl(.07,.07,.44,1.48,.26,1.10,mats.metal);
-  cyl(.25,.22,.04,1.48,.02,1.10,mats.metal);
-  cyl(.13,.13,.035,1.44,.57,1.02,mats.ceramic);
-  // Kitchen units, handles, side hood, countertop, appliances.
-  box(2.54,.82,.77,2.56,.41,-2.50,mats.wood);
-  box(2.71,.10,.88,2.53,.89,-2.50,mats.ceramic);
-  box(2.54,1.0,.15,2.56,1.72,-3.14,mats.chalk);
-  for(const x of [1.71,2.36,3.0,3.65]){box(.016,.68,.02,x,.41,-2.10,mats.gold);}
-  box(.78,.025,.46,2.20,.952,-2.5,mats.black);
-  for(const x of [2.00,2.39])for(const z of [-2.64,-2.37]){
-    const burner=new T.Mesh(new T.TorusGeometry(.10,.015,8,28),mats.metal);burner.rotation.x=-Math.PI/2;burner.position.set(x,.974,z);room.add(burner);
-  }
-  const sink=new T.Mesh(new T.BoxGeometry(.55,.035,.42),mat(0x828985,.21,.65));sink.position.set(3.33,.945,-2.51);room.add(sink);
-  box(.025,.23,.045,3.48,1.07,-2.65,mats.metal);
-  box(.19,.03,.03,3.40,1.17,-2.65,mats.metal);
-  box(.67,.04,.42,2.18,2.12,-2.77,mats.wood);
-  box(.38,.09,.42,2.18,2.34,-2.77,mats.metal);
-  // Entry: door, luggage, keys/console to support operational storytelling.
-  box(.09,2.47,1.16,4.11,1.18,1.95,mats.walnut);
-  box(.1,.07,1.25,4.04,2.47,1.95,mats.wood);
-  const handle=cyl(.05,.05,.14,4.01,1.16,1.52,mats.gold);handle.rotation.z=Math.PI/2;
-  box(.52,.52,.36,3.48,.29,2.16,mats.metal);
-  box(.15,.24,.32,3.48,.60,2.16,mats.gold);
-  box(.83,.05,.51,3.45,.90,1.17,mats.wood);
-  for(const x of [3.13,3.75])box(.05,.80,.06,x,.46,1.17,mats.metal);
-  box(.40,.18,.28,3.45,.98,1.17,mats.ceramic);
-  // Low interior partial wall and warm ceiling spots.
-  box(.10,1.06,1.75,.97,.52,-1.60,mats.chalk);
-  box(.33,.03,.80,.97,1.07,-1.60,mats.wood);
-  for(const [x,z] of [[-2.1,-1.85],[.4,1.8],[2.58,-2.3]]){
-    const l=new T.PointLight(0xffd7a0,4.5,4.7,2);l.position.set(x,2.5,z);room.add(l);
-    cyl(.15,.13,.07,x,2.63,z,mats.gold);
-  }
-  // Botanical details: real shapes and shadows, not arbitrary hero prisms.
-  const plantX=3.67,plantZ=.56;
-  cyl(.24,.17,.48,plantX,.24,plantZ,mats.ceramic);
-  for(let i=0;i<12;i++){
-    const a=i*2.399;const leaf=new T.Mesh(new T.SphereGeometry(.15,10,8),mats.leaf);
-    leaf.position.set(plantX+Math.cos(a)*(.10+i*.018),.61+(i%4)*.16,plantZ+Math.sin(a)*(.10+i*.017));
-    leaf.scale.set(.55,1.8,.65);leaf.rotation.z=Math.cos(a)*.38;leaf.castShadow=true;room.add(leaf);
-  }
-  // Door and bed inspection beacons: actionable UI markers for the user's actual workflow.
-  const rings=[
-    spot('door','Mission à confirmer',"La demande d'intervention doit être acceptée avant d'être considérée comme planifiée.",[3.78,1.14,1.75],1),
-    spot('bed','Vérifier la préparation',"Une prestation déclarée terminée ne remplace pas le contrôle de l'état du logement.",[-2.60,1.01,-.55],2),
-    spot('kitchen','Équipement et consommables',"Une anomalie de cuisine ou de stock doit être consignée et attribuée à une personne.",[2.5,1.26,-2.11],2)
-  ];
-  // Architectural presentation: pedestal shadow and halo surfaces.
-  const ground=new T.Mesh(new T.CircleGeometry(20,80),new T.MeshBasicMaterial({color:0x131b19,transparent:true,opacity:.23}));
-  ground.rotation.x=-Math.PI/2;ground.position.y=-.36;scene.add(ground);
-  const ambient=new T.AmbientLight(0xeff5dc,.86);scene.add(ambient);
-  const hemisphere=new T.HemisphereLight(0xb8d1ca,0x76604d,1.15);scene.add(hemisphere);
-  const key=new T.DirectionalLight(0xf6ead4,2.6);
-  key.position.set(1,10,10);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-9;key.shadow.bias=-.00035;scene.add(key);
-  const rim=new T.DirectionalLight(0x96bbb5,1.25);rim.position.set(-7,6,-8);scene.add(rim);
-  // Dust in the shaft of light: atmospheric, never detached cubes.
-  const dustGeo=new T.BufferGeometry(),coords=new Float32Array(480);
-  for(let i=0;i<160;i++){coords[i*3]=(Math.random()-.5)*17;coords[i*3+1]=Math.random()*8;coords[i*3+2]=(Math.random()-.5)*14;}
-  dustGeo.setAttribute('position',new T.BufferAttribute(coords,3));
-  const dust=new T.Points(dustGeo,new T.PointsMaterial({color:0xd8d4c2,size:.026,transparent:true,opacity:.35,depthWrite:false}));
-  scene.add(dust);
-  const pointer={x:0,y:0},current={x:0,y:0};
-  let chapter=0,running=true,last=0,hoverId='',selectedId='';
-  const path=[
-    {pos:[13.8,10.8,16.4],look:[.20,.20,0],zoom:1},
-    {pos:[10.0,7.3,10.1],look:[1.0,.25,1.0],zoom:1},
-    {pos:[4.0,8.3,10.5],look:[-1.6,.21,-.8],zoom:1.10},
-    {pos:[10.5,9.6,12.5],look:[0,.2,0],zoom:.99}
-  ];
-  const aimed=new T.Vector3(...path[0].pos),look=new T.Vector3(...path[0].look),initial=new T.Vector3();
-  const lerp=T.MathUtils.lerp;
-  const ray=new T.Raycaster(),ndc=new T.Vector2();
-  function updateView(index){
-    chapter=Math.min(3,Math.max(0,index|0));
-    wrapper.dataset.chapter=String(chapter);
-    selectedId=chapter===1?'door':chapter===2?'bed':'';
-    contact.forEach(({ring,core})=>{
-      const active=ring.userData.id===selectedId;
-      ring.material.color.set(active?0xffd298:0x9b947b);ring.material.transparent=true;ring.material.opacity=active?1:.35;
-      core.material.color.set(active?0xffe6b1:0xd6ba8a);
-    });
-    const titles=[['SCÈNE 01 — DÉPART','La rotation commence ici.'],['SCÈNE 02 — INTERVENTION','Qui a confirmé la mission ?'],['SCÈNE 03 — CONTRÔLE','Le logement est-il vraiment prêt ?'],['SCÈNE 04 — MÉTHODE','Une décision à la fois.']];
-    document.getElementById('worldIndex').textContent=titles[chapter][0];
-    document.getElementById('worldTitle').textContent=titles[chapter][1];
-    room.traverse(n=>{if(n.isMesh&&n.material===mats.amber)n.material.emissiveIntensity=chapter===2?2.3:1.2;});
-  }
-  function pointerMove(e){
-    pointer.x=(e.clientX/innerWidth-.5)*2;
-    pointer.y=(e.clientY/innerHeight-.5)*2;
-    if(e.pointerType==='touch')return;
-    ndc.set((e.clientX/innerWidth)*2-1,-(e.clientY/innerHeight)*2+1);
-    ray.setFromCamera(ndc,camera);
-    const hits=ray.intersectObjects(contact.flatMap(x=>[x.ring,x.core]),false);
-    const match=hits[0]?.object.userData?.id||'';
-    if(match!==hoverId){hoverId=match;wrapper.style.cursor=match?'pointer':'';}
-  }
-  addEventListener('pointermove',pointerMove,{passive:true});
-  canvas.addEventListener('click',event=>{
-    if(!hoverId)return;
-    const target=contact.find(x=>x.ring.userData.id===hoverId);
-    if(target)window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:target.ring.userData}));
-  });
-  function resize(){
-    camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<650?42:30;camera.updateProjectionMatrix();
-    renderer.setPixelRatio(Math.min(devicePixelRatio||1,innerWidth<700?1.25:1.6));renderer.setSize(innerWidth,innerHeight,false);
-  }
-  addEventListener('resize',resize,{passive:true});
-  motion.addEventListener?.('change',()=>{if(motion.matches){wrapper.dataset.ready='false';running=false;fallback.style.opacity='1';}else{running=true;wrapper.dataset.ready='true';fallback.style.opacity='0';requestAnimationFrame(frame);}});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden){running=false;}else if(!motion.matches){running=true;requestAnimationFrame(frame);}});
-  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();running=false;wrapper.dataset.ready='false';fallback.style.opacity='1';});
-  canvas.addEventListener('webglcontextrestored',()=>{running=true;wrapper.dataset.ready='true';requestAnimationFrame(frame);});
-  let pointerEnergy=0;
-  function frame(timestamp){
-    if(!running||motion.matches)return;
-    const elapsed=Math.min(35,timestamp-last||16);last=timestamp;
-    const phase=path[chapter],ease=1-Math.pow(.94,elapsed/16);
-    const side=innerWidth<750?0:pointer.x*.35;
-    const rise=innerWidth<750?0:pointer.y*.19;
-    const goalPos=new T.Vector3(...phase.pos).add(new T.Vector3(side,rise,-side*.55));
-    camera.position.lerp(goalPos,ease);
-    look.lerp(new T.Vector3(...phase.look),ease*.85);
-    camera.lookAt(look);
-    // One coherent building stays on screen while the camera advances between chapters.
-    const frameSize=innerWidth<750?.77:1;room.scale.setScalar(lerp(room.scale.x,frameSize,ease));
-    if(innerWidth<750)room.position.x=lerp(room.position.x,.60,ease);else room.position.x=lerp(room.position.x,.48,ease);
-    dust.rotation.y+=.00009*elapsed;
-    const pulse=1+Math.sin(timestamp*.003)*.085;
-    contact.forEach(({ring})=>ring.scale.setScalar(pulse));
-    renderer.render(scene,camera);
-    requestAnimationFrame(frame);
-  }
-  try{
-    updateView(0);resize();
-    wrapper.dataset.ready='true';wrapper.dataset.engine='webgl2';fallback.style.opacity='0';
-    window.rotationScene={setChapter:updateView, engine:'webgl2',roomCount:1,hotspots:contact.length};
-    window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2'}}));
-    requestAnimationFrame(frame);
-  }catch(err){wrapper.dataset.ready='false';wrapper.dataset.engine='fallback';console.warn('Scène de repli utilisée',err);}
+'use strict';
+const wrapper=document.getElementById('world');
+const canvas=document.getElementById('worldCanvas');
+const fallback=document.getElementById('sceneFallback');
+if(!wrapper||!canvas)return;
+const motion=matchMedia('(prefers-reduced-motion: reduce)');
+let T=null,renderer=null,started=false,running=false,raf=0,chapter=0,targetProgress=0;
+const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.65);
+function fallbackOn(reason){
+ wrapper.dataset.engine='fallback';wrapper.dataset.ready='false';
+ if(fallback)fallback.style.opacity='1';
+ canvas.style.opacity='0';
+ if(reason)console.info('La vue statique reste disponible :',reason);
+}
+if(motion.matches){fallbackOn('animations réduites');return;}
+try{T=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js');}
+catch(e){fallbackOn('bibliothèque 3D indisponible');return;}
+try{
+ const scene=new T.Scene();
+ const camera=new T.PerspectiveCamera(35,innerWidth/innerHeight,.1,100);
+ camera.position.set(0,0,10.5);
+ renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
+ renderer.setPixelRatio(dpr());
+ renderer.setSize(innerWidth,innerHeight,false);
+ renderer.outputColorSpace=T.SRGBColorSpace;
+ renderer.toneMapping=T.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.25;
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=T.PCFSoftShadowMap;
+ scene.add(new T.AmbientLight(0xcdd5c7,1.1));
+ const hemisphere=new T.HemisphereLight(0xffe6bc,0x3b514c,2.4);scene.add(hemisphere);
+ function light(color,power,x,y,z){const l=new T.DirectionalLight(color,power);l.position.set(x,y,z);scene.add(l);return l;}
+ const keylight=light(0xffe8ba,4.0,-3,5,7);
+ const rimlight=light(0xa9c6b5,3.1,3,-1,-3);
+ light(0xe8b184,1.65,5,1,6);
+ const group=new T.Group();scene.add(group);
+ // Brushed bronze from broad grazing highlights. Its blade and bow share one alloy.
+ const brass=new T.MeshPhysicalMaterial({color:0xc6a171,metalness:.83,roughness:.23,clearcoat:.58,clearcoatRoughness:.16});
+ const brassEdge=new T.MeshStandardMaterial({color:0xf0d6a7,metalness:.76,roughness:.29});
+ const darkMetal=new T.MeshStandardMaterial({color:0x544d3b,metalness:.78,roughness:.32});
+ const leather=new T.MeshStandardMaterial({color:0x3d3027,metalness:.04,roughness:.92,side:T.DoubleSide});
+ const ink=new T.MeshStandardMaterial({color:0x202a23,metalness:.25,roughness:.52});
+ const offwhite=new T.MeshStandardMaterial({color:0xdacdaf,metalness:.08,roughness:.72});
+ function attach(geometry,material,parent=group,name=''){const m=new T.Mesh(geometry,material);m.name=name;m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
+ function extrude(shape,depth=.1,bevel=.038){const g=new T.ExtrudeGeometry(shape,{depth,steps:1,bevelEnabled:true,bevelThickness:bevel,bevelSize:bevel,bevelSegments:5,curveSegments:50});g.translate(0,0,-depth/2);return g;}
+ // The key bow is actually pierced; the shaft has functional cuts, not a slab.
+ const bow=new T.Shape();
+ bow.absarc(0,.98,.66,0,Math.PI*2,false);
+ const hole=new T.Path();
+ hole.absarc(0,.98,.265,0,Math.PI*2,true);bow.holes.push(hole);
+ const bowMesh=attach(extrude(bow,.16,.05),brass,group,'bow');
+ const bladeShape=new T.Shape();
+ bladeShape.moveTo(-.19,.49);bladeShape.lineTo(.19,.49);
+ bladeShape.lineTo(.19,-1.13);bladeShape.lineTo(.52,-1.13);
+ bladeShape.lineTo(.52,-1.43);bladeShape.lineTo(.19,-1.43);
+ bladeShape.lineTo(.19,-1.69);bladeShape.lineTo(.44,-1.69);
+ bladeShape.lineTo(.44,-1.96);bladeShape.lineTo(-.19,-1.96);bladeShape.closePath();
+ const blade=attach(extrude(bladeShape,.135,.025),brass,group,'blade');
+ const neck=attach(new T.CylinderGeometry(.215,.215,.19,32),darkMetal,group,'neck');
+ neck.rotation.x=Math.PI/2;neck.position.set(0,.47,.02);
+ // Milling grooves catch light and make the key read as a precision-made object.
+ for(const side of [-1,1]){
+  const groove=attach(new T.BoxGeometry(.015,1.25,.008),brassEdge,group,'groove');
+  groove.position.set(-.085,-.63,side*.087);
+ }
+ const collar=attach(new T.TorusGeometry(.31,.035,10,64),brassEdge,group,'collar');
+ collar.position.set(0,.97,.12);
+ // The steel split-ring joins the identifier to the key.
+ const splitRing=attach(new T.TorusGeometry(.42,.06,12,100),darkMetal,group,'split-ring');
+ splitRing.position.set(.46,1.08,.12);
+ splitRing.rotation.y=-.2;
+ const ringTip=attach(new T.TorusGeometry(.415,.013,8,100),brassEdge,group,'split-ring-glint');
+ ringTip.position.copy(splitRing.position);ringTip.position.z+=.07;
+ // Rounded leather fob with a real punched eyelet.
+ const tagGroup=new T.Group();tagGroup.position.set(1.28,.39,-.22);tagGroup.rotation.z=-.29;tagGroup.rotation.y=-.12;group.add(tagGroup);
+ const tagShape=new T.Shape(),w=.59,h=.78,r=.16;
+ tagShape.moveTo(-w+r,-h);tagShape.lineTo(w-r,-h);
+ tagShape.quadraticCurveTo(w,-h,w,-h+r);tagShape.lineTo(w,h-r);
+ tagShape.quadraticCurveTo(w,h,w-r,h);tagShape.lineTo(-w+r,h);
+ tagShape.quadraticCurveTo(-w,h,-w,h-r);tagShape.lineTo(-w,-h+r);
+ tagShape.quadraticCurveTo(-w,-h,-w+r,-h);
+ const eyeletHole=new T.Path();eyeletHole.absarc(0,.58,.105,0,Math.PI*2,true);tagShape.holes.push(eyeletHole);
+ attach(extrude(tagShape,.09,.035),leather,tagGroup,'leather-tag');
+ const eyelet=attach(new T.TorusGeometry(.113,.03,8,48),brassEdge,tagGroup,'eyelet');
+ eyelet.position.set(0,.58,.1);
+ // Hand-designed print, native canvas texture, no unlicensed image/stock photograph.
+ const texCanvas=document.createElement('canvas');texCanvas.width=512;texCanvas.height=640;
+ const ctx=texCanvas.getContext('2d');
+ ctx.clearRect(0,0,512,640);
+ ctx.textAlign='center';ctx.fillStyle='#d2b98d';
+ ctx.strokeStyle='rgba(214,192,157,.60)';ctx.lineWidth=2;
+ ctx.strokeRect(31,33,450,576);
+ ctx.font='italic 224px Georgia,serif';ctx.fillText('P.',256,360);
+ ctx.fillStyle='#c2aa86';ctx.font='bold 25px monospace';ctx.fillText('ROTATION / 001',256,430);
+ ctx.font='16px monospace';ctx.fillText('PASSATION',256,482);
+ const texture=new T.CanvasTexture(texCanvas);
+ texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
+ const mark=new T.Mesh(new T.PlaneGeometry(1.04,1.3),new T.MeshBasicMaterial({map:texture,transparent:true,depthWrite:false,side:T.DoubleSide}));
+ mark.position.z=.103;mark.position.y=-.02;tagGroup.add(mark);
+ // A rivet at the point where the leather meets the split-ring.
+ const tinyRivet=attach(new T.CircleGeometry(.032,20),brassEdge,tagGroup,'rivet');
+ tinyRivet.position.set(0,.575,.14);
+ // Hover IDs are attached to real physical surfaces.
+ const hitObjects=[bowMesh,blade,mark];
+ const ray=new T.Raycaster(),mouse=new T.Vector2();
+ const pointer={x:0,y:0,hover:false};
+ let actual=.0,last=0,keyTurn=0,lastTap=0;
+ const captions=[
+  ['OBJET 01 / LA CLÉ','Un passage de relais.','Faites défiler : le geste raconte la procédure.'],
+  ['GESTE 01 / CONFIRMER','Une mission doit être acceptée.','Le bon prestataire, le bon créneau.'],
+  ['GESTE 02 / VÉRIFIER','Une fin de mission n’est pas un contrôle.','Ne laissez pas l’incident passer à la prochaine arrivée.'],
+  ['GESTE 03 / TRANSMETTRE','Le relais devient une méthode.','Une information claire vaut mieux qu’une supposition.']
+ ];
+ function setChapter(i){
+  chapter=Math.min(3,Math.max(0,Math.floor(i)));
+  wrapper.dataset.chapter=String(chapter);
+  const labels=captions[chapter];
+  const a=document.getElementById('worldIndex'),b=document.getElementById('worldTitle'),c=document.getElementById('worldHint');
+  if(a)a.textContent=labels[0];if(b)b.textContent=labels[1];if(c)c.textContent=labels[2];
+ }
+ const lerp=(a,b,t)=>a+(b-a)*t;
+ // A single continuous camera route: no scene swap, no teleport, reverse scroll works.
+ const keyframes=[
+  {rot:[-.10,-.34,-.19],pos:[1.43,.12,0],cam:[0,0,10.5]},
+  {rot:[-.04,.56,.16],pos:[1.65,.08,0],cam:[-.2,.08,9.5]},
+  {rot:[.13,1.65,-.12],pos:[-.95,.0,0],cam:[.5,0,9.45]},
+  {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]}
+ ];
+ function mixFrames(t){
+  const k=Math.max(0,Math.min(2.999,t)),i=Math.floor(k),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
+  return {rot:a.rot.map((x,j)=>lerp(x,b.rot[j],blend)),pos:a.pos.map((x,j)=>lerp(x,b.pos[j],blend)),cam:a.cam.map((x,j)=>lerp(x,b.cam[j],blend))};
+ }
+ function pulse(){lastTap=performance.now();keyTurn+=.45;window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
+ function handlePointer(e){
+  if(e.pointerType==='touch')return;
+  pointer.x=(e.clientX/innerWidth-.5)*2;pointer.y=(e.clientY/innerHeight-.5)*2;
+  mouse.set(pointer.x,-pointer.y);ray.setFromCamera(mouse,camera);
+  pointer.hover=ray.intersectObjects(hitObjects,false).length>0;
+  if(document.body)document.body.classList.toggle('object-hover',pointer.hover);
+ }
+ addEventListener('pointermove',handlePointer,{passive:true});
+ const trigger=document.getElementById('objectTrigger');
+ trigger?.addEventListener('click',pulse);
+ function resize(){
+  camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<700?41:35;camera.updateProjectionMatrix();
+  renderer.setPixelRatio(dpr());renderer.setSize(innerWidth,innerHeight,false);
+ }
+ function draw(now){
+  if(!running)return;
+  const dt=Math.min(40,now-last||16);last=now;const ease=1-Math.pow(.89,dt/16);
+  actual=lerp(actual,targetProgress,ease);
+  const f=mixFrames(actual);
+  const hoverLift=pointer.hover?.06:0;
+  group.position.set(lerp(group.position.x,f.pos[0],ease),lerp(group.position.y,f.pos[1]+hoverLift,ease),0);
+  group.rotation.set(
+   lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
+   lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
+   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.0007)*.025,ease)
+  );
+  keyTurn*=.94;
+  // Deliberate mobile composition: product occupies the upper half, never covers the text.
+  const targetX=innerWidth<700?.03:f.cam[0],targetY=innerWidth<700?.85:f.cam[1];
+  camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
+  camera.position.z=lerp(camera.position.z,innerWidth<700?11.6:f.cam[2],ease);
+  camera.lookAt(0,innerWidth<700?.25:0,0);
+  const size=innerWidth<700?.88:1.0;
+  group.scale.setScalar(lerp(group.scale.x,size,ease));
+  // Stronger rim light on the control step, because light reveals scratches and cutouts.
+  rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
+  renderer.render(scene,camera);raf=requestAnimationFrame(draw);
+ }
+ function start(){if(running||motion.matches||document.hidden)return;running=true;last=0;raf=requestAnimationFrame(draw);}
+ function stop(){running=false;cancelAnimationFrame(raf);}
+ function setProgress(t){targetProgress=Math.max(0,Math.min(3,Number(t)||0));}
+ addEventListener('resize',resize,{passive:true});
+ document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+ motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
+ canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
+ window.rotationScene={setChapter,setProgress,pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
+ setChapter(0);resize();renderer.render(scene,camera);
+ wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';started=true;
+ window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2',model:'key'}}));
+ start();
+}catch(error){if(renderer){try{renderer.dispose();}catch(_){}}fallbackOn('WebGL non disponible');console.warn(error);}
 })();
