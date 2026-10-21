@@ -28,7 +28,7 @@ jobs:
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
-      - name: Tester les scénarios, la 3D, l'accessibilité et les formats mobiles
+      - name: Tester les scénarios, les interactions, l'accessibilité et les formats mobiles
         run: |
           python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/decision-game.log 2>&1 &
           for n in {1..20}; do
@@ -44,7 +44,7 @@ jobs:
           for attempt in {1..15}; do
             home=$(curl -fLsS --max-time 20 "$base" || true)
             game=$(curl -fLsS --max-time 20 "${base}atelier-decisions.html" || true)
-            if [[ "$home" == *'Jouer une rotation en 3 décisions'* ]] &&
+            if [[ "$home" == *'href="./atelier-decisions.html"'* ]] &&
                [[ "$game" == *'id="choices"'* ]] &&
                [[ "$game" == *'id="restart"'* ]]; then
               echo 'DECISION_PUBLIC_HTML_VERIFIED HTTP=200'
