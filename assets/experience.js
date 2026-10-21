@@ -98,6 +98,11 @@ function hideOverlay(){
  document.body.style.overflow='';
  if(trigger&&typeof trigger.focus==='function')trigger.focus();
 }
+// The 2D fallback must retain the same useful interaction as the real 3D object.
+document.getElementById('objectTrigger')?.addEventListener('click',()=>{
+ if(window.rotationScene?.engine==='webgl2')return;
+ showOverlay({label:'OBJET INTERACTIF / PASSATION',heading:'La clé passe, la responsabilité aussi',detail:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'});
+});
 close?.addEventListener('click',hideOverlay);
 overlay?.addEventListener('click',e=>{if(e.target===overlay)hideOverlay();});
 document.querySelectorAll('[data-scenario]').forEach(button=>button.addEventListener('click',()=>showOverlay(stories[button.dataset.scenario])));
