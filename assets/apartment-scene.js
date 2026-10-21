@@ -140,9 +140,12 @@ try{
  function pulse(){lastTap=performance.now();keyTurn+=.45;window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
  function handlePointer(e){
   if(e.pointerType==='touch')return;
-  pointer.x=(e.clientX/innerWidth-.5)*2;pointer.y=(e.clientY/innerHeight-.5)*2;
+  const bounds=wrapper.getBoundingClientRect();
+  const inside=e.clientX>=bounds.left&&e.clientX<=bounds.right&&e.clientY>=bounds.top&&e.clientY<=bounds.bottom;
+  pointer.x=inside?Math.max(-1,Math.min(1,((e.clientX-bounds.left)/bounds.width-.5)*2)):0;
+  pointer.y=inside?Math.max(-1,Math.min(1,((e.clientY-bounds.top)/bounds.height-.5)*2)):0;
   mouse.set(pointer.x,-pointer.y);ray.setFromCamera(mouse,camera);
-  pointer.hover=ray.intersectObjects(hitObjects,false).length>0;
+  pointer.hover=inside&&ray.intersectObjects(hitObjects,false).length>0;
   if(document.body)document.body.classList.toggle('object-hover',pointer.hover);
  }
  addEventListener('pointermove',handlePointer,{passive:true});
