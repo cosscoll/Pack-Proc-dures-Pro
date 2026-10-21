@@ -22,3 +22,18 @@ main{position:relative;z-index:8;pointer-events:none}.chapter{position:relative;
 /* Scroll-driven contrast follows reading side, never covers actual controls. */
 body:has(.chapter-control.is-current) .world:before{background:linear-gradient(90deg,transparent 0%,rgba(9,14,13,.10) 36%,rgba(9,14,13,.74) 68%,rgba(9,14,13,.90) 100%),linear-gradient(0deg,rgba(9,15,14,.45),transparent 25%)}
 @media(max-width:740px){body:has(.chapter-control.is-current) .world:before{background:linear-gradient(180deg,#111a19d0,transparent 20%,transparent 40%,#111918e8 66%,#111918 100%)}}
+
+
+/* PATCH CHIRURGICAL: la scène WebGL transparente est devant les sections opaques,
+   tandis que la toile de fond / l'identité visuelle d'origine restent inchangées. */
+.key-layer{position:fixed;inset:0;z-index:17;isolation:isolate;overflow:hidden;pointer-events:none}
+.key-layer canvas{position:absolute;inset:0;z-index:2;display:block;width:100%;height:100%;opacity:0;transition:opacity .7s ease}
+.key-layer .world-fallback{z-index:1}
+.world[data-ready="true"] + .key-layer canvas{opacity:1}
+.world[data-ready="true"] + .key-layer .world-fallback{opacity:0}
+.world[data-ready="false"] + .key-layer canvas{opacity:0}
+.world[data-ready="false"] + .key-layer .world-fallback{opacity:.95}
+@media(prefers-reduced-motion:reduce){
+ .key-layer canvas{display:none!important;opacity:0!important}
+ .key-layer .world-fallback{opacity:1!important}
+}

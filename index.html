@@ -5,19 +5,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#151c1c">
 <meta name="description" content="Pack Procédures Pro : un premier kit opérationnel pour les conciergeries et locations courte durée. 15 procédures, 7 registres et une procédure pilote gratuite.">
-<meta name="robots" content="index,follow"><meta name="site-revision" content="passation-20261021-v2">
+<meta name="robots" content="index,follow"><meta name="site-revision" content="passation-key-visible-20261021-v3">
 <meta property="og:title" content="Pack Procédures Pro — Les clés passent. La méthode reste.">
 <meta property="og:description" content="Une méthode de travail claire entre deux arrivées. Découvrez gratuitement une procédure de rotation.">
 <title>Les clés passent. La méthode reste. — Procédures Pro</title>
-<link rel="stylesheet" href="./assets/cinematic.css?v=passation-20261021-v2">
-<script type="module" src="./assets/apartment-scene.js?v=passation-20261021-v2"></script>
-<script defer src="./assets/experience.js?v=passation-20261021-v2"></script>
+<link rel="stylesheet" href="./assets/cinematic.css?v=passation-key-visible-20261021-v3">
+<script type="module" src="./assets/apartment-scene.js?v=passation-key-visible-20261021-v3"></script>
+<script defer src="./assets/experience.js?v=passation-key-visible-20261021-v3"></script>
 </head>
 <body>
 <a class="skip" href="#main">Passer au contenu</a>
 <div class="grain" aria-hidden="true"></div>
 <div class="world" id="world" role="group" data-engine="loading" data-ready="false" aria-label="Objet 3D interactif : une clé de conciergerie et son porte-clés de passation.">
- <div class="world-fallback" id="sceneFallback" aria-hidden="true">
+ <div class="world-light" aria-hidden="true"></div>
+ <div class="world-label" aria-live="polite"><span id="worldIndex">OBJET 01 / LA CLÉ</span><strong id="worldTitle">Un passage de relais.</strong><small id="worldHint">Déplacez le pointeur ou faites défiler.</small></div>
+ <div class="model-caption" aria-hidden="true"><span>LA ROTATION / ÉTUDE N° 001</span><span>MATIÈRE &amp; MÉTHODE</span></div>
+</div>
+<div class="key-layer" id="keyLayer" aria-hidden="true">
+<div class="world-fallback" id="sceneFallback" aria-hidden="true">
   <svg viewBox="0 0 480 720" xmlns="http://www.w3.org/2000/svg" role="presentation">
    <defs>
     <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8e3ac"/><stop offset=".26" stop-color="#ab8450"/><stop offset=".52" stop-color="#ecd3a1"/><stop offset=".8" stop-color="#78603a"/><stop offset="1" stop-color="#dbc18c"/></linearGradient>
@@ -38,9 +43,6 @@
   </svg>
  </div>
  <canvas id="worldCanvas" aria-hidden="true"></canvas>
- <div class="world-light" aria-hidden="true"></div>
- <div class="world-label" aria-live="polite"><span id="worldIndex">OBJET 01 / LA CLÉ</span><strong id="worldTitle">Un passage de relais.</strong><small id="worldHint">Déplacez le pointeur ou faites défiler.</small></div>
- <div class="model-caption" aria-hidden="true"><span>LA ROTATION / ÉTUDE N° 001</span><span>MATIÈRE &amp; MÉTHODE</span></div>
 </div>
 <header class="header" id="haut">
  <a href="#depart" class="brand" aria-label="Procédures Pro, retour à l'accueil">

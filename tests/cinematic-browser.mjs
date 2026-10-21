@@ -50,6 +50,24 @@ try{
   assert.equal(await page.locator('#overlayMessage').isVisible(),true);
   assert.match(await page.locator('#overlayHeading').innerText(),/clé passe/);
   await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#keyLayer').count(),1);
+  assert.equal(await page.locator('#worldCanvas').evaluate(el=>getComputedStyle(el.parentElement).position),'fixed');
+  for(const segment of ['.interlude','#pack','.footer']){
+    await page.locator(segment).scrollIntoViewIfNeeded();
+    const info=await page.locator('#keyLayer').evaluate(el=>({fixed:getComputedStyle(el).position==='fixed',z:Number(getComputedStyle(el).zIndex),canvasOpacity:Number(getComputedStyle(el.querySelector('canvas')).opacity)}));
+    assert.ok(info.fixed&&info.z>8,'key must stay in front of main content: '+segment+' '+JSON.stringify(info));
+    if(width!==320)assert.ok(info.canvasOpacity>.9,'animated key must remain visible at '+segment);
+  }
+  if(width===1440||width===390){
+    for(const route of ['exemple-procedure.html','atelier-decisions.html','avancement.html']){
+      const sub=await ctx.newPage();
+      await sub.goto(new URL(route,base).toString(),{waitUntil:'domcontentloaded'});
+      await sub.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world')?.dataset.engine));
+      assert.equal(await sub.locator('#world').getAttribute('data-engine'),'webgl2',route+' must display key 3D');
+      assert.equal(await sub.locator('#world').evaluate(el=>getComputedStyle(el).position),'fixed');
+      await sub.close();
+    }
+  }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'horizontal overflow '+width+' px: '+overflow);
   assert.deepEqual(errs,[],'uncaught browser exceptions');

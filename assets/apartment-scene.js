@@ -8,6 +8,9 @@ const fallback=document.getElementById('sceneFallback');
 if(!wrapper||!canvas)return;
 const motion=matchMedia('(prefers-reduced-motion: reduce)');
 let T=null,renderer=null,started=false,running=false,raf=0,chapter=0,targetProgress=0;
+const compact=wrapper.classList.contains('key-companion');
+const viewWidth=()=>compact?Math.max(wrapper.clientWidth,1):innerWidth;
+const viewHeight=()=>compact?Math.max(wrapper.clientHeight,1):innerHeight;
 const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.65);
 function fallbackOn(reason){
  wrapper.dataset.engine='fallback';wrapper.dataset.ready='false';
@@ -20,11 +23,11 @@ try{T=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.modul
 catch(e){fallbackOn('bibliothèque 3D indisponible');return;}
 try{
  const scene=new T.Scene();
- const camera=new T.PerspectiveCamera(35,innerWidth/innerHeight,.1,100);
+ const camera=new T.PerspectiveCamera(35,viewWidth()/viewHeight(),.1,100);
  camera.position.set(0,0,10.5);
  renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
  renderer.setPixelRatio(dpr());
- renderer.setSize(innerWidth,innerHeight,false);
+ renderer.setSize(viewWidth(),viewHeight(),false);
  renderer.outputColorSpace=T.SRGBColorSpace;
  renderer.toneMapping=T.ACESFilmicToneMapping;
  renderer.toneMappingExposure=1.25;
@@ -145,7 +148,7 @@ try{
  const trigger=document.getElementById('objectTrigger');
  trigger?.addEventListener('click',pulse);
  function resize(){
-  camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<700?41:35;camera.updateProjectionMatrix();
+  camera.aspect=viewWidth()/viewHeight();camera.fov=compact?39:(innerWidth<700?41:35);camera.updateProjectionMatrix();
   renderer.setPixelRatio(dpr());renderer.setSize(innerWidth,innerHeight,false);
  }
  function draw(now){
@@ -154,7 +157,7 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
-  group.position.set(lerp(group.position.x,innerWidth<700?.05:f.pos[0],ease),lerp(group.position.y,f.pos[1]+(innerWidth<700?1.2:0)+hoverLift,ease),0);
+  group.position.set(lerp(group.position.x,compact?0:(innerWidth<700?.05:f.pos[0]),ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
@@ -162,11 +165,11 @@ try{
   );
   keyTurn*=.94;
   // Deliberate mobile composition: product occupies the upper half, never covers the text.
-  const targetX=innerWidth<700?.03:f.cam[0],targetY=innerWidth<700?.85:f.cam[1];
+  const targetX=compact?0:(innerWidth<700?.03:f.cam[0]),targetY=compact?0:(innerWidth<700?.85:f.cam[1]);
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
-  camera.position.z=lerp(camera.position.z,innerWidth<700?11.6:f.cam[2],ease);
-  camera.lookAt(0,innerWidth<700?.25:0,0);
-  const size=innerWidth<700?.79:1.0;
+  camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
+  camera.lookAt(0,compact?0:(innerWidth<700?.25:0),0);
+  const size=compact?1.04:(innerWidth<700?.79:1.0);
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
@@ -175,6 +178,7 @@ try{
  function start(){if(running||motion.matches||document.hidden)return;running=true;last=0;raf=requestAnimationFrame(draw);}
  function stop(){running=false;cancelAnimationFrame(raf);}
  function setProgress(t){targetProgress=Math.max(0,Math.min(3,Number(t)||0));}
+if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress(3*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});

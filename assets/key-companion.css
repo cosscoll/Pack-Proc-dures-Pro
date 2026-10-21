@@ -1,0 +1,10 @@
+/* La clé d'origine suit aussi la lecture des pages pratiques, sans changer leur charte. */
+.key-companion{position:fixed;right:clamp(9px,2vw,32px);top:clamp(95px,13vh,145px);z-index:8;width:clamp(160px,20vw,285px);height:clamp(205px,33vw,380px);pointer-events:none;isolation:isolate;background:radial-gradient(ellipse at 55% 42%,#3d4c409e 0%,#1b2e2966 55%,transparent 74%);filter:drop-shadow(0 10px 14px #101c181d)}
+.key-companion canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .6s ease}
+.key-companion[data-ready="true"] canvas{opacity:1}
+.key-companion .world-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .5s ease}
+.key-companion .world-fallback img{width:100%;height:95%;object-fit:contain}
+.key-companion[data-ready="true"] .world-fallback{opacity:0}
+@media(max-width:740px){.key-companion{top:80px;right:4px;width:clamp(96px,26vw,175px);height:clamp(135px,34vw,220px);opacity:.95}}
+@media print{.key-companion{display:none!important}}
+@media(prefers-reduced-motion:reduce){.key-companion canvas{display:none!important}.key-companion .world-fallback{opacity:1!important}}
