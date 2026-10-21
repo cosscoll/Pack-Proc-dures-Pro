@@ -69,3 +69,6 @@ body.page--status footer{color:#d9decf;padding:25px;background:#18291f;width:100
 @media(max-width:850px){body.page--atelier .hero-layout{grid-template-columns:1fr}body.page--atelier .visual{height:400px;min-height:400px;max-width:550px;width:100%;margin:auto}body.page--sample .container,body.page--atelier .container{width:calc(100% - 46px)}}
 @media(max-width:450px){body.page--sample .container,body.page--atelier .container{width:calc(100% - 34px)}body.page--atelier .visual{height:335px;min-height:335px}body.page--atelier .dial-core{font-size:79px}body.page--atelier .dial-core small{font-size:7px;margin-top:16px}body.page--atelier .dial-label{font-size:8px;padding:8px}body.page--atelier .dial-label b{font-size:19px}body.page--atelier .hero h1{font-size:clamp(58px,14vw,85px)}body.page--status h1{font-size:64px}}
 @media(prefers-reduced-motion:reduce){body.page--atelier .decision-dial{transform:none!important;transition:none!important}}
+
+/* Contraste des informations secondaires sur la procédure pilote (WCAG AA). */
+body.page--sample .lab-head>p,body.page--sample .container:nth-child(6)>p{color:#354e40}
