@@ -144,3 +144,7 @@ body.page--atelier .decision-dial{transform:none!important}
 /* Résultats axe-core — contraste des petites légendes et du lien de retour. */
 body.page--sample .lab-head>p{color:#344b3e}
 body.page--sample .btn.alt{color:#872c1a;border-color:#872c1a}
+
+/* Imprimé clair : correction du texte mis en évidence et des notes d'atelier. */
+body.page--atelier .hero p strong{color:#1b3025!important}
+body.page--atelier .hero .hero-note{color:#35483b!important}
