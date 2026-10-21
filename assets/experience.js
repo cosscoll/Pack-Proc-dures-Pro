@@ -47,13 +47,7 @@ function measure(){
   const a=chapters[i].offsetTop,b=chapters[i+1].offsetTop;
   if(y>=a){progress=i+Math.min(1,Math.max(0,(y-a)/(b-a||1)));}
  }
- // Le même objet reste présent à travers la note, le pack et le pied de page.
- const rest=[...chapters,document.querySelector('.interlude'),document.querySelector('.offer-section'),document.querySelector('.footer')].filter(Boolean);
- for(let i=0;i<rest.length-1;i++){
-  const a=rest[i].offsetTop,b=rest[i+1].offsetTop;
-  if(y>=a)progress=i+Math.min(1,Math.max(0,(y-a)/(b-a||1)));
- }
- if(y>=rest.at(-1)?.offsetTop)progress=rest.length-1;
+ if(y>=last)progress=3;
  window.rotationScene?.setProgress(progress);
  scheduled=false;
 }

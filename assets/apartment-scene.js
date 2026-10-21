@@ -8,8 +8,7 @@ const fallback=document.getElementById('sceneFallback');
 if(!wrapper||!canvas)return;
 const motion=matchMedia('(prefers-reduced-motion: reduce)');
 let T=null,renderer=null,started=false,running=false,raf=0,chapter=0,targetProgress=0;
-const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<740?1.25:1.65);
-const compact=()=>innerWidth<740;
+const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.65);
 function fallbackOn(reason){
  wrapper.dataset.engine='fallback';wrapper.dataset.ready='false';
  if(fallback)fallback.style.opacity='1';
@@ -25,7 +24,7 @@ try{
  camera.position.set(0,0,10.5);
  renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
  renderer.setPixelRatio(dpr());
- renderer.setSize(wrapper.clientWidth||innerWidth,wrapper.clientHeight||innerHeight,false);
+ renderer.setSize(innerWidth,innerHeight,false);
  renderer.outputColorSpace=T.SRGBColorSpace;
  renderer.toneMapping=T.ACESFilmicToneMapping;
  renderer.toneMappingExposure=1.25;
@@ -128,31 +127,25 @@ try{
   {rot:[-.10,-.34,-.19],pos:[1.43,.12,0],cam:[0,0,10.5]},
   {rot:[-.04,.56,.16],pos:[1.65,.08,0],cam:[-.2,.08,9.5]},
   {rot:[.13,1.65,-.12],pos:[-.95,.0,0],cam:[.5,0,9.45]},
-  {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]},
-  {rot:[-.1,4.18,-.2],pos:[.30,.02,0],cam:[0,0,10.5]},
-  {rot:[.08,5.25,.12],pos:[.35,.05,0],cam:[0,0,10.2]},
-  {rot:[-.12,6.10,-.1],pos:[.3,.01,0],cam:[0,0,10.5]}
+  {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]}
  ];
  function mixFrames(t){
-  const k=Math.max(0,Math.min(keyframes.length-1,t)),i=Math.min(keyframes.length-2,Math.floor(k)),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
+  const k=Math.max(0,Math.min(2.999,t)),i=Math.floor(k),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
   return {rot:a.rot.map((x,j)=>lerp(x,b.rot[j],blend)),pos:a.pos.map((x,j)=>lerp(x,b.pos[j],blend)),cam:a.cam.map((x,j)=>lerp(x,b.cam[j],blend))};
  }
  function pulse(){lastTap=performance.now();keyTurn+=.45;window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
  function handlePointer(e){
   if(e.pointerType==='touch')return;
-  const bounds=wrapper.getBoundingClientRect();
-  const inside=e.clientX>=bounds.left&&e.clientX<=bounds.right&&e.clientY>=bounds.top&&e.clientY<=bounds.bottom;
-  pointer.x=inside?Math.max(-1,Math.min(1,((e.clientX-bounds.left)/bounds.width-.5)*2)):0;
-  pointer.y=inside?Math.max(-1,Math.min(1,((e.clientY-bounds.top)/bounds.height-.5)*2)):0;
+  pointer.x=(e.clientX/innerWidth-.5)*2;pointer.y=(e.clientY/innerHeight-.5)*2;
   mouse.set(pointer.x,-pointer.y);ray.setFromCamera(mouse,camera);
-  pointer.hover=inside&&ray.intersectObjects(hitObjects,false).length>0;
+  pointer.hover=ray.intersectObjects(hitObjects,false).length>0;
   if(document.body)document.body.classList.toggle('object-hover',pointer.hover);
  }
  addEventListener('pointermove',handlePointer,{passive:true});
  const trigger=document.getElementById('objectTrigger');
  trigger?.addEventListener('click',pulse);
  function resize(){
-  camera.aspect=(wrapper.clientWidth||innerWidth)/(wrapper.clientHeight||innerHeight);camera.fov=compact()?40:35;camera.updateProjectionMatrix();
+  camera.aspect=innerWidth/innerHeight;camera.fov=innerWidth<700?41:35;camera.updateProjectionMatrix();
   renderer.setPixelRatio(dpr());renderer.setSize(innerWidth,innerHeight,false);
  }
  function draw(now){
@@ -161,7 +154,7 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
-  group.position.set(lerp(group.position.x,f.pos[0]*.11+(compact()?-.1:0),ease),lerp(group.position.y,f.pos[1]+hoverLift,ease),0);
+  group.position.set(lerp(group.position.x,innerWidth<700?.05:f.pos[0],ease),lerp(group.position.y,f.pos[1]+(innerWidth<700?1.2:0)+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
@@ -169,11 +162,11 @@ try{
   );
   keyTurn*=.94;
   // Deliberate mobile composition: product occupies the upper half, never covers the text.
-  const targetX=f.cam[0]*.1,targetY=f.cam[1]*.35;
+  const targetX=innerWidth<700?.03:f.cam[0],targetY=innerWidth<700?.85:f.cam[1];
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
-  camera.position.z=lerp(camera.position.z,compact()?10.5:f.cam[2],ease);
-  camera.lookAt(0,0,0);
-  const size=compact()?.94:1.0;
+  camera.position.z=lerp(camera.position.z,innerWidth<700?11.6:f.cam[2],ease);
+  camera.lookAt(0,innerWidth<700?.25:0,0);
+  const size=innerWidth<700?.79:1.0;
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
@@ -181,7 +174,7 @@ try{
  }
  function start(){if(running||motion.matches||document.hidden)return;running=true;last=0;raf=requestAnimationFrame(draw);}
  function stop(){running=false;cancelAnimationFrame(raf);}
- function setProgress(t){targetProgress=Math.max(0,Math.min(6,Number(t)||0));}
+ function setProgress(t){targetProgress=Math.max(0,Math.min(3,Number(t)||0));}
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});

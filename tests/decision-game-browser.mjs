@@ -23,11 +23,11 @@ try {
     assert.match(await page.locator('#feedbackTitle').innerText(),/Décision risquée/);
     assert.equal(await page.locator('.choice:disabled').count(),3);
     await page.locator('#next').click();
-    assert.match(await page.locator('#game-heading').innerText(),/Qui valide/i);
+    assert.match(await page.locator('#game-heading').innerText(),/Qui valide/);
     await page.locator('[data-choice="0"]').click();
     assert.match(await page.locator('#feedbackTitle').innerText(),/Décision cohérente/);
     await page.locator('#next').click();
-    assert.match(await page.locator('#game-heading').innerText(),/incident/i);
+    assert.match(await page.locator('#game-heading').innerText(),/incident/);
     await page.locator('[data-choice="2"]').click();
     await page.locator('#next').click();
     assert.equal(await page.locator('#result').isVisible(),true,'result visible');
@@ -38,7 +38,7 @@ try {
     await page.locator('#restart').click();
     assert.equal(await page.locator('#result').isVisible(),false,'result hidden after restart');
     assert.equal(await page.locator('#choices .choice').count(),3);
-    assert.match(await page.locator('#game-heading').innerText(),/intervenant/i);
+    assert.match(await page.locator('#game-heading').innerText(),/intervenant/);
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     assert.ok(overflow<=1,'horizontal overflow '+width+': '+overflow);
     assert.deepEqual(errors,[],'no JS errors');
