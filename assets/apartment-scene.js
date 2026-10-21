@@ -154,7 +154,7 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
-  group.position.set(lerp(group.position.x,f.pos[0],ease),lerp(group.position.y,f.pos[1]+hoverLift,ease),0);
+  group.position.set(lerp(group.position.x,innerWidth<700?.05:f.pos[0],ease),lerp(group.position.y,f.pos[1]+(innerWidth<700?1.2:0)+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
@@ -166,7 +166,7 @@ try{
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
   camera.position.z=lerp(camera.position.z,innerWidth<700?11.6:f.cam[2],ease);
   camera.lookAt(0,innerWidth<700?.25:0,0);
-  const size=innerWidth<700?.88:1.0;
+  const size=innerWidth<700?.79:1.0;
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
