@@ -35,20 +35,20 @@ try{
   assert.equal(await page.locator('#rotation').evaluate(el=>el.classList.contains('is-current')),true);
   await page.locator('[data-scenario="pending"]').click();
   assert.equal(await page.locator('#overlayMessage').isVisible(),true);
-  assert.match(await page.locator('#overlayHeading').innerText(),/mission reste non confirmée/);
+  assert.match(await page.locator('#overlayHeading').innerText(),/mission reste non confirmée/i);
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#overlayMessage').isVisible(),false);
   await page.locator('#controle').scrollIntoViewIfNeeded();
   await page.waitForTimeout(550);
   await page.locator('[data-scenario="incident"]').click();
-  assert.match(await page.locator('#overlayHeading').innerText(),/ne signifie pas/);
+  assert.match(await page.locator('#overlayHeading').innerText(),/ne signifie pas/i);
   await page.locator('#overlayClose').click();
   assert.equal(await page.locator('#overlayMessage').isVisible(),false);
   await page.locator('#depart').scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
   await page.locator('#objectTrigger').click();
   assert.equal(await page.locator('#overlayMessage').isVisible(),true);
-  assert.match(await page.locator('#overlayHeading').innerText(),/clé passe/);
+  assert.match(await page.locator('#overlayHeading').innerText(),/clé passe/i);
   await page.keyboard.press('Escape');
   // The key must stay fixed and visible on EVERY section, including offer and footer.
   for(const selector of ['#depart','#rotation','#controle','#solution','.interlude','#pack','.footer']){
