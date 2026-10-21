@@ -18,8 +18,13 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 @media print{.top,.hero,.nav,.visual,.more,.footer,.game-body .choices,.next,.again,.result-cta{display:none!important}.container{width:100%}body{background:#fff;color:#111}.game{display:block}.rail{display:none}.result{display:block!important;background:#fff}.result-list{display:block}.result-item{break-inside:avoid}.intro h2{font-size:27pt}@page{size:A4;margin:14mm}}
 </style>
-<link rel="stylesheet" href="./assets/subpages.css?v=1"></head>
-<body class="page--atelier">
+<link rel="stylesheet" href="./assets/subpages.css?v=1"><script type="module" src="./assets/apartment-scene.js?v=passation-20261021-v3"></script></head>
+<body class="page--atelier"><div class="world" id="world" role="group" data-engine="loading" data-ready="false" aria-label="Clé de passation animée en trois dimensions, visible pendant toute la navigation">
+<div class="world-fallback" id="sceneFallback" aria-hidden="true"><img src="./assets/key-fallback.svg" alt=""></div>
+<canvas id="worldCanvas" aria-hidden="true"></canvas>
+<div class="world-label" aria-hidden="true"><span>OBJET / 001</span><strong>LA CLÉ DE PASSATION</strong></div>
+<div class="model-caption" aria-hidden="true"><span>PROCÉDURES PRO / ÉTUDE N° 001</span><span>UN OBJET. UN RESPONSABLE.</span></div>
+</div>
 <a class="skip" href="#main">Aller au contenu</a>
 <header class="top"><nav class="nav container" aria-label="Navigation principale"><a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true">P.</span><span>PACK PROCÉDURES<br>PRO / ATELIER</span></a><div class="nav-links"><a href="./index.html">Accueil ↗</a><a href="./exemple-procedure.html">Fiche P01 ↗</a></div></nav></header>
 <section class="hero" aria-labelledby="hero-title"><div class="container hero-layout"><div><span class="eyebrow">EXPÉRIENCE GRATUITE / LE LABORATOIRE</span><h1 id="hero-title">Une rotation.<br>Trois décisions.<br><em>À vous de jouer.</em></h1><p>Un prestataire silencieux, un contrôle oublié, un incident juste avant l'arrivée. <strong>La différence ne vient pas d'un joli tableau, mais de la décision au bon moment.</strong></p><div class="hero-links"><a class="primary" href="#jeu">Commencer la simulation <span aria-hidden="true">↘</span></a><a class="quiet" href="./exemple-procedure.html">Voir la procédure P01 ↗</a></div><p class="hero-note">Trois situations fictives, 100 % gratuites. Aucun compte, aucune réponse transmise, aucun résultat commercial garanti.</p></div><div class="visual" id="visual" role="group" aria-label="Instrument graphique des trois étapes d'une rotation : confirmation, contrôle et transmission, orientable au pointeur et au clavier." tabindex="0">
