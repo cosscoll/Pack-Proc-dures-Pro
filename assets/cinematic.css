@@ -238,3 +238,9 @@ html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transiti
  .offer-stats span{max-width:none}
  .interlude p{font-size:clamp(48px,13vw,56px)}
 }
+
+/* Navigation mobile : menu sous la vitrine, la clé reste visible et les liens restent accessibles. */
+@media(max-width:740px){
+ .nav-panel{z-index:25;padding-top:305px}
+ .nav-panel>a span{font-size:clamp(32px,7vw,48px)}
+}
