@@ -17,17 +17,22 @@ const scenes=[
  {heading:'Une prestation terminée n’est pas une validation.',hint:'L’état du logement se contrôle.'},
  {heading:'Un même langage pour l’équipe.',hint:'Attribuer, contrôler, transmettre.'}
 ];
-let active=0,lastActive=-1,scheduled=false,menuOpen=false,trigger=null;
+let active=0,lastActive=-1,lastRail=-1,scheduled=false,menuOpen=false,trigger=null;
+function selectRail(index){
+ if(lastRail===index)return;
+ lastRail=index;
+ rails.forEach((rail,i)=>{
+  const chosen=i===index;
+  rail.classList.toggle('is-active',chosen);
+  if(chosen)rail.setAttribute('aria-current','step');else rail.removeAttribute('aria-current');
+ });
+}
 function setScene(index){
  active=Math.max(0,Math.min(chapters.length-1,index));
  if(lastActive===active)return;
  lastActive=active;
  chapters.forEach((chapter,i)=>chapter.classList.toggle('is-current',i===active));
- rails.forEach((rail,i)=>{
-  const selected=i===active;
-  rail.classList.toggle('is-active',selected);
-  if(selected)rail.setAttribute('aria-current','step');else rail.removeAttribute('aria-current');
- });
+
  document.body.dataset.scene=String(active);
  const title=document.getElementById('worldTitle'),hint=document.getElementById('worldHint');
  if(title)title.textContent=scenes[active].heading;
@@ -58,6 +63,7 @@ function measure(){
  }
  const footerRect=document.querySelector('.footer')?.getBoundingClientRect();
  if(footerRect&&footerRect.top<innerHeight*.83&&footerRect.bottom>innerHeight*.48)stage='footer';
+ selectRail(stage==='pack'||stage==='footer'?4:active);
  document.getElementById('world')?.setAttribute('data-stage',stage);
  // Le décor suit la clé existante : aucune consigne de repositionnement du modèle.
  scheduled=false;

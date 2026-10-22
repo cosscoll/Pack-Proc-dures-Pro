@@ -15,6 +15,7 @@ try{
   assert.match(await page.locator('h1').innerText(),/Les clés passent/);
   assert.equal(await page.locator('.chapter[data-scene]').count(),4);
   assert.equal(await page.locator('#worldCanvas').count(),1);
+  assert.equal(await page.locator('.rail-item').count(),5,'all four steps and pack must be reachable');
   assert.equal(await page.locator('.hero-chapter a[href="./exemple-procedure.html"]').isVisible(),true);
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world')?.dataset.engine),{timeout:30000});
   const engine=await page.locator('#world').getAttribute('data-engine');
@@ -126,6 +127,9 @@ try{
     }
    }
   }
+  await page.locator('#pack').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('.rail-item[data-go="pack"]').getAttribute('aria-current'),'step','progress must show 05 at product section');
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'horizontal overflow '+width+' px: '+overflow);
   assert.deepEqual(errs,[],'uncaught browser exceptions');

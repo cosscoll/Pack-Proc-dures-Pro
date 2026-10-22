@@ -33,3 +33,10 @@ test('locked cinematic route and a functional no-JavaScript navigation',()=>{
  assert.match(html,/\.nav-panel\{position:relative!important/,'no-JS navigation should be visible');
  assert.ok(ux.includes('nav.inert=true'),'scripts should make the closed menu inert');
 });
+
+test('the public pilot pack is discoverable without scrolling the full story',()=>{
+ assert.ok(html.includes('class="header-pack" href="#pack"'));
+ assert.ok(html.includes('data-go="pack"'));
+ assert.ok(html.includes('LE PACK PILOTE'));
+ assert.ok(ux.includes("selectRail(stage==='pack'||stage==='footer'?4:active)"));
+});
