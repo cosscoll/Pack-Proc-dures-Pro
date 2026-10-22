@@ -132,7 +132,11 @@ try{
   const bounds={left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity};
   for(let n=0;n<8;n++){
    renderCorner.set(n&1?renderBox.max.x:renderBox.min.x,n&2?renderBox.max.y:renderBox.min.y,n&4?renderBox.max.z:renderBox.min.z).project(camera);
-   const x=(renderCorner.x+1)*viewWidth()/2,y=(1-renderCorner.y)*viewHeight()/2;
+   // Return CSS viewport pixels, even when the full-motion canvas is presented
+   // within a small responsive art area. No camera or model position is altered.
+   const viewport=canvas.getBoundingClientRect();
+   const x=viewport.left+(renderCorner.x+1)*viewport.width/2;
+   const y=viewport.top+(1-renderCorner.y)*viewport.height/2;
    bounds.left=Math.min(bounds.left,x);bounds.top=Math.min(bounds.top,y);
    bounds.right=Math.max(bounds.right,x);bounds.bottom=Math.max(bounds.bottom,y);
   }

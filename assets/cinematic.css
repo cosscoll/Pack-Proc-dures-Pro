@@ -98,3 +98,58 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
   .offer-line strong{font-size:clamp(42px,10.5vw,54px)}
   .footer{padding:clamp(360px,55svh,500px) 19px 35px;min-height:115svh}
 }
+
+/* MOBILE — L'IMAGE GARDE EXACTEMENT SON ANIMATION, MAIS LE DÉCOR LUI
+   RÉSERVE UNE PETITE ZONE PERMANENTE À DROITE.
+   Aucun mouvement 3D ni interpolateur n'est modifié. */
+@media(max-width:740px){
+ .key-layer{
+   inset:82px 0 auto auto;
+   width:clamp(120px,38vw,180px);
+   height:clamp(210px,34svh,310px);
+   overflow:hidden;
+   isolation:isolate;
+ }
+ .key-layer canvas{position:absolute;width:100%;height:100%;inset:0}
+ .key-layer .world-fallback{inset:0;transform:none;display:grid;place-items:center}
+ .key-layer .world-fallback svg{height:95%;width:95%;object-fit:contain}
+ .interlude{
+   padding:115px calc(38vw + 22px) 55px 19px;
+   min-height:125svh;align-items:flex-start;
+ }
+ .interlude-top{width:100%;max-width:100%;flex-direction:column;align-items:flex-start}
+ .interlude p{width:100%;max-width:100%;font-size:clamp(34px,7.1vw,50px);
+   line-height:1.11;overflow-wrap:break-word;margin:44px 0 60px}
+ .interlude-sign{max-width:100%;margin-top:auto}
+ .offer-section{padding:115px calc(38vw + 22px) 65px 19px}
+ .offer-top,.offer-bottom{width:100%;max-width:100%;flex-wrap:wrap}
+ .offer-main{display:block;width:100%;max-width:100%;min-width:0;padding:32px 0 62px}
+ .offer-intro{width:100%;min-width:0}
+ .offer-intro h2{font-size:clamp(36px,8vw,57px);overflow-wrap:break-word}
+ .offer-intro>p:not(.eyebrow){font-size:15px}
+ .offer-stats{flex-direction:column;gap:16px}
+ .offer-stats div{width:100%;flex:0 0 auto}
+ .offer-stats strong{font-size:clamp(48px,9vw,60px)}
+ .offer-outline{max-width:100%;margin-top:55px}
+ .offer-line{grid-template-columns:19px minmax(0,1fr) 15px;gap:7px}
+ .offer-line strong{font-size:clamp(26px,6.9vw,43px);overflow-wrap:break-word}
+ .offer-line span{overflow-wrap:break-word}
+ .offer-bottom{padding-right:0}
+ .footer{
+   padding:115px calc(38vw + 22px) 40px 19px;
+   min-height:86svh;
+   grid-template-columns:minmax(0,1fr);
+   align-content:start;
+ }
+ .footer-brand{font-size:clamp(28px,7vw,43px);overflow-wrap:break-word}
+ .footer div{gap:16px}
+ .footer>p,.footer small{max-width:100%;overflow-wrap:break-word}
+}
+@media(max-width:350px){
+ .interlude{padding-right:calc(38vw + 16px);padding-left:15px}
+ .offer-section{padding-right:calc(38vw + 16px);padding-left:15px}
+ .footer{padding-right:calc(38vw + 16px);padding-left:15px}
+ .interlude p{font-size:31px}
+ .offer-intro h2{font-size:34px}
+ .offer-line strong{font-size:24px}
+}
