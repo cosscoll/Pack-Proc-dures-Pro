@@ -68,7 +68,8 @@ function measure(){
  // puis se retire doucement avant sa traversée vers la droite.
  const easing=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
  const arrival=easing(3.87,4.06,progress);
- const departure=1-easing(4.32,4.52,progress);
+ // Le manifeste mobile doit libérer son couloir AVANT que la clé repasse au centre.
+ const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,progress);
  const manifestoVisibility=Math.min(arrival,departure).toFixed(3);
  document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
  document.querySelectorAll('.interlude-top,.interlude p').forEach(node=>{
