@@ -449,3 +449,15 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .offer-outline{margin-top:24svh}
  .offer-bottom{margin-top:12svh}
 }
+
+/* QA 2026-10-22 : maîtriser la largeur réellement peinte du sommaire fermé
+   et des statistiques. Ces corrections ne touchent ni la caméra ni le modèle. */
+html,body{max-width:100%;overflow-x:clip}
+.nav-panel:not(.is-open){visibility:hidden;pointer-events:none}
+.nav-panel.is-open{visibility:visible;pointer-events:auto}
+@media(max-width:740px){
+ #pack .offer-stats{width:100%;max-width:100%;min-width:0;gap:12px}
+ #pack .offer-stats>div{flex:1 1 0;min-width:0;width:auto;gap:7px}
+ #pack .offer-stats strong{flex-shrink:0;font-size:clamp(43px,11vw,58px)}
+ #pack .offer-stats span{min-width:0;font-size:11px;line-height:1.4;overflow-wrap:anywhere;color:#1f3829}
+}
