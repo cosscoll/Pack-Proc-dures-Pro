@@ -83,8 +83,14 @@ function measure(){
  const detailsVisibility=mobileReadingBay?'1':easing(innerWidth>=1101?5.73:5.59,innerWidth>=1101?5.88:5.73,progress).toFixed(3);
  const intro=document.querySelector('#pack .offer-intro');
  const detail=document.querySelector('#pack .offer-outline');
- if(intro)intro.style.opacity=introVisibility;
- if(detail)detail.style.opacity=detailsVisibility;
+ if(intro){
+  intro.style.opacity=introVisibility;
+  intro.inert=!mobileReadingBay&&!motion.matches&&Number(introVisibility)<.13;
+ }
+ if(detail){
+  detail.style.opacity=detailsVisibility;
+  detail.inert=!mobileReadingBay&&!motion.matches&&Number(detailsVisibility)<.13;
+ }
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
  const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
  const focal=innerHeight*.54;

@@ -49,3 +49,9 @@ test('the key continues alternating across the complete site',()=>{
  assert.ok(ux.includes('interlude?.offsetTop'));
  assert.ok(ux.includes('pack?.offsetTop'));
 });
+
+test('scroll hand-off disables tabbing to currently invisible offers',()=>{
+ assert.ok(ux.includes('intro.inert='));
+ assert.ok(ux.includes('detail.inert='));
+ assert.ok(ux.includes('!motion.matches'));
+});

@@ -181,6 +181,14 @@ try{
   await page.locator('#pack').scrollIntoViewIfNeeded();
   await page.waitForTimeout(150);
   assert.equal(await page.locator('.rail-item[data-go="pack"]').getAttribute('aria-current'),'step','progress must show 05 at product section');
+  // Un contenu masqué par le scroll ne doit pas conserver de liens/boutons
+  // accessibles au clavier tant qu'il n'est pas lisible.
+  if(width!==320&&width>740){
+    await page.evaluate(()=>scrollTo({top:document.documentElement.scrollHeight-innerHeight,behavior:'instant'}));
+    await page.waitForTimeout(200);
+    assert.equal(await page.locator('#pack .offer-intro').evaluate(el=>el.inert),true);
+    assert.equal(await page.locator('#pack .offer-outline').evaluate(el=>el.inert),false);
+  }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'horizontal overflow '+width+' px: '+overflow);
   assert.deepEqual(errs,[],'uncaught browser exceptions');
