@@ -49,6 +49,15 @@ function measure(){
  }
  if(y>=last)progress=3;
  window.rotationScene?.setProgress(progress);
+ // Le 3D suit la structure réelle, y compris le manifeste, le pack et le pied de page.
+ const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
+ const focal=innerHeight*.54;
+ let stage='depart';
+ for(const part of route){
+  if(part.getBoundingClientRect().top<=focal)stage=part.id||part.classList.contains('interlude')&&'interlude'||part.classList.contains('footer')&&'footer'||stage;
+ }
+ document.getElementById('world')?.setAttribute('data-stage',stage);
+ window.rotationScene?.setStage(stage);
  scheduled=false;
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(measure);}}

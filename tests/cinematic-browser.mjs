@@ -68,6 +68,32 @@ try{
       await sub.close();
     }
   }
+  // Au manifeste la clef doit se loger dans un espace vacant, pas dans les lettres.
+  if(width!==320){
+   for(const [selector,stage] of [['.interlude','interlude'],['#pack','pack'],['.footer','footer']]){
+    await page.locator(selector).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1900);
+    const pos=await page.evaluate(()=>{
+     const scene=window.rotationScene,rect=scene?.getKeyBounds();
+     const stage=document.querySelector('#world')?.dataset.stage;
+     const obstacles=[];
+     for(const el of document.querySelectorAll('.interlude p,.offer-intro h2,.offer-intro p,.offer-line,.footer-brand,.footer p')){
+      if(!el.getClientRects().length)continue;
+      const range=document.createRange();range.selectNodeContents(el);
+      for(const r of range.getClientRects()){
+       const ix=Math.max(0,Math.min(rect.right,r.right)-Math.max(rect.left,r.left));
+       const iy=Math.max(0,Math.min(rect.bottom,r.bottom)-Math.max(rect.top,r.top));
+       if(ix*iy>70)obstacles.push({text:el.textContent.trim().slice(0,22),area:Math.round(ix*iy)});
+      }
+     }
+     return {stage,bounds:rect,overlaps:obstacles,selected:document.querySelector('#world')?.dataset.collisionFree};
+    });
+    assert.equal(pos.stage,stage,'step tracking '+selector+': '+JSON.stringify(pos));
+    assert.equal(pos.overlaps.length,0,'key must not cover text at '+selector+': '+JSON.stringify(pos));
+    assert.ok(pos.bounds.width>35&&pos.bounds.height>50,'key must remain visible '+selector);
+    console.log('KEY_SAFE_ZONE_PASS '+JSON.stringify({width,stage,bounds:pos.bounds}));
+   }
+  }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'horizontal overflow '+width+' px: '+overflow);
   assert.deepEqual(errs,[],'uncaught browser exceptions');
