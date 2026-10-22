@@ -47,9 +47,7 @@ jobs:
             sleep 10
           done
       - name: Tester les vrais interactions publiques bureau et mobile
-        env:
-          CINEMATIC_BASE: https://cosscoll.github.io/Pack-Proc-dures-Pro/
-        run: node tests/cinematic-browser.mjs
+        run: CINEMATIC_BASE="https://cosscoll.github.io/Pack-Proc-dures-Pro/?ci=${GITHUB_SHA}" node tests/cinematic-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

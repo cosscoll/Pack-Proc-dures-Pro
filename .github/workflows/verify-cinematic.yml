@@ -59,7 +59,7 @@ jobs:
             if [[ "$n" == 20 ]]; then echo "::error::La nouvelle expérience n'est pas servie en ligne";exit 1;fi
             sleep 10
           done
-          CINEMATIC_BASE="$base" node tests/cinematic-browser.mjs
+          CINEMATIC_BASE="${base}?ci=${GITHUB_SHA}" node tests/cinematic-browser.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
