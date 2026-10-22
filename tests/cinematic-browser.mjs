@@ -15,12 +15,16 @@ try{
   assert.match(await page.locator('h1').innerText(),/Les clés passent/);
   assert.equal(await page.locator('.chapter[data-scene]').count(),4);
   assert.equal(await page.locator('#worldCanvas').count(),1);
+  assert.equal(await page.locator('#coffre').count(),1,'final chest section present');
   assert.equal(await page.locator('.rail-item').count(),6,'five story stops and final chest must be reachable');
   assert.equal(await page.locator('.hero-chapter a[href="./exemple-procedure.html"]').isVisible(),true);
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world')?.dataset.engine),{timeout:30000});
   const engine=await page.locator('#world').getAttribute('data-engine');
   if(width!==320)assert.equal(engine,'webgl2','La clé WebGL doit charger à '+width+'px');
   else assert.equal(engine,'fallback','Mode sans animation attendu à 320px');
+  if(width===320){
+   assert.ok(await page.locator('.vault-finale__fallback').count()===1);
+  }
   if(width!==320){
    const scene=await page.evaluate(()=>({model:window.rotationScene?.model,hotspots:window.rotationScene?.hotspots}));
    assert.equal(scene.model,'machined-key-and-leather-fob');
@@ -168,6 +172,9 @@ try{
    const relocked=await page.evaluate(()=>window.rotationScene.getVaultState());
    assert.ok(relocked.open<.07,'reverse scroll must close lid again');
    console.log('VAULT_FINAL_PASS '+JSON.stringify({width,unlocked,relocked}));
+   await page.evaluate(()=>{scrollTo({top:document.documentElement.scrollHeight-innerHeight,behavior:'instant'});});
+   await page.waitForTimeout(950);
+   await page.screenshot({path:'screenshots/chest-open-'+width+'.png',animations:'disabled'});
   }
   // Balayage de vrais points de lecture : la page se compose autour d'une clé immuable.
   if(width!==320){

@@ -14,6 +14,7 @@ const viewHeight=()=>compact?Math.max(wrapper.clientHeight,1):(innerWidth<=740?M
 const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.65);
 function fallbackOn(reason){
  wrapper.dataset.engine='fallback';wrapper.dataset.ready='false';
+ document.body?.classList.add('vault-fallback-mode');
  if(fallback)fallback.style.opacity='1';
  canvas.style.opacity='0';
  if(reason)console.info('La vue statique reste disponible :',reason);
@@ -322,9 +323,9 @@ try{
 if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress((keyframes.length-1)*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
- motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
+ motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';document.body.classList.remove('vault-fallback-mode');start();}});
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
- canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
+ canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';document.body.classList.remove('vault-fallback-mode');start();});
  window.rotationScene={setChapter,setProgress,setVaultProgress,getKeyBounds,
   getVaultState:()=>({progress:actualVault,target:targetVault,open:Math.max(0,Math.min(1,-vaultLid.rotation.x/1.58)),lockTurn:-vaultLockRotor.rotation.z,chestVisible:vaultChest.visible}),
   getReferencePose:t=>{const f=mixFrames(t);return {rotationY:f.rot[1],x:f.pos[0]};},
@@ -332,6 +333,7 @@ if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentE
   pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
  setChapter(0);wrapper.dataset.motion='original-smooth';resize();renderer.render(scene,camera);
  wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';started=true;
+ document.body.classList.remove('vault-fallback-mode');
  window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2',model:'key'}}));
  start();
 }catch(error){if(renderer){try{renderer.dispose();}catch(_){}}fallbackOn('WebGL non disponible');console.warn(error);}

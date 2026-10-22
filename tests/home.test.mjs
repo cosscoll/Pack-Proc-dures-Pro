@@ -82,5 +82,6 @@ test('the original route finishes in a real reversible 3D chest opening',()=>{
  assert.ok(ux.includes('const originalEnd='),'legacy final key pose must keep its exact scroll anchor');
  assert.ok(ux.includes('Math.min(6,progress)'),'old key choreography must stay clamped at step six');
  assert.ok(ux.includes('setVaultProgress?.(vaultProgress)'),'finale is progressive and reversible');
+ assert.ok(css.includes('.vault-finale__fallback')&&three.includes('vault-fallback-mode'),'accessible static coffre when GPU unavailable');
  assert.equal(three.split('{rot:[').length-1,7,'all seven approved keyframes remain intact');
 });

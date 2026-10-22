@@ -514,3 +514,7 @@ html,body{max-width:100%;overflow-x:clip}
  .vault-finale__instruction{display:none}
 }
 @media(prefers-reduced-motion:reduce) and (max-width:740px){.vault-finale{min-height:125svh}}
+
+/* Si le WebGL est indisponible, montrer le vrai sujet du final au lieu d'une zone vide. */
+.vault-fallback-mode .vault-finale__fallback{display:grid;place-items:center;position:absolute;inset:115px 0 auto;height:clamp(200px,34svh,350px);opacity:.96;pointer-events:none}
+.vault-fallback-mode .vault-finale__end{opacity:1}
