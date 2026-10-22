@@ -272,7 +272,7 @@ try{
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?.25:0),0);
   camera.updateMatrixWorld(true);
-  if(!compact&&(stageChanged||(Math.abs(scrollY-lastScanY)>3&&now-lastScan>145)||now-lastScan>2500)){
+  if(!compact&&(stageChanged||(Math.abs(scrollY-lastScanY)>2&&now-lastScan>130)||now-lastScan>580)){
    occupied=textObstacles();
    nextPose=findSafePose(f);
    lastScan=now;lastScanY=scrollY;stageChanged=false;
@@ -299,6 +299,7 @@ try{
  function stop(){running=false;cancelAnimationFrame(raf);}
  function setProgress(t){targetProgress=Math.max(0,Math.min(3,Number(t)||0));}
 if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress(3*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
+ if(!compact)addEventListener('scrollend',()=>{stageChanged=true;},{passive:true});
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
