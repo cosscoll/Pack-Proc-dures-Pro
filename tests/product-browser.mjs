@@ -17,6 +17,14 @@ try{
   assert.equal(await page.locator('.registries li').count(),7);
   assert.equal(await page.locator('.inventory-item').count(),4);
   assert.equal(await page.locator('details').count(),6);
+  assert.equal(await page.locator('[data-preview="P01"]').getAttribute('aria-pressed'),'true');
+  await page.locator('[data-preview="P05"]').click();
+  assert.equal(await page.locator('[data-preview="P05"]').getAttribute('aria-pressed'),'true');
+  assert.match(await page.locator('#previewSub').innerText(),/VÉRIFIER LE LOGEMENT/);
+  await page.locator('[data-preview="P08"]').click();
+  assert.match(await page.locator('#previewTitle').innerText(),/incident/);
+  await page.locator('[data-preview="P01"]').click();
+  assert.match(await page.locator('#previewSub').innerText(),/PLANIFIER UNE ROTATION/);
   const sample=await page.locator('.hero-actions a[href="./exemple-procedure.html"]').count();
   assert.equal(sample,1);
   await page.locator('details').first().locator('summary').click();

@@ -32,3 +32,7 @@ Les pages et mises à jour de sprint doivent présenter uniquement des élément
 ## Finale 3D — ouverture du coffre
 
 La fin de la page inclut un véritable coffre 3D creux : panneaux, serrure, couvercle sur charnières. Après la septième position historique de la clé, un huitième segment de scroll rapproche la clé de la serrure, la fait pivoter, puis soulève le couvercle. L'intérieur reste volontairement vide jusqu'à décision sur le produit mis en avant. Le scroll inverse referme la boîte et retire la clé. La version accessible sans WebGL conserve un coffre illustré et son texte explicatif.
+
+## Optimisation commerciale et UX — 22 octobre 2026
+
+Audit axe-core/Playwright sur site public (1440 et 390px), correction des contrastes et des liens mobiles. Premier mini-présentoir interactif P01, P05, P08 sans collecte de données ; bénéfices expliqués par des cas précis et formats précisés. Aucun paiement activé ; prix 49 € encore indicatif. Scripts 3D et mouvements non modifiés.

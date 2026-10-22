@@ -30,3 +30,43 @@
 @media(max-width:760px){.site-header{min-height:74px;padding:10px 18px}.site-header nav{gap:13px}.site-header nav a:not(.nav-outline){display:none}.hero-inner{grid-template-columns:1fr;padding:70px 19px 85px}.hero-copy h1{font-size:clamp(74px,13vw,110px)}.hero-lead{max-width:600px}.document-display{width:min(100%,490px);margin-top:45px}.paper-sheet{padding:35px}.paper-sheet h2{font-size:clamp(54px,11vw,82px)}.section{padding:85px 22px}.section h2,.dark-section h2,.closing h2{font-size:clamp(57px,10vw,80px)}.problem-grid,.registries,.audience-layout,.closing{grid-template-columns:1fr}.problem-grid{margin-top:42px}.registries{margin-top:75px}.steps{grid-template-columns:1fr;gap:24px;margin-top:55px}.steps h3{margin:20px 0}.steps>div{padding-bottom:18px}.inventory-item{grid-template-columns:45px 1fr 20px;gap:10px}.inventory-item h3{font-size:clamp(28px,5.9vw,42px)}.site-footer{grid-template-columns:1fr}}
 @media(max-width:390px){.brand{font-size:10px}.monogram{width:40px;height:40px}.site-header nav .nav-outline{padding:8px 10px;font-size:10px}.hero-copy h1{font-size:70px}.paper-sheet{padding:26px 21px}.paper-sheet h2{font-size:58px}.spec-strip strong{font-size:33px}.spec-strip div:nth-child(3) strong{font-size:19px}.section h2,.dark-section h2,.closing h2{font-size:54px}.button{padding:14px;font-size:10px}.inventory-item{padding:24px 0}.inventory-item:hover{padding-left:5px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.paper-sheet,.inventory-item,.button,.faq summary>span{transition:none!important}.paper-sheet{transform:none!important}}
+
+/* Audit CRO + axe-core : choix d'extraits, lisibilité et densité de la fiche. */
+.hero-lead strong{color:#fff1d9;font-weight:700}
+.hero-format{font:10px/1.8 var(--mono);letter-spacing:.035em;color:#e0d1b5;margin:0 0 14px}
+.hero-format span{padding:0 6px}
+.preview-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:10px 10px 0}
+.preview-tabs button{cursor:pointer;min-height:44px;padding:10px 3px;text-align:center;border:1px solid #a1a089;background:#26392e;color:#f3eddd;font:10px/1.35 var(--mono);transition:background .2s,color .2s}
+.preview-tabs button:hover,.preview-tabs button:focus-visible{background:#436047;color:#fff}
+.preview-tabs button[aria-pressed=true]{background:#e8d2ac;color:#193022;border-color:#e8d2ac}
+.preview-tabs button:focus-visible{outline:3px solid #f4d49e;outline-offset:2px}
+.paper-sheet h2{min-height:2.65em}
+.paper-sheet li{min-height:69px}
+.registries li span{color:#354739}
+.text-cta{min-height:32px;align-items:center}
+.section{padding-top:clamp(67px,7vw,105px);padding-bottom:clamp(67px,7vw,105px)}
+.dark-section{padding-top:clamp(74px,8vw,112px);padding-bottom:clamp(74px,8vw,112px)}
+.problem-grid{margin-top:47px}
+.problem-side p{margin:25px 0;padding-bottom:21px}
+.inventory{margin-top:52px}
+.inventory-item{padding-top:23px;padding-bottom:23px}
+.registries{margin-top:78px}
+.steps{margin-top:54px}
+.faq-list{margin-top:36px}
+.faq summary{padding-top:21px;padding-bottom:21px}
+.closing{padding-top:clamp(70px,8vw,112px);padding-bottom:clamp(70px,8vw,112px)}
+@media(max-width:760px){
+ .section{padding-top:56px;padding-bottom:58px}
+ .dark-section{padding-top:70px;padding-bottom:70px}
+ .hero-inner{padding-top:50px;padding-bottom:67px}
+ .document-display{margin-top:25px}
+ .paper-sheet{margin-top:23px;margin-bottom:25px}
+ .preview-tabs{margin-top:14px}
+ .preview-tabs button{font-size:9px;min-height:47px}
+ .inventory-item{padding-top:22px;padding-bottom:22px}
+ .registries{margin-top:49px}
+ .registries li{padding-top:12px;padding-bottom:12px}
+ .faq summary{padding-top:18px;padding-bottom:18px}
+}
+@media(max-width:390px){.preview-tabs button{font-size:8px}.hero-format{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.preview-tabs button{transition:none}}

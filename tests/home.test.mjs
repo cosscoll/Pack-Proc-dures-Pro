@@ -85,3 +85,5 @@ test('the original route finishes in a real reversible 3D chest opening',()=>{
  assert.ok(css.includes('.vault-finale__fallback')&&three.includes('vault-fallback-mode'),'accessible static coffre when GPU unavailable');
  assert.equal(three.split('{rot:[').length-1,7,'all seven approved keyframes remain intact');
 });
+
+test('three pilot documents can be explored, without tracking or checkout',()=>{const page=read('pack-conciergerie.html'),js=read('assets/pack-demo.js');for(const id of ['P01','P05','P08']){assert.ok(page.includes('data-preview="'+id+'"'));assert.ok(js.includes(id+':{'))}assert.ok(page.includes('Tester la procédure gratuite'));assert.ok(!js.includes('fetch(')&&!js.includes('localStorage'))});

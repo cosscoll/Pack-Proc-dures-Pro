@@ -9,7 +9,8 @@
 <meta property="og:title" content="Le pack conciergerie — Procédures Pro">
 <meta property="og:description" content="Organiser, contrôler, transmettre : 15 procédures et 7 registres de suivi, conçus pour les équipes de conciergerie. Édition pilote en préparation.">
 <title>Pack conciergerie : 15 procédures + 7 registres — Procédures Pro</title>
-<link rel="stylesheet" href="./assets/pack-conciergerie.css?v=edition001">
+<link rel="stylesheet" href="./assets/pack-conciergerie.css?v=conversion-20261022-v25">
+<script src="./assets/pack-demo.js?v=conversion-20261022-v25" defer></script>
 </head>
 <body>
 <a class="skip" href="#contenu">Passer au contenu</a>
@@ -22,21 +23,23 @@
  <div class="hero-inner">
   <div class="hero-copy">
    <p class="kicker"><span class="mark">001</span> PREMIÈRE ÉDITION / LOCATION COURTE DURÉE</p>
-   <h1>Vos rotations.<br>Votre <em>méthode.</em></h1>
-   <p class="hero-lead">L'intervention a-t-elle été acceptée ? Le logement est-il réellement prêt ? Qui prend le relais ? Donnez un cadre lisible aux décisions qui rythment votre conciergerie.</p>
-   <div class="hero-actions"><a class="button button-light" href="#composition">Voir ce que contient le pack <span>↘</span></a><a class="quiet-link" href="./exemple-procedure.html">Tester gratuitement une procédure ↗</a></div>
+   <h1>Vos rotations.<br><em>Sous contrôle.</em></h1>
+   <p class="hero-lead">Pour les petites conciergeries : <strong>15 procédures métier</strong> pour savoir quoi faire et <strong>7 tableaux CSV</strong> pour suivre ce qui a été fait. Une méthode à adapter à votre équipe, sans nouveau logiciel.</p>
+   <div class="hero-actions"><a class="button button-light" href="./exemple-procedure.html">Tester la procédure gratuite <span>↗</span></a><a class="quiet-link" href="#composition">Découvrir les 22 modèles ↘</a></div>
+   <p class="hero-format">DOCX MODIFIABLES <span aria-hidden="true">·</span> PDF À CONSULTER <span aria-hidden="true">·</span> TABLEAUX CSV</p>
    <p class="pilot-note">ÉDITION PILOTE EN COURS DE VALIDATION · AUCUN ACHAT OUVERT</p>
   </div>
   <aside class="document-display" aria-label="Aperçu pédagogique du type de procédure inclus dans le pack">
    <div class="display-top"><span>ATELIER / ÉDITION 001</span><span>DOCUMENT DE TRAVAIL</span></div>
    <div class="paper-sheet">
-    <div class="paper-head"><span>PROCÉDURES PRO</span><span>P01 / EXTRAIT</span></div>
-    <h2>Une demande<br>n'est pas une<br><em>confirmation.</em></h2>
-    <p>PLANIFIER UNE ROTATION</p>
-    <ol><li><span>01</span><strong>Vérifier les horaires</strong><small>Départ, arrivée, durée disponible</small></li><li><span>02</span><strong>Proposer l'intervention</strong><small>Consignes et responsable désigné</small></li><li><span>03</span><strong>Obtenir un accord explicite</strong><small>Mission envoyée ≠ mission acceptée</small></li></ol>
-    <div class="paper-bottom"><span>STATUT / À CONFIRMER</span><span>EXEMPLE PÉDAGOGIQUE</span></div>
+    <div class="paper-head"><span>PROCÉDURES PRO</span><span id="previewRef">P01 / EXTRAIT</span></div>
+    <h2 id="previewTitle">Une demande<br>n'est pas une<br><em>confirmation.</em></h2>
+    <p id="previewSub">PLANIFIER UNE ROTATION</p>
+    <ol id="previewSteps" aria-live="polite"><li><span>01</span><strong>Vérifier les horaires</strong><small>Départ, arrivée, durée disponible</small></li><li><span>02</span><strong>Proposer l'intervention</strong><small>Consignes et responsable désigné</small></li><li><span>03</span><strong>Obtenir un accord explicite</strong><small>Mission envoyée ≠ mission acceptée</small></li></ol>
+    <div class="paper-bottom"><span id="previewStatus">STATUT / À CONFIRMER</span><span>EXTRAIT PÉDAGOGIQUE</span></div>
    </div>
-   <div class="display-bottom"><span>CONSIGNES CLAIRES</span><span>RESPONSABILITÉS DÉFINIES</span><span>SUIVI TRAÇABLE</span></div>
+   <div class="preview-tabs" role="group" aria-label="Choisir un exemple du manuel"><button type="button" data-preview="P01" aria-pressed="true">P01 · PLANIFIER</button><button type="button" data-preview="P05" aria-pressed="false">P05 · CONTRÔLER</button><button type="button" data-preview="P08" aria-pressed="false">P08 · INCIDENT</button></div>
+   <div class="display-bottom"><span>EXTRAITS DU MANUEL PILOTE</span><span>À PERSONNALISER</span></div>
   </aside>
  </div>
 </section>
@@ -57,16 +60,16 @@
  </div>
 </section>
 <section class="section composition" id="composition">
- <div class="section-intro"><p class="kicker dark">02 / LA BOÎTE À OUTILS</p><h2>Pas seulement des conseils.<br><em>Des documents à utiliser.</em></h2><p>Le pack pilote associe des procédures rédigées avec objectif, rôles, étapes, contrôles et exceptions, à des registres de suivi pour centraliser les décisions. Les modèles doivent être adaptés à votre activité avant utilisation.</p></div>
+ <div class="section-intro"><p class="kicker dark">02 / LA BOÎTE À OUTILS</p><h2>Pas seulement des conseils.<br><em>Des documents à utiliser.</em></h2><p>Chaque procédure précise <strong>quand intervenir, qui décide, quelles étapes suivre, quoi vérifier et comment réagir à un imprévu</strong>. Les registres permettent de suivre la mission et ses exceptions. Une base à personnaliser, pas une règle universelle.</p></div>
  <div class="inventory">
-  <div class="inventory-head"><span>LE MANUEL / 15 PROCÉDURES</span><span>EXEMPLES DOCUMENTÉS</span></div>
+  <div class="inventory-head"><span>LE MANUEL / 15 PROCÉDURES</span><span>TROIS EXEMPLES CONCRETS</span></div>
   <a class="inventory-item" href="./exemple-procedure.html"><span class="index">P01</span><div><h3>Planifier une rotation entre deux séjours</h3><p>Prévoir l'intervention, confirmer sa prise en charge et attribuer le contrôle.</p></div><span class="arrow">↗</span></a>
   <div class="inventory-item"><span class="index">P05</span><div><h3>Vérifier qu'un logement est prêt</h3><p>Contrôler les points sensibles, consigner les écarts et demander une validation.</p></div><span class="arrow" aria-hidden="true">↗</span></div>
   <div class="inventory-item"><span class="index">P08</span><div><h3>Traiter un incident avant l'arrivée</h3><p>Alerter le bon responsable, décider des mesures et suivre la résolution.</p></div><span class="arrow" aria-hidden="true">↗</span></div>
-  <div class="inventory-item extra"><span class="index">+12</span><div><h3>Douze autres procédures du manuel pilote</h3><p>La liste complète et le contenu final seront confirmés après validation métier. Nous ne présentons pas ces brouillons comme des procédures certifiées.</p></div></div>
+  <div class="inventory-item extra"><span class="index">+12</span><div><h3>Douze autres procédures du manuel pilote</h3><p>Les autres fiches font partie du manuel pilote. Leur détail définitif sera publié après la relecture métier, avant toute ouverture des ventes.</p></div></div>
  </div>
  <div class="registries">
-  <div><p class="kicker dark">07 / MODÈLES DE SUIVI</p><h3>La procédure dit quoi faire.<br><em>Le registre garde la trace.</em></h3><p>Sept modèles de tableaux CSV sont prévus dans le pack. Ils servent de points de départ, pas de logiciel de gestion ni de stockage sécurisé de données sensibles.</p><a href="./exemple-procedure.html" class="text-cta">Voir une procédure en situation ↗</a></div>
+  <div><p class="kicker dark">07 / MODÈLES DE SUIVI</p><h3>La procédure dit quoi faire.<br><em>Le registre garde la trace.</em></h3><p>Sept tableaux CSV couvrent les informations qui se perdent entre deux rotations : logements, incidents, stocks et passations. À remplir dans un tableur compatible ; ne stockez pas de secrets d'accès dans un fichier partagé.</p><a href="./exemple-procedure.html" class="text-cta">Voir une procédure en situation ↗</a></div>
   <ol>
    <li><span>01</span> Fiches logements</li><li><span>02</span> Suivi des rotations</li><li><span>03</span> Journal des anomalies</li><li><span>04</span> Suivi des stocks</li><li><span>05</span> Passation d'équipe</li><li><span>06</span> Objets trouvés</li><li><span>07</span> Journal des versions</li>
   </ol>
@@ -75,16 +78,16 @@
 <section class="dark-section" id="usage">
  <div class="section-intro"><p class="kicker">03 / SUR LE TERRAIN</p><h2>Une méthode utile<br>se <em>met en place.</em></h2></div>
  <div class="steps">
-  <div><span class="step-count">01 / IDENTIFIER</span><h3>Choisissez le bon modèle.</h3><p>Commencez par la situation qui vous fait perdre le plus de clarté : une mission, un contrôle ou un incident.</p></div>
-  <div><span class="step-count">02 / PERSONNALISER</span><h3>Adaptez vos consignes.</h3><p>Renseignez vos rôles, vos logements, vos outils et les modalités prévues par vos contrats. Vérifiez les informations sensibles.</p></div>
-  <div><span class="step-count">03 / TRANSMETTRE</span><h3>Équipez les intervenants.</h3><p>Partagez la version adaptée, précisez qui décide et où conserver les confirmations et les statuts.</p></div>
+  <div><span class="step-count">01 / CHOISIR</span><h3>La bonne fiche.</h3><p>Mission à confirmer : P01. Logement à valider : P05. Incident bloquant : P08.</p></div>
+  <div><span class="step-count">02 / ADAPTER</span><h3>Vos règles, vos rôles.</h3><p>Modifiez le DOCX pour votre organisation : prestataire, créneaux, responsabilités et contrôles.</p></div>
+  <div><span class="step-count">03 / TRANSMETTRE</span><h3>Une trace, pas un doute.</h3><p>Partagez la fiche et utilisez le registre de suivi pour conserver les confirmations, les écarts et les décisions.</p></div>
  </div>
 </section>
 <section class="section audience" id="pour-qui">
  <div class="section-intro"><p class="kicker dark">04 / À QUI S'ADRESSE LE PACK ?</p><h2>Pour celles et ceux<br><em>qui coordonnent.</em></h2></div>
  <div class="audience-layout">
-  <div class="big-statement">Plusieurs logements.<br>Plusieurs intervenants.<br><em>Une méthode commune.</em></div>
-  <div><p>Le pack est pensé en priorité pour les petites conciergeries de location courte durée qui gèrent plusieurs biens et travaillent avec un ou plusieurs intervenants.</p><p>Il peut aider à formaliser les habitudes d'une équipe existante ou à préparer l'arrivée d'un nouveau prestataire. Il ne remplace ni vos contrats, ni un logiciel de réservation, ni le jugement d'un professionnel.</p></div>
+  <div class="big-statement">Des logements à préparer.<br>Des équipes à coordonner.<br><em>Des consignes à partager.</em></div>
+  <div><p>Conçu pour les responsables de petites conciergeries qui supervisent plusieurs logements et coordonnent des intervenants internes ou externes.</p><p>Utile si les consignes sont dispersées entre messages, appels et fichiers. Ce pack ne remplace ni un logiciel de réservation, ni vos contrats, ni les règles de sécurité propres à chaque logement.</p></div>
  </div>
 </section>
 <section class="section faq" id="questions">
@@ -99,7 +102,7 @@
  </div>
 </section>
 <section class="closing">
- <div><p class="kicker">LA PREUVE, AVANT LE DISCOURS</p><h2>Ne nous croyez pas<br><em>sur parole.</em></h2><p>Parcourez une vraie fiche pilote en sept étapes. Aucun compte requis, aucune réponse enregistrée. C'est la meilleure façon de juger si notre approche correspond à vos besoins.</p></div>
+ <div><p class="kicker">VOYEZ AVANT DE CHOISIR</p><h2>Essayez la fiche.<br><em>Décidez ensuite.</em></h2><p>La procédure P01 est consultable gratuitement, avec ses sept étapes et sa checklist. Parcourez-la et imprimez-la pour juger du niveau de détail avant la commercialisation du pack.</p></div>
  <div class="closing-actions"><a class="button button-light" href="./exemple-procedure.html">Tester gratuitement P01 <span>↗</span></a><a class="quiet-link" href="./atelier-decisions.html">Essayer trois décisions métier ↗</a><small>Pack 001 en validation · Pas de vente ouverte · Prix envisagé 49 €</small></div>
 </section>
 </main>
