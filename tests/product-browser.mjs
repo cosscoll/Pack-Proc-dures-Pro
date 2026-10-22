@@ -29,6 +29,7 @@ try{
   assert.equal(await page.locator('[data-preview="P05"]').getAttribute('aria-pressed'),'true');
   await page.locator('a[data-show-preview="P08"]').click();
   assert.equal(await page.locator('[data-preview="P08"]').getAttribute('aria-pressed'),'true');
+  await page.locator('[data-preview="P01"]').click();
   assert.equal(await page.locator('[data-preview="P01"]').getAttribute('aria-pressed'),'true');
   await page.locator('[data-preview="P05"]').click();
   assert.equal(await page.locator('[data-preview="P05"]').getAttribute('aria-pressed'),'true');
