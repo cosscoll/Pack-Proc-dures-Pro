@@ -1,0 +1,44 @@
+name: Contrôle HTTP du pack commercial — Business 01
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pack-conciergerie.html'
+      - 'assets/pack-conciergerie.css'
+      - 'index.html'
+      - '.github/workflows/verify-product-http.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  http-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier le HTML, les contenus et les liens
+        run: node --test tests/home.test.mjs
+      - name: Contrôler la vraie page du pack sur GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          for n in {1..24}; do
+            status=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' -o /tmp/pack.html -w '%{http_code}' "${base}pack-conciergerie.html?commit=${GITHUB_SHA}" || true)
+            css=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' -o /tmp/pack.css -w '%{http_code}' "${base}assets/pack-conciergerie.css?commit=${GITHUB_SHA}" || true)
+            home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' -o /tmp/home.html -w '%{http_code}' "${base}?commit=${GITHUB_SHA}" || true)
+            if [[ "$status" == 200 && "$css" == 200 && "$home" == 200 ]] &&
+               grep -Fq 'Les bonnes questions.' /tmp/pack.html &&
+               grep -Fq 'href="./exemple-procedure.html"' /tmp/pack.html &&
+               grep -Fq 'href="./pack-conciergerie.html"' /tmp/home.html &&
+               grep -Fq 'offre-commerciale-20261022-v23' /tmp/home.html; then
+              echo "PACK_HTTP_200_PUBLIC_OK"
+              exit 0
+            fi
+            sleep 8
+          done
+          echo "::error::Le pack commercial n'est pas accessible en HTTP public comme attendu"
+          exit 1
