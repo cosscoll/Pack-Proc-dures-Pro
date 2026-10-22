@@ -32,16 +32,18 @@ jobs:
         run: |
           set -euo pipefail
           url='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
-          for n in {1..18}; do
-            code=$(curl -L -sS --max-time 15 -o /tmp/public-cinematic.html -w '%{http_code}' "$url" || true)
+          expected=$(sed -n 's/.*name="site-revision" content="\([^"]*\)".*/\1/p' index.html | head -n 1)
+          test -n "$expected"
+          for n in {1..20}; do
+            code=$(curl -L -sS --max-time 20 -H 'Cache-Control: no-cache' -o /tmp/public-cinematic.html -w '%{http_code}' "${url}?ci=${GITHUB_SHA}" || true)
             if [[ "$code" == '200' ]] &&
                grep -q 'id="worldCanvas"' /tmp/public-cinematic.html &&
                grep -q 'id="depart"' /tmp/public-cinematic.html &&
-               grep -q 'assets/apartment-scene.js' /tmp/public-cinematic.html; then
-              echo 'PUBLIC_CINEMATIC_HTML_VERIFIED HTTP=200'
+               grep -Fq "name=\"site-revision\" content=\"$expected\"" /tmp/public-cinematic.html; then
+              echo "PUBLIC_CINEMATIC_COMMIT_VERIFIED revision=$expected HTTP=200"
               break
             fi
-            if [[ "$n" == '18' ]]; then echo '::error::La refonte cinématographique n’est pas encore en ligne';exit 1;fi
+            if [[ "$n" == '20' ]]; then echo '::error::La refonte cinématographique n’est pas encore en ligne';exit 1;fi
             sleep 10
           done
       - name: Tester les vrais interactions publiques bureau et mobile

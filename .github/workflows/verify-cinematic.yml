@@ -48,10 +48,12 @@ jobs:
         run: |
           set -euo pipefail
           base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          expected=$(sed -n 's/.*name="site-revision" content="\([^"]*\)".*/\1/p' index.html | head -n 1)
+          test -n "$expected"
           for n in {1..20}; do
-            html=$(curl -fLsS --max-time 20 "$base" || true)
-            if [[ "$html" == *'id="worldCanvas"'* ]] && [[ "$html" == *'id="depart"'* ]] && [[ "$html" == *'assets/apartment-scene.js'* ]]; then
-              echo 'CINEMATIC_PUBLIC_HTTP_VERIFIED'
+            html=$(curl -fLsS --max-time 20 -H 'Cache-Control: no-cache' "${base}?ci=${GITHUB_SHA}" || true)
+            if [[ "$html" == *'id="worldCanvas"'* ]] && [[ "$html" == *'id="depart"'* ]] && [[ "$html" == *"name=\"site-revision\" content=\"$expected\""* ]]; then
+              echo "CINEMATIC_PUBLIC_COMMIT_VERIFIED revision=$expected"
               break
             fi
             if [[ "$n" == 20 ]]; then echo "::error::La nouvelle expérience n'est pas servie en ligne";exit 1;fi
