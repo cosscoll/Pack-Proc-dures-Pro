@@ -303,3 +303,47 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .offer-intro>.offer-cta span{font-size:17px;flex-shrink:0}
  .offer-intro>.legal-note{font-size:10px!important;overflow-wrap:anywhere}
 }
+
+/* PACK / ÉDITION RELAIS
+   Lire à gauche quand l'objet se tient à droite, puis lire à droite après
+   sa traversée. Le trajet, la vitesse et la rotation WebGL restent intacts. */
+@media(min-width:1101px){
+ .offer-main{display:flex;flex-direction:column;width:100%;max-width:none;padding-top:115px;padding-bottom:70px}
+ .offer-intro{width:min(37vw,550px);max-width:100%;align-self:flex-start}
+ .offer-outline{width:min(38vw,570px);max-width:100%;align-self:flex-end;
+   margin:75svh 0 0;padding-top:22px}
+ .offer-bottom{width:min(38vw,570px);max-width:100%;margin:35svh 0 0 auto}
+}
+@media(min-width:741px) and (max-width:1100px){
+ .offer-main{display:flex;flex-direction:column;width:100%;max-width:none;padding-top:110px;padding-bottom:55px}
+ .offer-intro{width:29vw;max-width:100%;align-self:flex-start}
+ .offer-outline{width:33vw;max-width:100%;align-self:flex-end;margin:90svh 0 0}
+ .offer-line strong{font-size:clamp(30px,4.2vw,46px)}
+ .offer-bottom{width:33vw;max-width:100%;margin:30svh 0 0 auto}
+}
+@media(max-width:740px){
+ .offer-section{padding-left:19px;padding-right:19px;padding-bottom:70px}
+ .offer-top{width:calc(50vw - 32px);max-width:none;align-self:flex-start}
+ .offer-main{display:flex;flex-direction:column;align-items:stretch;width:100%;max-width:100%;
+   padding:85px 0 35px}
+ .offer-intro{width:calc(50vw - 34px);max-width:100%;min-width:0;align-self:flex-start}
+ .offer-intro h2{font-size:clamp(30px,7.6vw,49px);line-height:1.08}
+ .offer-intro>p:not(.eyebrow){font-size:13px;line-height:1.57}
+ .offer-intro>.offer-cta{width:100%;max-width:100%;padding:15px 8px;
+   font-size:9px;line-height:1.6;min-height:58px}
+ .offer-intro>.legal-note{max-width:calc(50vw - 58px);width:100%;font-size:9px!important;line-height:1.62!important}
+ .offer-outline{align-self:flex-end;width:calc(45vw - 10px);max-width:100%;
+   margin:110svh 0 0;padding-top:15px}
+ .offer-outline .outline-caption{font-size:9px;line-height:1.5}
+ .offer-line{grid-template-columns:19px minmax(0,1fr) 12px;gap:4px}
+ .offer-line strong{font-size:clamp(25px,6vw,40px);letter-spacing:-.04em}
+ .offer-line span{font-size:11px}
+ .offer-bottom{align-self:flex-end;width:calc(45vw - 10px);max-width:100%;margin:36svh 0 0}
+}
+@media(max-width:350px){
+ .offer-section{padding-left:14px;padding-right:14px}
+ .offer-top,.offer-intro{width:calc(50vw - 27px)}
+ .offer-intro>.legal-note{max-width:calc(50vw - 48px)}
+ .offer-outline,.offer-bottom{width:calc(45vw - 6px)}
+ .offer-line strong{font-size:23px}
+}
