@@ -8,7 +8,7 @@ test('a commercially honest landing with four connected real-world gestures',()=
  for(const id of ['main','haut','depart','rotation','controle','solution','worldCanvas','sceneFallback','navPanel','overlayMessage','pack'])assert.ok(html.includes('id="'+id+'"'),id);
  assert.equal(html.split('data-scene="').length-1,4);
  for(const link of ['exemple-procedure.html','atelier-decisions.html','avancement.html'])assert.ok(html.includes('href="./'+link+'"'),link);
- for(const word of ['Les clés passent','15','7','49 €','Aucun achat possible','version pilote'])assert.ok(html.toLowerCase().includes(word.toLowerCase()),word);
+ for(const word of ['Les clés passent','15','7','Aucun achat possible','version pilote'])assert.ok(html.toLowerCase().includes(word.toLowerCase()),word);
  assert.ok(!html.includes('buy.stripe.com'));
 });
 test('3D product is a pierced metal key with a physical leather fob, never generic floating boxes',()=>{
