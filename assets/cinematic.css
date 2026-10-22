@@ -347,3 +347,12 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .offer-outline,.offer-bottom{width:calc(45vw - 6px)}
  .offer-line strong{font-size:23px}
 }
+
+/* RELAIS D'ÉDITION : le premier discours se retire avant la traversée,
+   les quatre familles d'usages arrivent seulement une fois la clé à gauche. */
+@media(prefers-reduced-motion:no-preference){
+ #pack .offer-intro,#pack .offer-outline{transition:opacity .18s ease}
+}
+@media(prefers-reduced-motion:reduce){
+ #pack .offer-intro,#pack .offer-outline{opacity:1!important}
+}

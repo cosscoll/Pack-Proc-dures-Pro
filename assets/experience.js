@@ -75,6 +75,15 @@ function measure(){
  document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign').forEach(node=>{
   node.style.opacity=manifestoVisibility;
  });
+ // Acte III : pendant que la clé traverse le pack, le texte d'introduction
+ // s'efface puis les quatre usages apparaissent du côté libéré.
+ // Aucune instruction de repositionnement n'est envoyée à la scène 3D.
+ const introVisibility=(1-easing(5.18,5.40,progress)).toFixed(3);
+ const detailsVisibility=easing(5.58,5.78,progress).toFixed(3);
+ const intro=document.querySelector('#pack .offer-intro');
+ const detail=document.querySelector('#pack .offer-outline');
+ if(intro)intro.style.opacity=introVisibility;
+ if(detail)detail.style.opacity=detailsVisibility;
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
  const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
  const focal=innerHeight*.54;
