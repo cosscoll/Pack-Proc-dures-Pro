@@ -35,9 +35,9 @@ test('locked cinematic route and a functional no-JavaScript navigation',()=>{
 });
 
 test('the public pilot pack is discoverable without scrolling the full story',()=>{
- assert.ok(html.includes('class="header-pack" href="./pack-conciergerie.html"'));
+ assert.ok(html.includes('class="header-pack" href="#pack"'));
  assert.ok(html.includes('data-go="pack"'));
- assert.ok(html.includes('DÉCOUVRIR LE PACK'));
+ assert.ok(html.includes('LE PACK PILOTE'));
  assert.ok(ux.includes("selectRail(stage==='coffre'?5:stage==='pack'||stage==='footer'?4:active)"));
 });
 
