@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#151c1c">
 <meta name="description" content="15 procédures métier et 7 registres de suivi pour les conciergeries de location courte durée. Découvrez le contenu du premier pack pilote et testez une procédure gratuitement.">
-<meta name="robots" content="index,follow"><meta name="site-revision" content="offre-commerciale-20261022-v23">
+<meta name="robots" content="index,follow"><meta name="site-revision" content="coffre-cinematique-20261022-v24">
 <meta property="og:title" content="Pack Procédures Pro — Les clés passent. La méthode reste.">
 <meta property="og:description" content="Une boîte à outils conçue pour les rotations : 15 procédures, 7 registres, des consignes à adapter et un exemple gratuit. Pack pilote en pré-lancement.">
 <title>Les clés passent. La méthode reste. — Procédures Pro</title>
-<link rel="stylesheet" href="./assets/cinematic.css?v=passation-continu-20261022-v19">
-<script type="module" src="./assets/apartment-scene.js?v=rotation-fluide-20261022-v22"></script>
-<script defer src="./assets/experience.js?v=passation-continu-20261022-v19"></script>
+<link rel="stylesheet" href="./assets/cinematic.css?v=coffre-20261022-v24">
+<script type="module" src="./assets/apartment-scene.js?v=coffre-20261022-v24"></script>
+<script defer src="./assets/experience.js?v=coffre-20261022-v24"></script>
 </head>
 <body>
 <a class="skip" href="#main">Passer au contenu</a>
@@ -63,6 +63,7 @@
  <a href="#controle"><small>03</small><span>La vérification</span><b>↗</b></a>
  <a href="#solution"><small>04</small><span>Le relais</span><b>↗</b></a>
  <a href="#pack"><small>05</small><span>Le premier pack</span><b>↗</b></a>
+ <a href="#coffre"><small>06</small><span>Le coffre</span><b>↗</b></a>
  <div class="nav-extras"><a href="./pack-conciergerie.html">Découvrir le pack ↗</a><a href="./exemple-procedure.html">Procédure gratuite ↗</a><a href="./atelier-decisions.html">Atelier de décisions ↗</a><a href="./avancement.html">Avancement ↗</a></div>
  <p class="nav-note">UNE VERSION PILOTE, PAS ENCORE EN VENTE.</p>
 </nav>
@@ -72,6 +73,7 @@
  <button type="button" class="rail-item" data-go="controle"><span>03</span><b>Contrôler</b></button>
  <button type="button" class="rail-item" data-go="solution"><span>04</span><b>Transmettre</b></button>
  <button type="button" class="rail-item" data-go="pack"><span>05</span><b>Le pack pilote</b></button>
+ <button type="button" class="rail-item" data-go="coffre"><span>06</span><b>Le coffre</b></button>
 </div>
 <main id="main">
  <section class="chapter hero-chapter is-current" id="depart" data-scene="0">
@@ -146,6 +148,31 @@
  </section>
 </main>
 <footer class="footer"><a href="#depart" class="footer-brand">PROCÉDURES <em>PRO.</em></a><p>LE TRAVAIL BIEN TRANSMIS NE S'IMPROVISE PAS.</p><div><a href="./pack-conciergerie.html">LE PACK ↗</a><a href="./exemple-procedure.html">PROCÉDURE P01 ↗</a><a href="./avancement.html">AVANCEMENT ↗</a></div><small>© 2026 / VERSION PILOTE</small></footer>
+<section class="vault-finale" id="coffre" aria-label="Finale : la clé ouvre un coffre vide">
+ <div class="vault-finale__sticky">
+  <div class="vault-finale__head"><span>PASSATION / DERNIER GESTE</span><span>OBJET 002 — LE COFFRE</span></div>
+  <div class="vault-finale__copy">
+   <p class="vault-finale__eyebrow">LA CLÉ RENCONTRE SA SERRURE</p>
+   <h2>Chaque clé<br>ouvre <em>une suite.</em></h2>
+   <p>Au bout du parcours, la clé ouvre un coffre. Ce qu'il contiendra sera dévoilé plus tard.</p>
+   <span class="vault-finale__instruction">CONTINUEZ À DÉFILER POUR OUVRIR <span aria-hidden="true">↓</span></span>
+  </div>
+  <div id="vaultState" class="vault-finale__status" role="status" aria-live="polite">LE COFFRE EST FERMÉ</div>
+  <div class="vault-finale__fallback" aria-hidden="true">
+   <svg viewBox="0 0 380 280" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="vaultWood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#73563a"/><stop offset=".6" stop-color="#382c21"/><stop offset="1" stop-color="#1c211d"/></linearGradient></defs>
+    <ellipse cx="190" cy="255" rx="146" ry="19" fill="#090d0b" opacity=".4"/>
+    <path d="M62 106L190 74 318 106 308 235 68 235Z" fill="url(#vaultWood)" stroke="#c59c65" stroke-width="5"/>
+    <path d="M62 106L190 74 318 106 308 146 70 146Z" fill="#231d17" stroke="#ccab72" stroke-width="4"/>
+    <path d="M68 146L308 146" stroke="#c59c65" stroke-width="11"/>
+    <path d="M91 150V234M285 150V234" stroke="#9c7d52" stroke-width="12"/>
+    <path d="M162 141H216V188H162Z" fill="#a8814d" stroke="#e6c587" stroke-width="4"/>
+    <path d="M187 154V176" stroke="#191b16" stroke-width="8" stroke-linecap="round"/>
+   </svg>
+  </div>
+  <div class="vault-finale__end">COFFRE OUVERT / INTÉRIEUR VOLONTAIREMENT VIDE</div>
+ </div>
+</section>
 <div class="overlay-message" id="overlayMessage" role="dialog" aria-modal="true" aria-labelledby="overlayHeading" aria-describedby="overlayDetail" hidden>
  <div class="overlay-inner"><span id="overlayCategory">POINT DE CONTRÔLE / 001</span><button id="overlayClose" type="button" aria-label="Fermer la fenêtre">×</button><strong id="overlayHeading">À qui revient la décision ?</strong><p id="overlayDetail">Une étape est à vérifier.</p><a href="./exemple-procedure.html">VOIR LA PROCÉDURE ASSOCIÉE ↗</a></div>
 </div>

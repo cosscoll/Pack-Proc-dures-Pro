@@ -109,8 +109,88 @@ try{
  // Hover IDs are attached to real physical surfaces.
  const hitObjects=[bowMesh,blade,mark];
  const ray=new T.Raycaster(),mouse=new T.Vector2();
+
+ // Coffre de conciergerie : vrai volume creux avec panneau avant, dos, flancs,
+ // fond et couvercle articulé ; aucune illusion de simple image plaquée.
+ // Il n'apparaît qu'au dernier acte, après la septième pose originale.
+ const vaultChest=new T.Group();scene.add(vaultChest);
+ const chestShell=new T.Group();vaultChest.add(chestShell);
+ const woodCanvas=document.createElement('canvas');woodCanvas.width=512;woodCanvas.height=256;
+ const woodCtx=woodCanvas.getContext('2d');
+ const woodGrad=woodCtx.createLinearGradient(0,0,512,256);
+ woodGrad.addColorStop(0,'#8b6541');woodGrad.addColorStop(.45,'#563f2c');woodGrad.addColorStop(1,'#322820');
+ woodCtx.fillStyle=woodGrad;woodCtx.fillRect(0,0,512,256);
+ for(let i=0;i<85;i++){
+  const yy=i*3.2+Math.sin(i*1.7)*2;
+  woodCtx.beginPath();woodCtx.moveTo(0,yy);
+  for(let xx=0;xx<=512;xx+=12)woodCtx.lineTo(xx,yy+Math.sin(xx*.027+i*.42)*2);
+  woodCtx.strokeStyle=i%5===0?'#d7ac7055':'#1d160f52';woodCtx.lineWidth=i%4===0?1.8:.75;woodCtx.stroke();
+ }
+ const woodMap=new T.CanvasTexture(woodCanvas);woodMap.colorSpace=T.SRGBColorSpace;
+ woodMap.anisotropy=Math.min(renderer.capabilities.getMaxAnisotropy(),4);
+ const vaultWood=new T.MeshStandardMaterial({map:woodMap,color:0xdbb596,roughness:.82,metalness:.05});
+ const vaultInner=new T.MeshStandardMaterial({color:0x1b211b,roughness:.99,side:T.DoubleSide});
+ const vaultTrim=new T.MeshStandardMaterial({color:0xa07d53,metalness:.78,roughness:.27});
+ const vaultGold=new T.MeshPhysicalMaterial({color:0xe1bc7a,metalness:.86,roughness:.24,clearcoat:.65});
+ const vaultDark=new T.MeshStandardMaterial({color:0x161917,metalness:.43,roughness:.42});
+ function chestPart(w,h,d,x,y,z,material=vaultWood,parent=chestShell,name='chest-part'){
+  const m=attach(new T.BoxGeometry(w,h,d),material,parent,name);m.position.set(x,y,z);return m;
+ }
+ chestPart(3.20,.19,1.60,0,-1.22,0,vaultInner,chestShell,'empty-chest-floor');
+ chestPart(3.20,1.57,.16,0,-.44,.76,vaultWood,chestShell,'front-wood-panel');
+ chestPart(3.20,1.57,.16,0,-.44,-.76,vaultWood,chestShell,'rear-wood-panel');
+ for(const x of [-1.53,1.53])chestPart(.16,1.57,1.60,x,-.44,0,vaultWood,chestShell,'chest-side');
+ // Wooden slats, corner bands and visible rivets make the construction legible.
+ for(const y of [-1.10,-.22,.30]){
+  chestPart(3.35,.075,.10,0,y,.865,vaultTrim,chestShell,'bronze-front-rail');
+  chestPart(3.35,.075,.10,0,y,-.865,vaultTrim,chestShell,'bronze-rear-rail');
+ }
+ for(const x of [-1.57,1.57]){
+  chestPart(.11,1.63,.13,x,-.44,.89,vaultTrim,chestShell,'bronze-corner');
+  chestPart(.11,1.63,.13,x,-.44,-.89,vaultTrim,chestShell,'bronze-corner-back');
+ }
+ for(const x of [-1.42,1.42])for(const y of [-1.05,.23]){
+  const rivet=attach(new T.SphereGeometry(.05,12,8),vaultGold,chestShell,'chest-rivet');
+  rivet.position.set(x,y,.953);rivet.scale.z=.4;
+ }
+ // La serrure possède une entrée noire véritablement évidée dans la plaque.
+ const plateShape=new T.Shape();
+ plateShape.moveTo(-.32,-.42);plateShape.lineTo(.32,-.42);
+ plateShape.quadraticCurveTo(.39,-.42,.39,-.33);plateShape.lineTo(.39,.33);
+ plateShape.quadraticCurveTo(.39,.42,.3,.42);plateShape.lineTo(-.3,.42);
+ plateShape.quadraticCurveTo(-.39,.42,-.39,.33);plateShape.lineTo(-.39,-.33);
+ plateShape.quadraticCurveTo(-.39,-.42,-.32,-.42);
+ const entry=new T.Path();
+ entry.absarc(0,.09,.10,0,Math.PI*2,true);
+ entry.moveTo(-.062,.075);entry.lineTo(-.074,-.24);entry.lineTo(.074,-.24);entry.lineTo(.062,.075);
+ plateShape.holes.push(entry);
+ const lockPlate=attach(extrude(plateShape,.06,.017),vaultGold,chestShell,'real-keyhole-surround');
+ lockPlate.position.set(0,-.34,.97);
+ chestPart(.19,.40,.025,0,-.38,.978,vaultDark,chestShell,'keyhole-void');
+ const vaultLockRotor=new T.Group();vaultLockRotor.position.set(0,-.34,1.00);chestShell.add(vaultLockRotor);
+ const cylinder=attach(new T.TorusGeometry(.21,.047,9,46),vaultGold,vaultLockRotor,'lock-cylinder');
+ cylinder.position.z=.045;
+ const keySlot=attach(new T.BoxGeometry(.045,.29,.008),vaultDark,vaultLockRotor,'lock-slot');
+ keySlot.position.z=.063;
+ // Axe à l'arrière : le couvercle se soulève réellement, révélant un volume vide.
+ const vaultLid=new T.Group();vaultLid.position.set(0,.44,-.73);chestShell.add(vaultLid);
+ chestPart(3.40,.28,1.83,0,.07,.79,vaultWood,vaultLid,'hinged-lid');
+ chestPart(3.55,.085,.11,0,.10,1.73,vaultGold,vaultLid,'lid-front-trim');
+ chestPart(3.55,.08,.11,0,.10,-.10,vaultTrim,vaultLid,'lid-hinge-trim');
+ for(const x of [-1.60,1.60])chestPart(.11,.30,1.92,x,.07,.79,vaultTrim,vaultLid,'lid-side-band');
+ for(const x of [-1.12,1.12]){
+  const hinge=attach(new T.CylinderGeometry(.09,.09,.21,18),vaultDark,chestShell,'hinge');
+  hinge.rotation.z=Math.PI/2;hinge.position.set(x,.41,-.83);
+ }
+ chestPart(2.90,.025,1.45,0,-1.12,0,vaultInner,chestShell,'open-empty-interior');
+ vaultChest.position.set(1.20,-.24,-.26);
+ vaultChest.visible=false;
+ const vaultEasing=(a,b,v)=>{
+  const u=Math.max(0,Math.min(1,(v-a)/(b-a)));return u*u*(3-2*u);
+ };
+
  const pointer={x:0,y:0,hover:false};
- let actual=.0,last=0,lastTap=-Infinity;
+ let actual=.0,last=0,lastTap=-Infinity,targetVault=0,actualVault=0;
  const captions=[
   ['OBJET 01 / LA CLÉ','Un passage de relais.','Faites défiler : le geste raconte la procédure.'],
   ['GESTE 01 / CONFIRMER','Une mission doit être acceptée.','Le bon prestataire, le bon créneau.'],
@@ -191,26 +271,46 @@ try{
   const dt=Math.min(40,now-last||16);last=now;const ease=1-Math.pow(.89,dt/16);
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
+  actualVault=lerp(actualVault,targetVault,ease);
+  const v=actualVault;
+  const rise=vaultEasing(.03,.32,v),approach=vaultEasing(.13,.57,v);
+  const enter=vaultEasing(.48,.68,v),turn=vaultEasing(.66,.81,v),open=vaultEasing(.79,.985,v);
+  if(!compact){
+   vaultChest.visible=v>.012;
+   vaultChest.position.x=lerp(4.3,innerWidth<=740?.54:1.2,rise);
+   vaultChest.position.y=innerWidth<=740?.62:-.24;
+   vaultChest.scale.setScalar((innerWidth<=740?1.20:innerWidth<=1100?.83:1)*lerp(.78,1,rise));
+   vaultLid.rotation.x=-1.58*open;
+   vaultLockRotor.rotation.z=-.72*turn;
+  }
   const tapAge=now-lastTap;
   const tapTwist=tapAge>=0&&tapAge<1800?.15*Math.sin(Math.PI*tapAge/1800):0;
-  const hoverLift=pointer.hover?.06:0;
+  const hoverLift=pointer.hover&&v<.02?.06:0;
   // Proportions latérales prévues pour chaque format, indépendantes du texte.
   // Sur tablette, préserver le trajet complet sans faire sortir l'objet du cadre.
   const lateral=innerWidth>=1440?1:innerWidth>740?
    Math.max(.43,Math.min(1,.43+(innerWidth-768)*(.57/672))):.78;
-  group.position.set(lerp(group.position.x,compact?0:f.pos[0]*lateral,ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
+  // Après le parcours historique, la même clé rejoint une vraie entrée de serrure.
+  // L'orientation vers la serrure est une nouvelle pose uniquement après t=6.
+  const lockX=innerWidth<=740?.54:1.20;
+  const homeX=f.pos[0]*lateral,homeY=f.pos[1]+(innerWidth<700?1.2:0);
+  const lockY=innerWidth<=740?1.05:.31;
+  const targetX=compact?0:lerp(homeX,lockX,approach);
+  const targetY=compact?0:lerp(homeY,lockY,approach)+hoverLift;
+  const targetZ=compact?0:lerp(0,1.85,approach)-.19*enter;
+  group.position.set(lerp(group.position.x,targetX,ease),lerp(group.position.y,targetY,ease),lerp(group.position.z,targetZ,ease));
   group.rotation.set(
-   lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
-   lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+tapTwist,ease),
-   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.00055)*.014,ease)
+   lerp(group.rotation.x,lerp(f.rot[0]+(innerWidth>700?-pointer.y*.04:0),1.15,approach),ease),
+   lerp(group.rotation.y,lerp(f.rot[1]+(innerWidth>700?pointer.x*.16:0)+tapTwist,9.42,approach)+.79*turn,ease),
+   lerp(group.rotation.z,lerp(f.rot[2]+Math.sin(now*.00055)*.014,-.08,approach),ease)
   );
   // Deliberate mobile composition: product occupies the upper half, never covers the text.
-  const targetX=compact?0:(innerWidth<700?.03:f.cam[0]),targetY=compact?0:(innerWidth<700?.85:f.cam[1]);
-  camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
+  const camX=compact?0:(innerWidth<700?.03:f.cam[0]),camY=compact?0:(innerWidth<700?.85:f.cam[1]);
+  camera.position.x=lerp(camera.position.x,camX,ease);camera.position.y=lerp(camera.position.y,camY,ease);
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?0:0),0);
   const size=compact?1.04:(innerWidth>740&&innerWidth<1100?.78:innerWidth<=740?1.20:1.0);
-  group.scale.setScalar(lerp(group.scale.x,size,ease));
+  group.scale.setScalar(lerp(group.scale.x,compact?size:lerp(size,innerWidth<=740?.67:.60,approach),ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
   renderer.render(scene,camera);raf=requestAnimationFrame(draw);
@@ -218,13 +318,15 @@ try{
  function start(){if(running||motion.matches||document.hidden)return;running=true;last=0;raf=requestAnimationFrame(draw);}
  function stop(){running=false;cancelAnimationFrame(raf);}
  function setProgress(t){targetProgress=Math.max(0,Math.min(keyframes.length-1,Number(t)||0));}
+ function setVaultProgress(t){targetVault=compact?0:Math.max(0,Math.min(1,Number(t)||0));}
 if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress((keyframes.length-1)*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
  canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
- window.rotationScene={setChapter,setProgress,getKeyBounds,
+ window.rotationScene={setChapter,setProgress,setVaultProgress,getKeyBounds,
+  getVaultState:()=>({progress:actualVault,target:targetVault,open:Math.max(0,Math.min(1,-vaultLid.rotation.x/1.58)),lockTurn:-vaultLockRotor.rotation.z,chestVisible:vaultChest.visible}),
   getReferencePose:t=>{const f=mixFrames(t);return {rotationY:f.rot[1],x:f.pos[0]};},
   getMotionState:()=>({actual,target:targetProgress,keyframes:keyframes.length,initialFrames:4,placement:'scroll-storyboard',pos:group.position.x,rotation:group.rotation.y}),
   pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};

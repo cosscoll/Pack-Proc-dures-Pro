@@ -472,3 +472,45 @@ html,body{max-width:100%;overflow-x:clip}
  /* Sur mobile le panneau opaque protège le texte : pas de sticky dans le pack. */
  #pack .offer-intro,#pack .offer-outline{position:relative;top:auto}
 }
+
+/* Finale : le coffre devient le dernier geste. Aucun changement aux sections précédentes. */
+.vault-finale{position:relative;z-index:8;min-height:285svh;background:radial-gradient(ellipse 75% 70% at 70% 47%,#28352b 0%,#15231e 63%,#0b1411 100%);color:#ede7d8;pointer-events:auto}
+.vault-finale__sticky{position:sticky;top:0;height:100svh;min-height:620px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(94px,12vh,130px) clamp(25px,7vw,120px) 48px}
+.vault-finale__head{display:flex;gap:20px;justify-content:space-between;border-bottom:1px solid #b6ac8d61;padding-bottom:15px;max-width:100%;font:10px var(--mono);letter-spacing:.1em;color:#c2b79c}
+.vault-finale__copy{position:relative;z-index:2;max-width:min(37vw,530px);margin-top:auto;margin-bottom:auto}
+.vault-finale__eyebrow,.vault-finale__instruction,.vault-finale__status,.vault-finale__end{font:10px/1.65 var(--mono);letter-spacing:.1em}
+.vault-finale__eyebrow{color:#d7b789}
+.vault-finale h2{margin:25px 0;font:normal clamp(75px,6.5vw,122px)/.89 var(--serif);letter-spacing:-.05em}
+.vault-finale h2 em{font-weight:400;color:#ddb48b}
+.vault-finale__copy>p:not(.vault-finale__eyebrow){max-width:410px;font:16px/1.65 var(--sans);color:#d9ded0}
+.vault-finale__instruction{display:inline-block;margin-top:23px;color:#e7c698}
+.vault-finale__status{position:absolute;right:clamp(25px,7vw,120px);bottom:45px;z-index:3;color:#e3c89f;text-align:right}
+.vault-finale__end{position:absolute;right:clamp(25px,7vw,120px);top:clamp(165px,23vh,260px);max-width:250px;color:#ddc2a0;opacity:var(--vault-end-opacity,0);transition:opacity .15s ease;text-align:right}
+.vault-finale__fallback{display:none}
+#world[data-stage="coffre"] .world-label{opacity:0;pointer-events:none}
+@media(max-width:1100px) and (min-width:741px){
+ .vault-finale__copy{max-width:39vw}
+ .vault-finale h2{font-size:clamp(54px,6vw,85px)}
+ .vault-finale__copy>p:not(.vault-finale__eyebrow){font-size:14px}
+}
+@media(max-width:740px){
+ .vault-finale{min-height:285svh}
+ .vault-finale__sticky{min-height:550px;height:100svh;padding:clamp(345px,52svh,490px) 23px 40px;justify-content:flex-start}
+ .vault-finale__head{position:absolute;top:72px;left:23px;right:23px;gap:9px;font-size:8px;flex-wrap:wrap}
+ .vault-finale__copy{max-width:100%;margin:0}
+ .vault-finale h2{font-size:clamp(55px,11vw,82px);margin:8px 0 13px}
+ .vault-finale__eyebrow{font-size:9px}
+ .vault-finale__copy>p:not(.vault-finale__eyebrow){font-size:13px;line-height:1.5;max-width:420px}
+ .vault-finale__instruction{margin-top:12px;font-size:9px}
+ .vault-finale__status{bottom:17px;right:23px;left:23px;text-align:left;font-size:9px}
+ .vault-finale__end{top:120px;right:23px;max-width:180px;font-size:8px}
+}
+@media(max-width:360px){.vault-finale__sticky{padding-top:clamp(305px,50svh,410px)}.vault-finale h2{font-size:49px}}
+@media(prefers-reduced-motion:reduce){
+ .vault-finale{min-height:115svh}
+ .vault-finale__fallback{display:grid;place-items:center;position:absolute;inset:115px 0 auto;height:clamp(200px,34svh,350px);opacity:.9;pointer-events:none}
+ .vault-finale__fallback svg{height:100%;max-width:85%}
+ .vault-finale__end{opacity:1}
+ .vault-finale__instruction{display:none}
+}
+@media(prefers-reduced-motion:reduce) and (max-width:740px){.vault-finale{min-height:125svh}}

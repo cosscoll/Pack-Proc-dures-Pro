@@ -51,10 +51,14 @@ function measure(){
  // Aucun recalcul opportuniste de la pose: on suit uniquement la position du scroll.
  const interlude=document.querySelector('.interlude'),pack=document.querySelector('#pack'),footer=document.querySelector('.footer');
  const scrollEnd=Math.max(0,document.documentElement.scrollHeight-innerHeight);
+ const vault=document.getElementById("coffre");
+ const footerSection=document.querySelector(".footer");
+ const originalEnd=footerSection?Math.max(footerSection.offsetTop,footerSection.offsetTop+footerSection.offsetHeight-innerHeight):scrollEnd;
  const anchors=[
   ...chapters.map(ch=>ch.offsetTop),
   interlude?.offsetTop ?? last+innerHeight,
   pack?.offsetTop ?? last+innerHeight*2,
+  originalEnd,
   scrollEnd
  ];
  let progress=0;
@@ -63,7 +67,12 @@ function measure(){
   if(y>=a)progress=i+Math.min(1,Math.max(0,(y-a)/(b-a)));
  }
  if(y>=scrollEnd-2)progress=anchors.length-1;
- window.rotationScene?.setProgress(progress);
+ window.rotationScene?.setProgress(Math.min(6,progress));
+ const vaultProgress=Math.max(0,Math.min(1,progress-6));
+ window.rotationScene?.setVaultProgress?.(vaultProgress);
+ const vaultState=document.getElementById("vaultState");
+ if(vaultState)vaultState.textContent=vaultProgress>.92?"LE COFFRE EST OUVERT":vaultProgress>.72?"LA SERRURE TOURNE":vaultProgress>.43?"LA CLÉ ENTRE DANS LA SERRURE":"LE COFFRE EST FERMÉ";
+ document.documentElement.style.setProperty("--vault-end-opacity",String(Math.max(0,Math.min(1,(vaultProgress-.86)*9))));
  // Le texte de l'interlude entre dans le champ lorsque la clé a atteint la gauche,
  // puis se retire doucement avant sa traversée vers la droite.
  const easing=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
@@ -92,7 +101,7 @@ function measure(){
   detail.inert=!mobileReadingBay&&!motion.matches&&Number(detailsVisibility)<.13;
  }
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
- const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
+ const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer'),document.querySelector('#coffre')].filter(Boolean);
  const focal=innerHeight*.54;
  let stage='depart';
  for(const part of route){
@@ -100,7 +109,7 @@ function measure(){
  }
  const footerRect=document.querySelector('.footer')?.getBoundingClientRect();
  if(footerRect&&footerRect.top<innerHeight*.83&&footerRect.bottom>innerHeight*.48)stage='footer';
- selectRail(stage==='pack'||stage==='footer'?4:active);
+ selectRail(stage==='coffre'?5:stage==='pack'||stage==='footer'?4:active);
  document.getElementById('world')?.setAttribute('data-stage',stage);
  // Le décor suit la clé existante : aucune consigne de repositionnement du modèle.
  scheduled=false;

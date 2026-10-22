@@ -28,3 +28,7 @@ Les pages et mises à jour de sprint doivent présenter uniquement des élément
 - La fiche expose les trois procédures pilotes documentées (P01, P05, P08), les sept registres, les formats prévus, des exemples d'usage, les limites et six réponses aux questions fréquentes.
 - Le parcours mène vers [la procédure gratuite P01](./exemple-procedure.html), pas vers un paiement fictif.
 - Prix de 49 € encore hypothétique ; validation métier, statut du vendeur, obligations et paiement à finaliser avant toute commercialisation.
+
+## Finale 3D — ouverture du coffre
+
+La fin de la page inclut un véritable coffre 3D creux : panneaux, serrure, couvercle sur charnières. Après la septième position historique de la clé, un huitième segment de scroll rapproche la clé de la serrure, la fait pivoter, puis soulève le couvercle. L'intérieur reste volontairement vide jusqu'à décision sur le produit mis en avant. Le scroll inverse referme la boîte et retire la clé. La version accessible sans WebGL conserve un coffre illustré et son texte explicatif.
