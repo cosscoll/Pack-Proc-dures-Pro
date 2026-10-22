@@ -282,3 +282,24 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .offer-intro h2{font-size:32px}
  .offer-line strong{font-size:22px}
 }
+
+/* Le CTA et sa note restent lisibles dans la colonne de gauche quand la clé
+   traverse le milieu du pack sur les écrans étroits. Aucun déplacement 3D. */
+@media(max-width:740px){
+ .offer-intro>.offer-cta,
+ .offer-intro>.legal-note{
+  width:100%;
+  max-width:calc(50vw - 38px);
+  min-width:0;
+ }
+ .offer-intro>.offer-cta{
+  gap:5px;
+  padding:15px 9px;
+  line-height:1.6;
+  min-height:58px;
+  word-break:normal;
+  overflow-wrap:anywhere;
+ }
+ .offer-intro>.offer-cta span{font-size:17px;flex-shrink:0}
+ .offer-intro>.legal-note{font-size:10px!important;overflow-wrap:anywhere}
+}
