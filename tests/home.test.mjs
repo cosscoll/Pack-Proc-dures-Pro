@@ -38,7 +38,7 @@ test('the public pilot pack is discoverable without scrolling the full story',()
  assert.ok(html.includes('class="header-pack" href="#pack"'));
  assert.ok(html.includes('data-go="pack"'));
  assert.ok(html.includes('LE PACK PILOTE'));
- assert.ok(ux.includes("selectRail(stage==='pack'||stage==='footer'?4:active)"));
+ assert.ok(ux.includes("selectRail(stage==='coffre'?5:stage==='pack'||stage==='footer'?4:active)"));
 });
 
 test('the key continues alternating across the complete site',()=>{
@@ -74,4 +74,13 @@ test('the store actually presents a product and an honest sales path',()=>{
  assert.ok(style.includes('prefers-reduced-motion:reduce'));
  assert.ok(!/stripe\.com|paypal\.com|type="email"|action=/.test(product),'do not offer checkout or collect leads before release');
  assert.ok(html.includes('worldCanvas'),'original cinematic scene retained');
+});
+
+test('the original route finishes in a real reversible 3D chest opening',()=>{
+ for(const snippet of ['id="coffre"','id="vaultState"','OBJET 002 — LE COFFRE','intérieur vide'])assert.ok(html.toLowerCase().includes(snippet.toLowerCase()),snippet);
+ for(const text of ['vaultChest','real-keyhole-surround','hinged-lid','empty-chest-floor','setVaultProgress','getVaultState','vaultLid.rotation.x=-1.58*open'])assert.ok(three.includes(text),text);
+ assert.ok(ux.includes('const originalEnd='),'legacy final key pose must keep its exact scroll anchor');
+ assert.ok(ux.includes('Math.min(6,progress)'),'old key choreography must stay clamped at step six');
+ assert.ok(ux.includes('setVaultProgress?.(vaultProgress)'),'finale is progressive and reversible');
+ assert.equal((three.match(/\\{rot:\\[/g)||[]).length,7,'all seven approved keyframes remain intact');
 });

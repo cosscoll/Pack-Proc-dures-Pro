@@ -15,7 +15,7 @@ try{
   assert.match(await page.locator('h1').innerText(),/Les clés passent/);
   assert.equal(await page.locator('.chapter[data-scene]').count(),4);
   assert.equal(await page.locator('#worldCanvas').count(),1);
-  assert.equal(await page.locator('.rail-item').count(),5,'all four steps and pack must be reachable');
+  assert.equal(await page.locator('.rail-item').count(),6,'five story stops and final chest must be reachable');
   assert.equal(await page.locator('.hero-chapter a[href="./exemple-procedure.html"]').isVisible(),true);
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world')?.dataset.engine),{timeout:30000});
   const engine=await page.locator('#world').getAttribute('data-engine');
@@ -100,7 +100,7 @@ try{
     await page.evaluate(({selector})=>{
       const el=document.querySelector(selector);
       const end=document.documentElement.scrollHeight-innerHeight;
-      scrollTo({top:selector==='.footer'?end:el.offsetTop,behavior:'instant'});
+      scrollTo({top:selector==='.footer'?Math.max(el.offsetTop,el.offsetTop+el.offsetHeight-innerHeight):el.offsetTop,behavior:'instant'});
     },{selector});
     await page.waitForTimeout(2000);
     const snap=await page.evaluate(()=>({
@@ -155,6 +155,19 @@ try{
     assert.equal(report.overlaps.length,0,'Text crosses the original key @'+width+' '+section+': '+JSON.stringify(report.overlaps));
     assert.ok(report.bounds.width>30&&report.bounds.height>50,'Key remains rendered '+section);
    }
+  }
+  // The unlocked chest is physically modeled; the same key travels into its lock.
+  if(width!==320){
+   await page.evaluate(()=>{scrollTo({top:document.documentElement.scrollHeight-innerHeight,behavior:'instant'});});
+   await page.waitForFunction(()=>window.rotationScene.getVaultState().open>.94,{timeout:13000});
+   const unlocked=await page.evaluate(()=>window.rotationScene.getVaultState());
+   assert.ok(unlocked.chestVisible&&unlocked.open>.94,'the chest lid must physically open at the end '+width+': '+JSON.stringify(unlocked));
+   assert.ok(unlocked.lockTurn>.66,'the key should turn in the lock');
+   await page.evaluate(()=>{const e=document.querySelector('.footer');scrollTo({top:Math.max(e.offsetTop,e.offsetTop+e.offsetHeight-innerHeight),behavior:'instant'});});
+   await page.waitForFunction(()=>window.rotationScene.getVaultState().open<.07,{timeout:13000});
+   const relocked=await page.evaluate(()=>window.rotationScene.getVaultState());
+   assert.ok(relocked.open<.07,'reverse scroll must close lid again');
+   console.log('VAULT_FINAL_PASS '+JSON.stringify({width,unlocked,relocked}));
   }
   // Balayage de vrais points de lecture : la page se compose autour d'une clé immuable.
   if(width!==320){
