@@ -47,14 +47,24 @@ function measure(){
  }
  setScene(found);
  const y=scrollY,first=chapters[0]?.offsetTop||0,last=chapters.at(-1)?.offsetTop||1;
+ // Même interpolation lente de départ, étendue aux trois séquences suivantes.
+ // Aucun recalcul opportuniste de la pose: on suit uniquement la position du scroll.
+ const interlude=document.querySelector('.interlude'),pack=document.querySelector('#pack'),footer=document.querySelector('.footer');
+ const scrollEnd=Math.max(0,document.documentElement.scrollHeight-innerHeight);
+ const anchors=[
+  ...chapters.map(ch=>ch.offsetTop),
+  interlude?.offsetTop ?? last+innerHeight,
+  pack?.offsetTop ?? last+innerHeight*2,
+  scrollEnd
+ ];
  let progress=0;
- for(let i=0;i<chapters.length-1;i++){
-  const a=chapters[i].offsetTop,b=chapters[i+1].offsetTop;
-  if(y>=a){progress=i+Math.min(1,Math.max(0,(y-a)/(b-a||1)));}
+ for(let i=0;i<anchors.length-1;i++){
+  const a=anchors[i],b=Math.max(a+1,anchors[i+1]);
+  if(y>=a)progress=i+Math.min(1,Math.max(0,(y-a)/(b-a)));
  }
- if(y>=last)progress=3;
+ if(y>=scrollEnd-2)progress=anchors.length-1;
  window.rotationScene?.setProgress(progress);
- // Le 3D suit la structure réelle, y compris le manifeste, le pack et le pied de page.
+ // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
  const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
  const focal=innerHeight*.54;
  let stage='depart';

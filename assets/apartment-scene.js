@@ -149,10 +149,15 @@ try{
   {rot:[-.10,-.34,-.19],pos:[1.43,.12,0],cam:[0,0,10.5]},
   {rot:[-.04,.56,.16],pos:[1.65,.08,0],cam:[-.2,.08,9.5]},
   {rot:[.13,1.65,-.12],pos:[-.95,.0,0],cam:[.5,0,9.45]},
-  {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]}
+  {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]},
+  // Le passage de relais continue sur tout le site, en alternant les deux bords
+  // avec une amplitude symétrique et une rotation toujours dans le même sens.
+  {rot:[-.11,4.93,-.08],pos:[-2.40,.03,0],cam:[0,0,10.2]},
+  {rot:[.09,6.55,.10],pos:[2.40,-.05,0],cam:[0,0,10.2]},
+  {rot:[-.09,8.21,-.09],pos:[-2.40,.03,0],cam:[0,0,10.2]}
  ];
  function mixFrames(t){
-  const k=Math.max(0,Math.min(2.999,t)),i=Math.floor(k),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
+  const k=Math.max(0,Math.min(keyframes.length-1,t)),i=Math.min(keyframes.length-2,Math.floor(k)),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
   return {rot:a.rot.map((x,j)=>lerp(x,b.rot[j],blend)),pos:a.pos.map((x,j)=>lerp(x,b.pos[j],blend)),cam:a.cam.map((x,j)=>lerp(x,b.cam[j],blend))};
  }
  function pulse(){lastTap=performance.now();keyTurn+=.45;window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
@@ -196,14 +201,14 @@ try{
  }
  function start(){if(running||motion.matches||document.hidden)return;running=true;last=0;raf=requestAnimationFrame(draw);}
  function stop(){running=false;cancelAnimationFrame(raf);}
- function setProgress(t){targetProgress=Math.max(0,Math.min(3,Number(t)||0));}
-if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress(3*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
+ function setProgress(t){targetProgress=Math.max(0,Math.min(keyframes.length-1,Number(t)||0));}
+if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentElement.scrollHeight-innerHeight);setProgress((keyframes.length-1)*scrollY/total);};addEventListener('scroll',updateCompanion,{passive:true});updateCompanion();}
  addEventListener('resize',resize,{passive:true});
  document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
  canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
- window.rotationScene={setChapter,setProgress,getKeyBounds,getMotionState:()=>({actual,target:targetProgress,keyframes:4,placement:'original-fixed'}),pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
+ window.rotationScene={setChapter,setProgress,getKeyBounds,getMotionState:()=>({actual,target:targetProgress,keyframes:keyframes.length,initialFrames:4,placement:'scroll-storyboard',pos:group.position.x,rotation:group.rotation.y}),pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
  setChapter(0);wrapper.dataset.motion='original-smooth';resize();renderer.render(scene,camera);
  wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';started=true;
  window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2',model:'key'}}));

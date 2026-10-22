@@ -73,8 +73,26 @@ try{
   if(width!==320){
    assert.equal(await page.locator('#world').getAttribute('data-motion'),'original-smooth');
    const timeline=await page.evaluate(()=>window.rotationScene?.getMotionState());
-   assert.equal(timeline.keyframes,4);
-   assert.equal(timeline.placement,'original-fixed');
+   assert.equal(timeline.keyframes,7);
+   assert.equal(timeline.placement,'scroll-storyboard');
+   const poseSamples=[];
+   for(const [selector,targetStep] of [['.interlude',4],['#pack',5],['.footer',6]]){
+    await page.locator(selector).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(2000);
+    const snap=await page.evaluate(()=>({
+      ...window.rotationScene.getMotionState(),
+      bounds:window.rotationScene.getKeyBounds()
+    }));
+    poseSamples.push({selector,targetStep,...snap});
+   }
+   for(let i=1;i<poseSamples.length;i++){
+    assert.ok(poseSamples[i].rotation>poseSamples[i-1].rotation+.5,'key must keep rotating '+JSON.stringify(poseSamples));
+    const sign=i===1?1:-1;
+    assert.ok((poseSamples[i].bounds.left+poseSamples[i].bounds.right-
+               poseSamples[i-1].bounds.left-poseSamples[i-1].bounds.right)*sign>25,
+               'key should alternate left/right '+JSON.stringify(poseSamples));
+   }
+   console.log('CONTINUOUS_KEY_CROSSING '+JSON.stringify({width,poses:poseSamples}));
    for(const [selector,section] of [['.interlude','manifeste'],['#pack','pack'],['.footer','footer']]){
     await page.locator(selector).scrollIntoViewIfNeeded();
     await page.waitForTimeout(1750);

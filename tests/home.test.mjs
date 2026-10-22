@@ -25,10 +25,10 @@ test('animation, responsive, accessible equivalent interactions',()=>{
 
 test('locked cinematic route and a functional no-JavaScript navigation',()=>{
  const frames=(three.match(/\{rot:\[/g)||[]).length;
- assert.equal(frames,4,'the original four artistic poses cannot be added to or removed');
+ assert.equal(frames,7,'four original poses followed by 3 alternate-side poses');
  assert.match(three,/actual=lerp\(actual,targetProgress,ease\)/);
  assert.ok(!three.includes('findSafePose('),'3D must not chase layout text');
- assert.ok(!three.includes('setStage('),'the motion path cannot be changed section by section');
+ assert.ok(!three.includes('setStage('),'the motion path cannot be changed by obstacle detection');
  assert.ok(!html.includes('id="navPanel" inert'),'navigation cannot be inert if scripts fail');
  assert.match(html,/\.nav-panel\{position:relative!important/,'no-JS navigation should be visible');
  assert.ok(ux.includes('nav.inert=true'),'scripts should make the closed menu inert');
@@ -39,4 +39,13 @@ test('the public pilot pack is discoverable without scrolling the full story',()
  assert.ok(html.includes('data-go="pack"'));
  assert.ok(html.includes('LE PACK PILOTE'));
  assert.ok(ux.includes("selectRail(stage==='pack'||stage==='footer'?4:active)"));
+});
+
+test('the key continues alternating across the complete site',()=>{
+ assert.match(three,/pos:\[-2\.40,\.03,0\]/);
+ assert.match(three,/pos:\[2\.40,-\.05,0\]/);
+ assert.match(three,/rot:\[-\.09,8\.21,-\.09\]/);
+ assert.ok(ux.includes('scrollEnd'));
+ assert.ok(ux.includes('interlude?.offsetTop'));
+ assert.ok(ux.includes('pack?.offsetTop'));
 });
