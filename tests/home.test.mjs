@@ -25,7 +25,7 @@ test('animation, responsive, accessible equivalent interactions',()=>{
 
 test('locked cinematic route and a functional no-JavaScript navigation',()=>{
  const frames=(three.match(/\{rot:\[/g)||[]).length;
- assert.equal(frames,7,'four original poses followed by 3 alternate-side poses');
+ assert.equal(frames,7,'four opening scenes followed by three continued cross-screen poses');
  assert.match(three,/actual=lerp\(actual,targetProgress,ease\)/);
  assert.ok(!three.includes('findSafePose('),'3D must not chase layout text');
  assert.ok(!three.includes('setStage('),'the motion path cannot be changed by obstacle detection');
@@ -42,7 +42,7 @@ test('the public pilot pack is discoverable without scrolling the full story',()
 });
 
 test('the key continues alternating across the complete site',()=>{
- assert.match(three,/pos:\[-2\.40,\.03,0\]/);
+ assert.match(three,/pos:\[-2\.70,\.03,0\]/);
  assert.match(three,/pos:\[2\.40,-\.05,0\]/);
  assert.match(three,/rot:\[-\.09,8\.21,-\.09\]/);
  assert.ok(ux.includes('scrollEnd'));
