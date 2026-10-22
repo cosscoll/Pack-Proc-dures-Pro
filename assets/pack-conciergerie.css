@@ -96,3 +96,6 @@
 @media(max-width:760px){.catalogue-summary{grid-template-columns:45px minmax(0,1fr) 24px;gap:9px;padding:21px 9px}.catalogue-summary strong{font-size:clamp(28px,6vw,39px)}.catalogue-list{grid-template-columns:1fr}.catalogue-list li{padding:15px 0}.catalogue-list strong{font-size:27px}.inventory-after{font-size:10px}}
 @media(max-width:390px){.catalogue-summary{grid-template-columns:40px minmax(0,1fr) 20px}.catalogue-summary strong{font-size:28px}.catalogue-list strong{font-size:25px}.spec-strip>div:last-child strong{font-size:25px}}
 @media(prefers-reduced-motion:reduce){.catalogue-icon{transition:none}}
+
+/* Fluidité typographique vérifiée sur largeur mobile */
+@media(max-width:390px){.hero-copy h1{font-size:clamp(55px,15vw,64px);line-height:.91}.product-hero .hero-inner{padding-inline:20px}}
