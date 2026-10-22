@@ -1,0 +1,63 @@
+name: Recette commerciale du pack — Business 01
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pack-conciergerie.html'
+      - 'assets/pack-conciergerie.css'
+      - 'index.html'
+      - 'exemple-procedure.html'
+      - 'tests/product-browser.mjs'
+      - 'tests/home.test.mjs'
+      - '.github/workflows/verify-product.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  commerce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier le contenu produit et les liens
+        run: node --test tests/home.test.mjs
+      - name: Installer navigateur Chromium
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Recette locale de la page produit
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/product-server.log 2>&1 &
+          for n in {1..20}; do
+            if curl -fsS http://127.0.0.1:8787/pack-conciergerie.html >/dev/null; then break; fi
+            sleep 1
+          done
+          PRODUCT_BASE=http://127.0.0.1:8787/ node tests/product-browser.mjs
+      - name: Vérifier la même version en production
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://cosscoll.github.io/Pack-Proc-dures-Pro/'
+          expected=$(sed -n 's/.*name="site-revision" content="\([^"]*\)".*/\1/p' index.html | head -n1)
+          test -n "$expected"
+          for n in {1..20}; do
+            code=$(curl -fsSL -H 'Cache-Control: no-cache' -o /tmp/live-home.html -w '%{http_code}' "${base}?v=${GITHUB_SHA}" || true)
+            product=$(curl -fsSL -H 'Cache-Control: no-cache' -o /tmp/live-pack.html -w '%{http_code}' "${base}pack-conciergerie.html?v=${GITHUB_SHA}" || true)
+            if [[ "$code" == 200 && "$product" == 200 ]] && grep -Fq "name=\"site-revision\" content=\"$expected\"" /tmp/live-home.html && grep -Fq 'Les bonnes questions.' /tmp/live-pack.html; then
+              echo "PACK_COMMERCE_PUBLIC_OK revision=$expected"
+              break
+            fi
+            if [[ "$n" == 20 ]]; then echo '::error::Version commerciale non encore publiée'; exit 1; fi
+            sleep 10
+          done
+          PRODUCT_BASE="${base}?v=${GITHUB_SHA}" node tests/product-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captures-pack-commercial
+          path: screenshots/pack-conciergerie-*.png
+          if-no-files-found: ignore
+          retention-days: 7

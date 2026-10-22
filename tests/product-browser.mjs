@@ -1,0 +1,37 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {mkdirSync} from 'node:fs';
+const base=process.env.PRODUCT_BASE||'http://127.0.0.1:8787/';
+mkdirSync('screenshots',{recursive:true});
+const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+try{
+ for(const width of [1440,768,390,320]){
+  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:width===320?'reduce':'no-preference'});
+  const page=await context.newPage(),errors=[];
+  page.on('pageerror',error=>errors.push(String(error)));
+  const response=await page.goto(new URL('pack-conciergerie.html',base).toString(),{waitUntil:'domcontentloaded',timeout:35000});
+  assert.equal(response?.status(),200);
+  assert.match(await page.title(),/Pack conciergerie/);
+  assert.equal(await page.locator('main h1').count(),1);
+  assert.equal(await page.locator('.spec-strip>div').count(),4);
+  assert.equal(await page.locator('.registries li').count(),7);
+  assert.equal(await page.locator('.inventory-item').count(),4);
+  assert.equal(await page.locator('details').count(),6);
+  const sample=await page.locator('.hero-actions a[href="./exemple-procedure.html"]').count();
+  assert.equal(sample,1);
+  await page.locator('details').first().locator('summary').click();
+  assert.equal(await page.locator('details').first().getAttribute('open'),'');
+  assert.ok(await page.locator('details').first().locator('p').isVisible());
+  await page.locator('details').first().locator('summary').click();
+  assert.equal(await page.locator('details').first().getAttribute('open'),null);
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
+  assert.ok(overflow<=1,'Product page horizontal overflow '+width+': '+overflow);
+  assert.deepEqual(errors,[],'No browser errors at '+width);
+  const doc=await page.request.get(new URL('exemple-procedure.html',base).toString());
+  assert.equal(doc.status(),200,'Free procedure must remain available');
+  await page.screenshot({path:'screenshots/pack-conciergerie-'+width+'.png',animations:'disabled'});
+  console.log('PRODUCT_QA_OK '+JSON.stringify({width,overflow,faqs:6,registries:7,errors:errors.length}));
+  await context.close();
+ }
+ console.log('PRODUCT_QA_ACCEPTANCE_OK');
+}finally{await browser.close();}
