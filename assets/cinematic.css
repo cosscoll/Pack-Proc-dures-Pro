@@ -338,7 +338,7 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .offer-line{grid-template-columns:19px minmax(0,1fr) 12px;gap:4px}
  .offer-line strong{font-size:clamp(25px,6vw,40px);letter-spacing:-.04em}
  .offer-line span{font-size:11px}
- .offer-bottom{align-self:flex-end;width:calc(45vw - 10px);max-width:100%;margin:36svh 0 0}
+ .offer-bottom{width:calc(45vw - 10px);max-width:100%;margin:36svh 0 0 auto;display:flex;align-items:flex-start}
 }
 @media(max-width:350px){
  .offer-section{padding-left:14px;padding-right:14px}
