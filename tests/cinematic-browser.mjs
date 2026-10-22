@@ -145,6 +145,7 @@ try{
        }
        return {offenders,bounds};
      });
+     console.log('CONTINUOUS_KEY_TEXT_SWEEP '+JSON.stringify({width,sec,step,coverage}));
      assert.equal(coverage.offenders.length,0,'readable text should never cross the original 3D key '+width+' '+sec+' '+step+': '+JSON.stringify(coverage.offenders));
     }
    }

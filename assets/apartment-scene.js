@@ -148,13 +148,13 @@ try{
  const keyframes=[
   {rot:[-.10,-.34,-.19],pos:[1.43,.12,0],cam:[0,0,10.5]},
   {rot:[-.04,.56,.16],pos:[1.65,.08,0],cam:[-.2,.08,9.5]},
-  {rot:[.13,1.65,-.12],pos:[-.95,.0,0],cam:[.5,0,9.45]},
+  {rot:[.13,1.65,-.12],pos:[-2.55,.0,0],cam:[.5,0,9.45]},
   {rot:[-.15,3.25,.13],pos:[1.2,-.06,0],cam:[0,0,10.2]},
   // Le passage de relais continue sur tout le site, en alternant les deux bords
   // avec une amplitude symétrique et une rotation toujours dans le même sens.
-  {rot:[-.11,4.93,-.08],pos:[-2.40,.03,0],cam:[0,0,10.2]},
+  {rot:[-.11,4.93,-.08],pos:[-2.70,.03,0],cam:[0,0,10.2]},
   {rot:[.09,6.55,.10],pos:[2.40,-.05,0],cam:[0,0,10.2]},
-  {rot:[-.09,8.21,-.09],pos:[-2.40,.03,0],cam:[0,0,10.2]}
+  {rot:[-.09,8.21,-.09],pos:[-2.62,.03,0],cam:[0,0,10.2]}
  ];
  function mixFrames(t){
   const k=Math.max(0,Math.min(keyframes.length-1,t)),i=Math.min(keyframes.length-2,Math.floor(k)),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
