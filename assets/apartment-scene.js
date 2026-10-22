@@ -126,7 +126,7 @@ try{
  }
  const lerp=(a,b,t)=>a+(b-a)*t;
  const stages=['depart','rotation','controle','solution','interlude','pack','footer'];
- let currentStage='depart',stageChanged=true,nextPose=null,lastScan=0;
+ let currentStage='depart',stageChanged=true,nextPose=null,lastScan=0,lastScanY=-1;
  let occupied=[];
  const positions={
   depart:[[.73,.48,1],[.78,.46,.78],[.82,.27,.54]],
@@ -272,10 +272,10 @@ try{
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?.25:0),0);
   camera.updateMatrixWorld(true);
-  if(!compact&&(stageChanged||now-lastScan>160)){
+  if(!compact&&(stageChanged||(Math.abs(scrollY-lastScanY)>3&&now-lastScan>145)||now-lastScan>2500)){
    occupied=textObstacles();
    nextPose=findSafePose(f);
-   lastScan=now;stageChanged=false;
+   lastScan=now;lastScanY=scrollY;stageChanged=false;
    wrapper.dataset.collisionFree=String(nextPose.score===0);
   }
   const target=compact?{x:.5,y:.5,scale:1.04}:nextPose||{x:.7,y:.5,scale:.8};
