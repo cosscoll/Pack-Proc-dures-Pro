@@ -15,4 +15,5 @@ function show(key){
  buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.preview===key)));
 }
 buttons.forEach(button=>button.addEventListener('click',()=>show(button.dataset.preview)));
+document.querySelectorAll('[data-show-preview]').forEach(link=>link.addEventListener('click',()=>show(link.dataset.showPreview)));
 })();

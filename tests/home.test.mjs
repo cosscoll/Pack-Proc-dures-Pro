@@ -68,7 +68,7 @@ test('continuous key rotation stays in the original seven poses and uses frame-i
 test('the store actually presents a product and an honest sales path',()=>{
  const product=read('pack-conciergerie.html'),style=read('assets/pack-conciergerie.css');
  assert.ok(html.includes('href="./pack-conciergerie.html"'));
- for(const word of ['15 procédures','7 registres','49 €','AUCUN ACHAT OUVERT','DOCX','PDF','CSV','P01','P05','P08','Fiches logements','Passation d\'équipe'])assert.ok(product.toLowerCase().includes(word.toLowerCase()),word);
+ for(const word of ['15 procédures','7 registres','49 €','ÉDITION PILOTE NON COMMERCIALISÉE','DOCX','PDF','CSV','P01','P05','P08','Fiches logements','Passation d\'équipe'])assert.ok(product.toLowerCase().includes(word.toLowerCase()),word);
  for(const link of ['./index.html','./exemple-procedure.html','./atelier-decisions.html'])assert.ok(product.includes('href="'+link+'"'),link);
  assert.equal((product.match(/<details>/g)||[]).length,6);
  assert.ok(style.includes('prefers-reduced-motion:reduce'));
@@ -87,3 +87,13 @@ test('the original route finishes in a real reversible 3D chest opening',()=>{
 });
 
 test('three pilot documents can be explored, without tracking or checkout',()=>{const page=read('pack-conciergerie.html'),js=read('assets/pack-demo.js');for(const id of ['P01','P05','P08']){assert.ok(page.includes('data-preview="'+id+'"'));assert.ok(js.includes(id+':{'))}assert.ok(page.includes('Tester la procédure gratuite'));assert.ok(!js.includes('fetch(')&&!js.includes('localStorage'))});
+
+test('full catalogue comes from the actual fifteen-draft manual',()=>{
+ const page=read('pack-conciergerie.html');
+ for(let i=2;i<=15;i++){const code='P'+String(i).padStart(2,'0');assert.ok(page.includes('>'+code+'</span>')||page.includes('data-preview="'+code+'"'),code)}
+ assert.ok(page.includes('id="sommaire-complet"'));
+ assert.ok(page.includes('Surveiller les changements de réservations'));
+ assert.ok(page.includes('Faire le bilan mensuel des rotations'));
+ assert.ok(page.includes('brouillons'));
+ assert.ok(page.includes('data-show-preview="P05"')&&page.includes('data-show-preview="P08"'));
+});
