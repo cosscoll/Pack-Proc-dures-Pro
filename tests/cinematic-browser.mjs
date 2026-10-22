@@ -25,6 +25,26 @@ try{
    const scene=await page.evaluate(()=>({model:window.rotationScene?.model,hotspots:window.rotationScene?.hotspots}));
    assert.equal(scene.model,'machined-key-and-leather-fob');
    assert.ok(scene.hotspots>0);
+   // Angular speed must remain smooth across every chapter boundary in both directions.
+   const trajectory=await page.evaluate(()=>{
+     const pose=t=>window.rotationScene.getReferencePose(t);
+     const pivots=[1,2,3,4,5].map(i=>{
+       const h=.001,left=(pose(i).rotationY-pose(i-h).rotationY)/h;
+       const right=(pose(i+h).rotationY-pose(i).rotationY)/h;
+       return {i,left,right};
+     });
+     const angles=Array.from({length:121},(_,i)=>pose(i*.05).rotationY);
+     const positions=[0,1,2,3,4,5,6].map(i=>pose(i).x);
+     return {pivots,angles,positions};
+   });
+   for(const {i,left,right} of trajectory.pivots){
+     assert.ok(left>.5&&right>.5,'key should not pause rotation at pose '+i);
+     assert.ok(Math.abs(left-right)<.04,'key turn should be smooth at pose '+i);
+   }
+   for(let i=1;i<trajectory.angles.length;i++)
+     assert.ok(trajectory.angles[i]>trajectory.angles[i-1],'key must keep rotating forward without jumping');
+   assert.deepEqual(trajectory.positions.map(x=>Number(x.toFixed(2))),[1.43,1.65,-2.55,1.2,-2.7,2.4,-2.62],
+     'validated left/right route cannot change');
   }
   await page.locator('#menuToggle').click();
   assert.equal(await page.locator('#menuToggle').getAttribute('aria-expanded'),'true');

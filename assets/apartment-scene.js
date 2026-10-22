@@ -110,7 +110,7 @@ try{
  const hitObjects=[bowMesh,blade,mark];
  const ray=new T.Raycaster(),mouse=new T.Vector2();
  const pointer={x:0,y:0,hover:false};
- let actual=.0,last=0,keyTurn=0,lastTap=0;
+ let actual=.0,last=0,lastTap=-Infinity;
  const captions=[
   ['OBJET 01 / LA CLÉ','Un passage de relais.','Faites défiler : le geste raconte la procédure.'],
   ['GESTE 01 / CONFIRMER','Une mission doit être acceptée.','Le bon prestataire, le bon créneau.'],
@@ -156,11 +156,22 @@ try{
   {rot:[.09,6.55,.10],pos:[2.40,-.05,0],cam:[0,0,10.2]},
   {rot:[-.09,8.21,-.09],pos:[-2.62,.03,0],cam:[0,0,10.2]}
  ];
+ // Translation still eases gently into each edge; those turnaround points are intentional.
+ // The Y rotation, however, must NEVER stop at a chapter boundary: use a
+ // monotone cubic Hermite curve with matching tangents across all seven poses.
+ // This preserves every validated keyframe and all left/right travel distances.
  function mixFrames(t){
   const k=Math.max(0,Math.min(keyframes.length-1,t)),i=Math.min(keyframes.length-2,Math.floor(k)),u=k-i,blend=u*u*(3-2*u),a=keyframes[i],b=keyframes[i+1];
-  return {rot:a.rot.map((x,j)=>lerp(x,b.rot[j],blend)),pos:a.pos.map((x,j)=>lerp(x,b.pos[j],blend)),cam:a.cam.map((x,j)=>lerp(x,b.cam[j],blend))};
+  const prev=keyframes[Math.max(0,i-1)].rot[1],next=keyframes[Math.min(keyframes.length-1,i+2)].rot[1];
+  const d0=i===0?b.rot[1]-a.rot[1]:(b.rot[1]-prev)*.5;
+  const d1=i===keyframes.length-2?b.rot[1]-a.rot[1]:(next-a.rot[1])*.5;
+  const u2=u*u,u3=u2*u;
+  const yaw=(2*u3-3*u2+1)*a.rot[1]+(u3-2*u2+u)*d0+(-2*u3+3*u2)*b.rot[1]+(u3-u2)*d1;
+  const rot=a.rot.map((x,j)=>j===1?yaw:lerp(x,b.rot[j],blend));
+  return {rot,pos:a.pos.map((x,j)=>lerp(x,b.pos[j],blend)),cam:a.cam.map((x,j)=>lerp(x,b.cam[j],blend))};
  }
- function pulse(){lastTap=performance.now();keyTurn+=.45;window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
+ // The click is now a slow, bounded response rather than a frame-rate-dependent jerk.
+ function pulse(){lastTap=performance.now();window.dispatchEvent(new CustomEvent('rotation:hotspot',{detail:{id:'key',label:'La clé passe, la responsabilité aussi',description:'La remise des clés ne clôt pas la rotation : la prestation doit être attribuée, contrôlée et transmise.'}}));}
  function handlePointer(e){
   if(e.pointerType==='touch')return;
   pointer.x=(e.clientX/innerWidth-.5)*2;pointer.y=(e.clientY/innerHeight-.5)*2;
@@ -180,6 +191,8 @@ try{
   const dt=Math.min(40,now-last||16);last=now;const ease=1-Math.pow(.89,dt/16);
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
+  const tapAge=now-lastTap;
+  const tapTwist=tapAge>=0&&tapAge<1800?.15*Math.sin(Math.PI*tapAge/1800):0;
   const hoverLift=pointer.hover?.06:0;
   // Proportions latérales prévues pour chaque format, indépendantes du texte.
   // Sur tablette, préserver le trajet complet sans faire sortir l'objet du cadre.
@@ -188,10 +201,9 @@ try{
   group.position.set(lerp(group.position.x,compact?0:f.pos[0]*lateral,ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
-   lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
-   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.0007)*.025,ease)
+   lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+tapTwist,ease),
+   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.00055)*.014,ease)
   );
-  keyTurn*=.94;
   // Deliberate mobile composition: product occupies the upper half, never covers the text.
   const targetX=compact?0:(innerWidth<700?.03:f.cam[0]),targetY=compact?0:(innerWidth<700?.85:f.cam[1]);
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
@@ -212,7 +224,10 @@ if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentE
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
  canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
- window.rotationScene={setChapter,setProgress,getKeyBounds,getMotionState:()=>({actual,target:targetProgress,keyframes:keyframes.length,initialFrames:4,placement:'scroll-storyboard',pos:group.position.x,rotation:group.rotation.y}),pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
+ window.rotationScene={setChapter,setProgress,getKeyBounds,
+  getReferencePose:t=>{const f=mixFrames(t);return {rotationY:f.rot[1],x:f.pos[0]};},
+  getMotionState:()=>({actual,target:targetProgress,keyframes:keyframes.length,initialFrames:4,placement:'scroll-storyboard',pos:group.position.x,rotation:group.rotation.y}),
+  pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
  setChapter(0);wrapper.dataset.motion='original-smooth';resize();renderer.render(scene,camera);
  wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';started=true;
  window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2',model:'key'}}));

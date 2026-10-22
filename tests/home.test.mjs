@@ -55,3 +55,12 @@ test('scroll hand-off disables tabbing to currently invisible offers',()=>{
  assert.ok(ux.includes('detail.inert='));
  assert.ok(ux.includes('!motion.matches'));
 });
+
+test('continuous key rotation stays in the original seven poses and uses frame-independent click easing',()=>{
+ assert.match(three,/monotone cubic Hermite/);
+ assert.match(three,/const yaw=\(2\*u3-3\*u2\+1\)/);
+ assert.ok(!three.includes('keyTurn*=.94'), 'click must not depend on frame rate');
+ assert.match(three,/tapAge<1800/);
+ assert.match(three,/getReferencePose/);
+ assert.equal((three.match(/\{rot:\[/g)||[]).length,7);
+});
