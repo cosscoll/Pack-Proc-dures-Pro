@@ -66,13 +66,13 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
   .interlude p{max-width:34vw;width:34vw;font-size:clamp(39px,4.9vw,60px)}
   .interlude-top{width:35vw}
   .offer-section{padding-inline:27px}
-  .offer-main{width:35vw;padding:100px 0 95px}
+  .offer-main{width:29vw;padding:100px 0 95px}
   .offer-intro h2{font-size:clamp(53px,6.35vw,77px)}
-  .offer-intro .offer-stats{gap:12px}
+  .offer-intro .offer-stats{gap:12px;flex-direction:column;align-items:flex-start}
   .offer-stats strong{font-size:57px}
   .offer-stats span{font-size:10px}
-  .offer-line strong{font-size:clamp(40px,5.6vw,60px)}
-  .footer{grid-template-columns:minmax(0,1fr);padding-inline:27px 62vw}
+  .offer-line strong{font-size:clamp(29px,4vw,43px)}
+  .footer{grid-template-columns:minmax(0,1fr);padding-inline:27px 65vw}
 }
 @media(max-width:740px){
   /* Sur les petits écrans la clé garde sa caméra et son lent déplacement
