@@ -68,30 +68,33 @@ try{
       await sub.close();
     }
   }
-  // Au manifeste la clef doit se loger dans un espace vacant, pas dans les lettres.
+  // La clé suit strictement l'ancien trajet, sans keyframe ajouté ni routage automatique.
   if(width!==320){
-   for(const [selector,stage] of [['.interlude','interlude'],['#pack','pack'],['.footer','footer']]){
+   assert.equal(await page.locator('#world').getAttribute('data-motion'),'original-smooth');
+   const timeline=await page.evaluate(()=>window.rotationScene?.getMotionState());
+   assert.equal(timeline.keyframes,4);
+   assert.equal(timeline.placement,'original-fixed');
+   for(const [selector,section] of [['.interlude','manifeste'],['#pack','pack'],['.footer','footer']]){
     await page.locator(selector).scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1900);
-    const pos=await page.evaluate(()=>{
-     const scene=window.rotationScene,rect=scene?.getKeyBounds();
-     const stage=document.querySelector('#world')?.dataset.stage;
-     const obstacles=[];
-     for(const el of document.querySelectorAll('.interlude p,.offer-intro h2,.offer-intro p,.offer-line,.footer-brand,.footer p')){
-      if(!el.getClientRects().length)continue;
+    await page.waitForTimeout(1750);
+    const report=await page.evaluate(()=>{
+     const b=window.rotationScene.getKeyBounds();
+     const checks=[];
+     const selector='.interlude p,.interlude-top,.interlude-sign,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.footer-brand,.footer p,.footer div,.footer small';
+     for(const el of document.querySelectorAll(selector)){
       const range=document.createRange();range.selectNodeContents(el);
       for(const r of range.getClientRects()){
-       const ix=Math.max(0,Math.min(rect.right,r.right)-Math.max(rect.left,r.left));
-       const iy=Math.max(0,Math.min(rect.bottom,r.bottom)-Math.max(rect.top,r.top));
-       if(ix*iy>70)obstacles.push({text:el.textContent.trim().slice(0,22),area:Math.round(ix*iy)});
+       if(r.width<1||r.height<1||r.bottom<90||r.top>innerHeight-5)continue;
+       const w=Math.max(0,Math.min(b.right,r.right)-Math.max(b.left,r.left));
+       const h=Math.max(0,Math.min(b.bottom,r.bottom)-Math.max(b.top,r.top));
+       if(w*h>95)checks.push({element:el.tagName,area:Math.round(w*h),text:el.textContent.trim().slice(0,30)});
       }
      }
-     return {stage,bounds:rect,overlaps:obstacles,selected:document.querySelector('#world')?.dataset.collisionFree};
+     return {bounds:b,overlaps:checks,mode:window.rotationScene.getMotionState()};
     });
-    assert.equal(pos.stage,stage,'step tracking '+selector+': '+JSON.stringify(pos));
-    assert.equal(pos.overlaps.length,0,'key must not cover text at '+selector+': '+JSON.stringify(pos));
-    assert.ok(pos.bounds.width>35&&pos.bounds.height>50,'key must remain visible '+selector);
-    console.log('KEY_SAFE_ZONE_PASS '+JSON.stringify({width,stage,bounds:pos.bounds,selected:pos.selected}));
+    console.log('COMPOSITION_AROUND_ORIGINAL_KEY '+JSON.stringify({width,section,bounds:report.bounds,overlaps:report.overlaps}));
+    assert.equal(report.overlaps.length,0,'Text crosses the original key @'+width+' '+section+': '+JSON.stringify(report.overlaps));
+    assert.ok(report.bounds.width>30&&report.bounds.height>50,'Key remains rendered '+section);
    }
   }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);

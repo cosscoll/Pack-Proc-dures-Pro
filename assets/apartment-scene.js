@@ -125,114 +125,19 @@ try{
   if(a)a.textContent=labels[0];if(b)b.textContent=labels[1];if(c)c.textContent=labels[2];
  }
  const lerp=(a,b,t)=>a+(b-a)*t;
- const stages=['depart','rotation','controle','solution','interlude','pack','footer'];
- let currentStage='depart',stageChanged=true,nextPose=null,lastScan=0;
- let occupied=[];
- const positions={
-  depart:[[.73,.48,1],[.78,.46,.78],[.82,.27,.54]],
-  rotation:[[.73,.48,1],[.8,.45,.79],[.85,.30,.56]],
-  controle:[[.38,.51,1],[.32,.5,.82],[.24,.52,.56]],
-  solution:[[.72,.47,1],[.81,.36,.76],[.83,.25,.53]],
-  interlude:[[.87,.83,.36],[.88,.22,.33],[.87,.73,.29],[.13,.82,.28],[.89,.55,.21]],
-  pack:[[.87,.21,.39],[.87,.83,.38],[.81,.17,.33],[.14,.84,.31],[.89,.53,.28]],
-  footer:[[.88,.26,.36],[.86,.83,.34],[.15,.23,.30],[.84,.44,.28]]
- };
- const box=new T.Box3(),vec=new T.Vector3(),corner=new T.Vector3();
- function boundsOfObject(){
-  camera.updateMatrixWorld(true);group.updateMatrixWorld(true);box.setFromObject(group);
-  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;
-  for(let i=0;i<8;i++){
-   corner.set(i&1?box.max.x:box.min.x,i&2?box.max.y:box.min.y,i&4?box.max.z:box.min.z).project(camera);
-   const x=(corner.x+1)*viewWidth()/2,y=(1-corner.y)*viewHeight()/2;
-   left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+ // Measurement-only QA hook. No collision detector can change the choreography.
+ const renderBox=new T.Box3(),renderCorner=new T.Vector3();
+ function getKeyBounds(){
+  camera.updateMatrixWorld(true);group.updateMatrixWorld(true);renderBox.setFromObject(group);
+  const bounds={left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity};
+  for(let n=0;n<8;n++){
+   renderCorner.set(n&1?renderBox.max.x:renderBox.min.x,n&2?renderBox.max.y:renderBox.min.y,n&4?renderBox.max.z:renderBox.min.z).project(camera);
+   const x=(renderCorner.x+1)*viewWidth()/2,y=(1-renderCorner.y)*viewHeight()/2;
+   bounds.left=Math.min(bounds.left,x);bounds.top=Math.min(bounds.top,y);
+   bounds.right=Math.max(bounds.right,x);bounds.bottom=Math.max(bounds.bottom,y);
   }
-  return {left,top,right,bottom,width:right-left,height:bottom-top};
- }
- function worldPositionAt(x,y){
-  vec.set(x*2-1,1-y*2,.5).unproject(camera).sub(camera.position).normalize();
-  const d=-camera.position.z/vec.z;
-  return {x:camera.position.x+vec.x*d,y:camera.position.y+vec.y*d};
- }
- function textObstacles(){
-  const all=document.querySelectorAll('.chapter h1,.chapter h2,.chapter p,.chapter a,.chapter button,'+
-   '.interlude p,.interlude-top,.interlude-sign,.offer-top,.offer-bottom,'+
-   '.offer-intro h2,.offer-intro p,.offer-stats,.offer-cta,.offer-outline .outline-caption,'+
-   '.offer-line,.footer-brand,.footer p,.footer div,.footer small,'+
-   '.progress-rail,.world-label,.model-caption');
-  const out=[];
-  for(const el of all){
-   if(el.closest('[hidden]')||getComputedStyle(el).visibility==='hidden')continue;
-   const range=document.createRange();range.selectNodeContents(el);
-   const rectangles=el.matches('.progress-rail,.world-label,.model-caption,.offer-stats,.footer div')?[el.getBoundingClientRect()]:range.getClientRects();
-   for(const r of rectangles){
-    if(r.width<1||r.height<1||r.bottom<92||r.top>innerHeight-8)continue;
-    out.push({left:r.left-12,right:r.right+12,top:r.top-12,bottom:r.bottom+12});
-   }
-  }
-  return out;
- }
- function overlap(b,obstacles){
-  let cost=0;
-  // Going outside the viewport is never preferable to respecting an editorial margin.
-  if(b.left<16)cost+=(16-b.left)*1800;
-  if(b.right>viewWidth()-45)cost+=(b.right-viewWidth()+45)*1800;
-  if(b.top<100)cost+=(100-b.top)*1800;
-  if(b.bottom>viewHeight()-18)cost+=(b.bottom-viewHeight()+18)*1800;
-  for(const r of obstacles){
-   const w=Math.max(0,Math.min(b.right,r.right)-Math.max(b.left,r.left));
-   const h=Math.max(0,Math.min(b.bottom,r.bottom)-Math.max(b.top,r.top));
-   cost+=w*h;
-  }
-  return cost;
- }
- function findSafePose(frame){
-  if(compact)return {x:.5,y:.5,scale:1.04,score:0};
-  const regular=stages.indexOf(currentStage)<4, mobile=innerWidth<740;
-  let choices=positions[currentStage]||positions.depart;
-  if(regular){
-   const original=new T.Vector3(frame.pos[0],frame.pos[1]+(mobile?1.2:0),0).project(camera);
-   choices=[[(original.x+1)/2,(1-original.y)/2,mobile?.79:1],...choices];
-  }
-  const factors=regular?[1,.85,.70,.55,.39,.27,.20]:[1,.84,.67];
-  let best=null;
-  const oldPos=group.position.clone(),oldRot=group.rotation.clone(),oldScale=group.scale.x;
-  for(const factor of factors){
-   for(const [x,y,s] of choices){
-    const scale=s*factor,world=worldPositionAt(x,y);
-    group.position.set(world.x,world.y,0);
-    group.scale.setScalar(scale);
-    const turn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
-    group.rotation.set(frame.rot[0],frame.rot[1]+turn,frame.rot[2]);
-    const bounds=boundsOfObject(),score=overlap(bounds,occupied);
-    const candidate={x,y,scale,score};
-    if(!best||score<best.score-.01)best=candidate;
-    if(score===0){group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);return candidate;}
-   }
-  }
-  // Dernier recours : chercher une marge libre réelle au lieu de traverser le texte.
-  // L'ordre privilégie toujours les bords et les coins, jamais le centre du message.
-  if(best?.score>0){
-   const xs=[.85,.15,.75,.25,.62,.38];
-   const ys=[.18,.82,.34,.66,.49];
-   for(const scale of (innerWidth<740?[.27,.23,.19]:[.34,.29,.25,.21])){
-    for(const y of ys)for(const x of xs){
-     const world=worldPositionAt(x,y);
-     group.position.set(world.x,world.y,0);group.scale.setScalar(scale);
-     const turn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
-     group.rotation.set(frame.rot[0],frame.rot[1]+turn,frame.rot[2]);
-     const score=overlap(boundsOfObject(),occupied);
-     if(score<best.score)best={x,y,scale,score};
-     if(score===0){group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);return best;}
-    }
-   }
-  }
-  group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);
-  return best;
- }
- function setStage(name){
-  const desired=stages.includes(name)?name:'depart';
-  if(currentStage!==desired){currentStage=desired;stageChanged=true;}
-  wrapper.dataset.stage=currentStage;
+  bounds.width=bounds.right-bounds.left;bounds.height=bounds.bottom-bounds.top;
+  return bounds;
  }
 
  // A single continuous camera route: no scene swap, no teleport, reverse scroll works.
@@ -259,7 +164,7 @@ try{
  trigger?.addEventListener('click',pulse);
  function resize(){
   camera.aspect=viewWidth()/viewHeight();camera.fov=compact?39:(innerWidth<700?41:35);camera.updateProjectionMatrix();
-  renderer.setPixelRatio(dpr());renderer.setSize(viewWidth(),viewHeight(),false);stageChanged=true;
+  renderer.setPixelRatio(dpr());renderer.setSize(viewWidth(),viewHeight(),false);
  }
  function draw(now){
   if(!running)return;
@@ -267,30 +172,20 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
+  group.position.set(lerp(group.position.x,compact?0:(innerWidth<700?.05:f.pos[0]),ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
+  group.rotation.set(
+   lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
+   lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
+   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.0007)*.025,ease)
+  );
+  keyTurn*=.94;
+  // Deliberate mobile composition: product occupies the upper half, never covers the text.
   const targetX=compact?0:(innerWidth<700?.03:f.cam[0]),targetY=compact?0:(innerWidth<700?.85:f.cam[1]);
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?.25:0),0);
-  camera.updateMatrixWorld(true);
-  if(!compact&&(stageChanged||now-lastScan>160)){
-   occupied=textObstacles();
-   nextPose=findSafePose(f);
-   lastScan=now;stageChanged=false;
-   wrapper.dataset.collisionFree=String(nextPose.score===0);
-  }
-  const target=compact?{x:.5,y:.5,scale:1.04}:nextPose||{x:.7,y:.5,scale:.8};
-  const dest=worldPositionAt(target.x,target.y);
-  group.position.set(lerp(group.position.x,dest.x,ease),lerp(group.position.y,dest.y+hoverLift,ease),0);
-  const extraTurn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
-  group.rotation.set(
-   lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
-   lerp(group.rotation.y,f.rot[1]+extraTurn+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
-   lerp(group.rotation.z,f.rot[2]+Math.sin(now*.0007)*.025,ease)
-  );
-  keyTurn*=.94;
-  const shrink=target.scale<group.scale.x?Math.min(.78,ease*4):ease;
-  group.scale.setScalar(lerp(group.scale.x,target.scale,shrink));
-  if(!compact)wrapper.dataset.keyBounds=Object.values(boundsOfObject()).slice(0,4).map(Math.round).join(',');
+  const size=compact?1.04:(innerWidth<700?.79:1.0);
+  group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
   renderer.render(scene,camera);raf=requestAnimationFrame(draw);
@@ -304,8 +199,8 @@ if(compact){const updateCompanion=()=>{const total=Math.max(1,document.documentE
  motion.addEventListener?.('change',()=>{if(motion.matches){stop();fallbackOn('animations réduites');}else{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';start();}});
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();fallbackOn('contexte 3D perdu');});
  canvas.addEventListener('webglcontextrestored',()=>{wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';start();});
- window.rotationScene={setChapter,setProgress,setStage,getKeyBounds:boundsOfObject,pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
- setChapter(0);setStage('depart');resize();renderer.render(scene,camera);
+ window.rotationScene={setChapter,setProgress,getKeyBounds,getMotionState:()=>({actual,target:targetProgress,keyframes:4,placement:'original-fixed'}),pulse,engine:'webgl2',model:'machined-key-and-leather-fob',hotspots:3};
+ setChapter(0);wrapper.dataset.motion='original-smooth';resize();renderer.render(scene,camera);
  wrapper.dataset.engine='webgl2';wrapper.dataset.ready='true';fallback.style.opacity='0';started=true;
  window.dispatchEvent(new CustomEvent('rotation:ready',{detail:{engine:'webgl2',model:'key'}}));
  start();

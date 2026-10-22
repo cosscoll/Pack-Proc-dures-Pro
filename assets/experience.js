@@ -59,7 +59,7 @@ function measure(){
  const footerRect=document.querySelector('.footer')?.getBoundingClientRect();
  if(footerRect&&footerRect.top<innerHeight*.83&&footerRect.bottom>innerHeight*.48)stage='footer';
  document.getElementById('world')?.setAttribute('data-stage',stage);
- window.rotationScene?.setStage(stage);
+ // Le décor suit la clé existante : aucune consigne de repositionnement du modèle.
  scheduled=false;
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(measure);}}

@@ -38,9 +38,63 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .key-layer .world-fallback{opacity:1!important}
 }
 
-/* Tablette : laisser au produit une véritable marge négative dans le pack. */
-@media(min-width:741px) and (max-width:1000px){
- .offer-main{grid-template-columns:minmax(0,1fr);padding:100px clamp(160px,22vw,200px) 110px 0;gap:46px}
- .offer-intro h2{font-size:clamp(61px,8vw,83px)}
- .offer-outline{margin-top:20px}
+/* ÉDITION 001 — COMPOSITION AUTOUR DE LA CLÉ, JAMAIS L'INVERSE.
+   Les coordonnées et rotations du modèle sont inchangées. Ces colonnes
+   ménagent une vraie respiration à droite, aussi pendant la vente et le footer. */
+@media(min-width:741px){
+  .interlude{min-height:120svh;padding-top:60px;padding-bottom:74px;align-items:flex-start}
+  .interlude-top{width:min(48vw,730px);flex-wrap:wrap;gap:12px}
+  .interlude p{max-width:min(39vw,600px);width:39vw;font-size:clamp(50px,5.4vw,87px);line-height:1.03;
+    overflow-wrap:normal;word-break:normal;margin:52px 0 70px;letter-spacing:-.042em}
+  .interlude-sign{margin-top:auto;max-width:40vw}
+  .interlude:before{left:59%;opacity:.45}
+  .offer-section{padding-right:clamp(30px,7vw,125px)}
+  .offer-top{width:100%;padding-right:0}
+  .offer-main{display:block;width:51vw;max-width:780px;padding:clamp(80px,10vh,125px) 0 95px}
+  .offer-intro{width:100%;max-width:100%;min-width:0}
+  .offer-intro h2{max-width:100%;font-size:clamp(58px,6.2vw,110px)}
+  .offer-intro>p:not(.eyebrow){max-width:590px}
+  .offer-outline{max-width:100%;margin-top:80px}
+  .offer-line strong{font-size:clamp(45px,5.15vw,76px)}
+  .offer-stamp{margin:30px 0 0 auto}
+  .offer-bottom{max-width:53vw;padding-right:0}
+  .footer{min-height:320px;grid-template-columns:minmax(0,52vw);gap:28px;padding-right:41vw;align-content:center}
+  .footer>p,.footer small{text-align:left;justify-self:start}
+}
+@media(min-width:741px) and (max-width:1100px){
+  .interlude{min-height:140svh;padding:35px 28px 45px}
+  .interlude p{max-width:40vw;width:40vw;font-size:clamp(42px,5.5vw,63px)}
+  .interlude-top{width:44vw}
+  .offer-section{padding-inline:27px}
+  .offer-main{width:49vw;padding:100px 0 95px}
+  .offer-intro h2{font-size:clamp(53px,6.35vw,77px)}
+  .offer-intro .offer-stats{gap:12px}
+  .offer-stats strong{font-size:57px}
+  .offer-stats span{font-size:10px}
+  .offer-line strong{font-size:clamp(40px,5.6vw,60px)}
+  .footer{grid-template-columns:minmax(0,50vw);padding-inline:27px 44vw}
+}
+@media(max-width:740px){
+  /* Sur les petits écrans la clé garde sa caméra et son lent déplacement
+     au-dessus d'une zone de lecture dédiée, sans changer sa trajectoire. */
+  .interlude{min-height:150svh;padding:clamp(325px,52svh,500px) 24px 60px;justify-content:flex-start}
+  .interlude-top{width:100%}
+  .interlude p{max-width:100%;font-size:clamp(48px,10vw,67px);line-height:1.05;margin:42px 0}
+  .interlude-sign{margin-top:auto}
+  .offer-section{padding:clamp(350px,55svh,520px) 24px 44px}
+  .offer-main{display:block;width:100%;padding:52px 0 70px}
+  .offer-intro h2{font-size:clamp(63px,12vw,92px)}
+  .offer-outline{margin-top:80px}
+  .offer-top{flex-wrap:wrap}
+  .footer{min-height:120svh;padding:clamp(370px,56svh,520px) 24px 45px;
+     align-content:start;grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .interlude{padding-inline:19px;padding-top:clamp(310px,50svh,470px)}
+  .interlude p{font-size:clamp(43px,11vw,55px);line-height:1.08}
+  .offer-section{padding:clamp(325px,53svh,480px) 19px 40px}
+  .offer-main{padding:35px 0 60px}
+  .offer-outline{margin-top:70px}
+  .offer-line strong{font-size:clamp(42px,10.5vw,54px)}
+  .footer{padding:clamp(360px,55svh,500px) 19px 35px;min-height:115svh}
 }
