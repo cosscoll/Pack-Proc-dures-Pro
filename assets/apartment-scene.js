@@ -181,7 +181,11 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
-  group.position.set(lerp(group.position.x,compact?0:f.pos[0],ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
+  // Proportions latérales prévues pour chaque format, indépendantes du texte.
+  // Sur tablette, préserver le trajet complet sans faire sortir l'objet du cadre.
+  const lateral=innerWidth>=1440?1:innerWidth>740?
+   Math.max(.43,Math.min(1,.43+(innerWidth-768)*(.57/672))):.78;
+  group.position.set(lerp(group.position.x,compact?0:f.pos[0]*lateral,ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
@@ -193,7 +197,7 @@ try{
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?0:0),0);
-  const size=compact?1.04:(innerWidth<700?.79:1.0);
+  const size=compact?1.04:(innerWidth>740&&innerWidth<1100?.78:innerWidth<700?.79:1.0);
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
