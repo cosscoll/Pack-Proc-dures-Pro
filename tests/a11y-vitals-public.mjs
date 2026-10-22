@@ -24,6 +24,21 @@ try {
     overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth
   }));
   const details=outcome.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,targets:v.nodes.slice(0,30).map(n=>({target:n.target.join(' '),contrast:n.any.find(a=>a.id==='color-contrast')?.data?.contrastRatio||null,summary:n.failureSummary?.slice(0,170)}))}));
+  if(route===''&&(metrics.overflow>1||details.length)){
+   const diagnostics=await page.evaluate(()=>{
+    const width=document.documentElement.clientWidth;
+    const offenders=[...document.querySelectorAll('*')].map(el=>{
+      const r=el.getBoundingClientRect();
+      return {tag:el.tagName,cls:typeof el.className==='string'?el.className.slice(0,90):'',
+       text:el.innerText?.slice(0,36),x:Math.round(r.x),right:Math.round(r.right),width:Math.round(r.width),display:getComputedStyle(el).display};
+    }).filter(x=>x.right>width+2&&x.width>0).sort((a,b)=>b.right-a.right).slice(0,20);
+    const stats=document.querySelector('.offer-stats span');
+    return {width,scrollWidth:document.documentElement.scrollWidth,offenders,stage:document.querySelector('#world')?.dataset.stage,
+      readingBay:getComputedStyle(document.querySelector('.key-layer')).backgroundColor,
+      statsColor:stats?getComputedStyle(stats).color:null,statsRect:stats?.getBoundingClientRect().toJSON()};
+   });
+   console.log('A11Y_LAYOUT_DIAGNOSTICS '+JSON.stringify(diagnostics));
+  }
   console.log('A11Y_AUDIT_RESULT '+JSON.stringify({route:route||'index.html',http:response?.status(),metrics,errors,violations:details}));
   if(response?.status()!==200||errors.length||details.length||metrics.overflow>1)failures++;
   await page.close();await context.close();
