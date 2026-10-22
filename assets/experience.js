@@ -83,7 +83,12 @@ function measure(){
  // Le manifeste mobile doit libérer son couloir AVANT que la clé repasse au centre.
  const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,actualProgress);
  const mobileReadingBay=innerWidth<=740;
- const manifestoVisibility=mobileReadingBay?'1':Math.min(arrival,departure).toFixed(3);
+ // Les deux extrémités du déplacement (réelle ET demandée) doivent être
+ // dans le créneau dégagé. Cela évite qu'un saut de scroll rende le texte
+ // visible avant que la clé ait libéré sa travée.
+ const targetArrival=easing(3.87,4.06,progress);
+ const targetDeparture=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,progress);
+ const manifestoVisibility=mobileReadingBay?'1':Math.min(arrival,departure,targetArrival,targetDeparture).toFixed(3);
  document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
  document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign').forEach(node=>{
   node.style.opacity=manifestoVisibility;
