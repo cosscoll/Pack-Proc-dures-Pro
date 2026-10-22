@@ -37,3 +37,10 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .key-layer canvas{display:none!important;opacity:0!important}
  .key-layer .world-fallback{opacity:1!important}
 }
+
+/* Tablette : laisser au produit une véritable marge négative dans le pack. */
+@media(min-width:741px) and (max-width:1000px){
+ .offer-main{grid-template-columns:minmax(0,1fr);padding:100px clamp(160px,22vw,200px) 110px 0;gap:46px}
+ .offer-intro h2{font-size:clamp(61px,8vw,83px)}
+ .offer-outline{margin-top:20px}
+}

@@ -209,6 +209,23 @@ try{
     if(score===0){group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);return candidate;}
    }
   }
+  // Dernier recours : chercher une marge libre réelle au lieu de traverser le texte.
+  // L'ordre privilégie toujours les bords et les coins, jamais le centre du message.
+  if(best?.score>0){
+   const xs=[.85,.15,.75,.25,.62,.38];
+   const ys=[.18,.82,.34,.66,.49];
+   for(const scale of (innerWidth<740?[.27,.23,.19]:[.34,.29,.25,.21])){
+    for(const y of ys)for(const x of xs){
+     const world=worldPositionAt(x,y);
+     group.position.set(world.x,world.y,0);group.scale.setScalar(scale);
+     const turn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
+     group.rotation.set(frame.rot[0],frame.rot[1]+turn,frame.rot[2]);
+     const score=overlap(boundsOfObject(),occupied);
+     if(score<best.score)best={x,y,scale,score};
+     if(score===0){group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);return best;}
+    }
+   }
+  }
   group.position.copy(oldPos);group.rotation.copy(oldRot);group.scale.setScalar(oldScale);
   return best;
  }
