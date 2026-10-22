@@ -145,7 +145,7 @@ try{
          if(w*h>130)offenders.push({type:el.className||el.tagName,area:Math.round(w*h)});
         }
        }
-       return {offenders,bounds};
+       return {offenders,bounds,progress:window.rotationScene?.getMotionState()?.target,opacity:getComputedStyle(document.querySelector('.interlude p')).opacity};
      });
      console.log('CONTINUOUS_KEY_TEXT_SWEEP '+JSON.stringify({width,sec,step,coverage}));
      assert.equal(coverage.offenders.length,0,'readable text should never cross the original 3D key '+width+' '+sec+' '+step+': '+JSON.stringify(coverage.offenders));

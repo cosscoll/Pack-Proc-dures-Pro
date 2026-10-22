@@ -69,7 +69,11 @@ function measure(){
  const easing=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
  const arrival=easing(3.87,4.06,progress);
  const departure=1-easing(4.32,4.52,progress);
- document.documentElement.style.setProperty('--manifest-visibility',Math.min(arrival,departure).toFixed(3));
+ const manifestoVisibility=Math.min(arrival,departure).toFixed(3);
+ document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
+ document.querySelectorAll('.interlude-top,.interlude p').forEach(node=>{
+  node.style.opacity=manifestoVisibility;
+ });
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
  const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
  const focal=innerHeight*.54;
