@@ -176,6 +176,25 @@ try{
    await page.waitForTimeout(950);
    await page.screenshot({path:'screenshots/chest-open-'+width+'.png',animations:'disabled'});
   }
+  // La lecture doit rester dégagée même après un saut brusque depuis le coffre.
+  if(width!==320&&width>=741){
+   await page.evaluate(()=>{
+    const el=document.querySelector('#coffre');
+    scrollTo({top:el.offsetTop+el.offsetHeight-innerHeight,behavior:'instant'});
+   });
+   await page.waitForTimeout(420);
+   await page.evaluate(()=>{
+    const el=document.querySelector('.interlude');
+    scrollTo({top:el.offsetTop+el.offsetHeight*.43-innerHeight*.55,behavior:'instant'});
+   });
+   await page.waitForTimeout(250);
+   const check=await page.evaluate(()=>({
+    target:window.rotationScene.getMotionState().target,
+    actual:window.rotationScene.getMotionState().actual,
+    opacity:Number(getComputedStyle(document.querySelector('.interlude p')).opacity)
+   }));
+   assert.ok(check.opacity<.55,'text must remain hidden while the key catches up after an anchor jump: '+JSON.stringify(check));
+  }
   // Balayage de vrais points de lecture : la page se compose autour d'une clé immuable.
   if(width!==320){
    for(const sec of ['.interlude','#pack','.footer']){

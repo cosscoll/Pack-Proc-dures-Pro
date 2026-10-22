@@ -76,9 +76,12 @@ function measure(){
  // Le texte de l'interlude entre dans le champ lorsque la clé a atteint la gauche,
  // puis se retire doucement avant sa traversée vers la droite.
  const easing=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
- const arrival=easing(3.87,4.06,progress);
+ // Le texte épouse la position effectivement rendue par la clé lente, jamais
+ // la position cible du scroll (qui peut bondir lors d'un saut d'ancre).
+ const actualProgress=window.rotationScene?.getMotionState()?.actual??progress;
+ const arrival=easing(3.87,4.06,actualProgress);
  // Le manifeste mobile doit libérer son couloir AVANT que la clé repasse au centre.
- const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,progress);
+ const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,actualProgress);
  const mobileReadingBay=innerWidth<=740;
  const manifestoVisibility=mobileReadingBay?'1':Math.min(arrival,departure).toFixed(3);
  document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
@@ -113,6 +116,9 @@ function measure(){
  document.getElementById('world')?.setAttribute('data-stage',stage);
  // Le décor suit la clé existante : aucune consigne de repositionnement du modèle.
  scheduled=false;
+ // Continue à ajuster le texte pendant le rattrapage lent de la clé, même
+ // lorsqu'aucun nouvel évènement de scroll n'arrive (clic sur un lien d'ancre).
+ if(!motion.matches&&Math.abs(actualProgress-Math.min(6,progress))>.018)schedule();
 }
 function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(measure);}}
 addEventListener('scroll',schedule,{passive:true});
