@@ -518,3 +518,11 @@ html,body{max-width:100%;overflow-x:clip}
 /* Si le WebGL est indisponible, montrer le vrai sujet du final au lieu d'une zone vide. */
 .vault-fallback-mode .vault-finale__fallback{display:grid;place-items:center;position:absolute;inset:115px 0 auto;height:clamp(200px,34svh,350px);opacity:.96;pointer-events:none}
 .vault-fallback-mode .vault-finale__end{opacity:1}
+
+/* Audit commercial : CTA du pack accessible sur téléphone, sans altérer la 3D */
+.offer-stamp small{color:#55371f}
+.footer div a{display:inline-flex;align-items:center;min-height:32px}
+@media(max-width:1100px){.header-pack{display:inline-flex;font-size:9px}}
+@media(max-width:740px){.header-pack{display:inline-flex;font-size:9px}.header-actions{gap:12px}}
+@media(max-width:480px){.header-pack{display:inline-flex;font-size:9px;gap:4px}.header-pack span{font-size:16px}.header-actions{gap:9px}}
+@media(max-width:360px){.header-pack{font-size:8px}}
