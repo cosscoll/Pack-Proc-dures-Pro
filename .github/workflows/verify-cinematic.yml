@@ -41,6 +41,7 @@ jobs:
             if curl --fail --silent http://127.0.0.1:8787/ >/dev/null; then break; fi
             sleep 1
           done
+          node --test tests/home.test.mjs
           node tests/cinematic-browser.mjs
       - name: Contrôler après fusion le vrai site GitHub Pages
         if: github.event_name == 'push'

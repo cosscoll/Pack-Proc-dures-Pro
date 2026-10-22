@@ -97,6 +97,35 @@ try{
     assert.ok(report.bounds.width>30&&report.bounds.height>50,'Key remains rendered '+section);
    }
   }
+  // Balayage de vrais points de lecture : la page se compose autour d'une clé immuable.
+  if(width!==320){
+   for(const sec of ['.interlude','#pack','.footer']){
+    for(const step of [.12,.43,.75]){
+     await page.evaluate(({sec,step})=>{
+       const el=document.querySelector(sec),top=scrollY+el.getBoundingClientRect().top;
+       const target=top+el.offsetHeight*step-innerHeight*.55;
+       scrollTo({top:Math.min(document.documentElement.scrollHeight-innerHeight,Math.max(0,target)),behavior:'instant'});
+     },{sec,step});
+     await page.waitForTimeout(900);
+     const coverage=await page.evaluate(()=>{
+       const bounds=window.rotationScene?.getKeyBounds(),offenders=[];
+       const all=document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign,.offer-top,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.offer-bottom,.footer-brand,.footer p,.footer div,.footer small');
+       for(const el of all){
+        if(!el.getClientRects().length)continue;
+        const range=document.createRange();range.selectNodeContents(el);
+        for(const r of range.getClientRects()){
+         if(r.width<1||r.height<1||r.bottom<95||r.top>innerHeight-10)continue;
+         const w=Math.max(0,Math.min(bounds.right,r.right)-Math.max(bounds.left,r.left));
+         const h=Math.max(0,Math.min(bounds.bottom,r.bottom)-Math.max(bounds.top,r.top));
+         if(w*h>130)offenders.push({type:el.className||el.tagName,area:Math.round(w*h)});
+        }
+       }
+       return {offenders,bounds};
+     });
+     assert.equal(coverage.offenders.length,0,'readable text should never cross the original 3D key '+width+' '+sec+' '+step+': '+JSON.stringify(coverage.offenders));
+    }
+   }
+  }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'horizontal overflow '+width+' px: '+overflow);
   assert.deepEqual(errs,[],'uncaught browser exceptions');
@@ -105,4 +134,15 @@ try{
   await ctx.close();
  }
  console.log('PASSATION_QA_ACCEPTANCE_OK');
+ // Navigation still works when JavaScript is blocked (graceful degradation).
+ const context=await browser.newContext({viewport:{width:390,height:850},javaScriptEnabled:false});
+ const page=await context.newPage();
+ const res=await page.goto(base,{waitUntil:'domcontentloaded'});
+ assert.equal(res?.status(),200);
+ assert.equal(await page.locator('#navPanel').isVisible(),true);
+ assert.equal(await page.locator('#navPanel a[href="./exemple-procedure.html"]').isVisible(),true);
+ assert.equal(await page.locator('#menuToggle').isVisible(),false);
+ assert.equal(await page.locator('.world-fallback').isVisible(),true);
+ await context.close();
+ console.log('NO_JS_NAVIGATION_PASS');
 }finally{await browser.close();}

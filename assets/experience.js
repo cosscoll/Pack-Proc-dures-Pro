@@ -66,6 +66,7 @@ function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(measure)
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule,{passive:true});
 addEventListener('rotation:ready',schedule);
+nav.inert=true;
 measure();
 rails.forEach(button=>button.addEventListener('click',()=>{
  document.getElementById(button.dataset.go)?.scrollIntoView({behavior:motion.matches?'instant':'smooth',block:'start'});

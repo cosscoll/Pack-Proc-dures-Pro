@@ -22,3 +22,14 @@ test('animation, responsive, accessible equivalent interactions',()=>{
  assert.ok(html.includes('aria-live="polite"'));
  assert.ok(html.includes('aria-modal="true"'));
 });
+
+test('locked cinematic route and a functional no-JavaScript navigation',()=>{
+ const frames=(three.match(/\{rot:\[/g)||[]).length;
+ assert.equal(frames,4,'the original four artistic poses cannot be added to or removed');
+ assert.match(three,/actual=lerp\(actual,targetProgress,ease\)/);
+ assert.ok(!three.includes('findSafePose('),'3D must not chase layout text');
+ assert.ok(!three.includes('setStage('),'the motion path cannot be changed section by section');
+ assert.ok(!html.includes('id="navPanel" inert'),'navigation cannot be inert if scripts fail');
+ assert.match(html,/\.nav-panel\{position:relative!important/,'no-JS navigation should be visible');
+ assert.ok(ux.includes('nav.inert=true'),'scripts should make the closed menu inert');
+});
