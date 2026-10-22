@@ -356,3 +356,96 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
 @media(prefers-reduced-motion:reduce){
  #pack .offer-intro,#pack .offer-outline{opacity:1!important}
 }
+
+/* MOBILE / LECTURE + OBJET
+   Une scène fixe en haut de l'écran laisse défiler le texte à pleine largeur.
+   Les textes passent sous cette scène opaque sans être recouverts visuellement
+   par le modèle. La chorégraphie gauche-droite n'est pas modifiée. */
+@media(max-width:740px){
+ .key-layer{
+   position:fixed;
+   top:69px;right:0;left:0;bottom:auto;
+   width:100%;height:clamp(218px,28svh,252px);
+   background:#111c18;
+   border-bottom:1px solid rgba(143,149,134,.65);
+   box-shadow:0 12px 22px rgba(6,10,8,.11);
+   transition:background-color .25s ease;
+   z-index:17;
+   pointer-events:none;
+ }
+ .key-layer canvas{width:100%;height:100%;inset:0}
+ #world[data-stage="interlude"] + .key-layer{background-color:#655f54}
+ #world[data-stage="pack"] + .key-layer{background-color:#e8e3d7}
+ #world[data-stage="footer"] + .key-layer{background-color:#111c18}
+ .chapter,.interlude,.offer-section,.footer{scroll-margin-top:330px}
+ .interlude{
+   min-height:105svh;
+   padding:70px 20px 70px;
+   display:flex;
+   flex-direction:column;
+   justify-content:center;
+ }
+ .interlude-top,.interlude p,.interlude-sign{
+   width:100%;max-width:100%;margin-left:0;margin-right:0;
+ }
+ .interlude p{
+   margin:48px 0 62px;
+   font-size:clamp(44px,10vw,69px);
+   line-height:1.04;
+   overflow-wrap:normal;
+ }
+ .interlude-sign{margin-top:0}
+ .offer-section{
+   min-height:100svh;
+   padding:45px 20px 65px;
+ }
+ .offer-top{width:100%;max-width:100%;flex-direction:row;gap:13px;flex-wrap:wrap}
+ .offer-main{width:100%;display:flex;flex-direction:column;gap:0;padding:65px 0 40px}
+ .offer-intro,.offer-outline{align-self:stretch;width:100%;max-width:100%;margin-left:0;margin-right:0}
+ .offer-intro h2{font-size:clamp(58px,12vw,83px);line-height:.9}
+ .offer-intro>p:not(.eyebrow){font-size:16px;line-height:1.5;max-width:590px}
+ .offer-intro>.offer-cta{max-width:100%;width:100%;padding:18px 20px;min-height:56px;
+   font-size:11px;line-height:1.5}
+ .offer-intro>.legal-note{max-width:100%;width:100%;font-size:11px!important;line-height:1.65!important}
+ .offer-stats{display:flex;flex-direction:row;gap:20px}
+ .offer-outline{margin-top:65px;padding-top:22px}
+ .offer-outline .outline-caption{font-size:10px}
+ .offer-line{grid-template-columns:25px minmax(0,1fr) 22px;gap:12px}
+ .offer-line strong{font-size:clamp(47px,9vw,62px)}
+ .offer-line span{font-size:13px}
+ .offer-bottom{width:100%;max-width:100%;margin:55px 0 0;display:flex;
+   flex-direction:row;justify-content:space-between;align-items:center;gap:16px}
+ .footer{
+   min-height:75svh;
+   padding:90px 20px 65px;
+   display:flex;flex-direction:column;gap:24px;
+   align-items:flex-start;justify-content:center;
+ }
+ .footer-brand{font-size:clamp(52px,11vw,77px)}
+ .footer p{font-size:12px}
+ .footer div{display:flex;flex-direction:row;flex-wrap:wrap;gap:18px}
+ .footer small{align-self:flex-start}
+}
+@media(max-width:480px){
+ .interlude,.offer-section,.footer{padding-left:19px;padding-right:19px}
+ .offer-intro h2{font-size:clamp(55px,12.5vw,69px)}
+ .offer-line strong{font-size:clamp(42px,10vw,52px)}
+ .offer-stats strong{font-size:52px}
+ .footer-brand{font-size:clamp(48px,11vw,65px)}
+}
+@media(max-width:350px){
+ .offer-intro h2{font-size:51px}
+ .offer-line strong{font-size:40px}
+ .interlude p{font-size:43px}
+}
+/* DESKTOP / Le texte prend le relais sans un écran blanc de transition. */
+@media(min-width:1101px){
+ .interlude{min-height:190svh;padding-top:clamp(210px,24svh,310px)}
+ .offer-outline{width:min(29vw,430px);margin-top:20svh}
+ .offer-bottom{margin-top:14svh}
+}
+@media(min-width:741px) and (max-width:1100px){
+ .interlude{min-height:210svh;padding-top:clamp(250px,28svh,330px)}
+ .offer-outline{margin-top:24svh}
+ .offer-bottom{margin-top:12svh}
+}

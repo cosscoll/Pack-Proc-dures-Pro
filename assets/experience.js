@@ -70,7 +70,8 @@ function measure(){
  const arrival=easing(3.87,4.06,progress);
  // Le manifeste mobile doit libérer son couloir AVANT que la clé repasse au centre.
  const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,progress);
- const manifestoVisibility=Math.min(arrival,departure).toFixed(3);
+ const mobileReadingBay=innerWidth<=740;
+ const manifestoVisibility=mobileReadingBay?'1':Math.min(arrival,departure).toFixed(3);
  document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
  document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign').forEach(node=>{
   node.style.opacity=manifestoVisibility;
@@ -78,8 +79,8 @@ function measure(){
  // Acte III : pendant que la clé traverse le pack, le texte d'introduction
  // s'efface puis les quatre usages apparaissent du côté libéré.
  // Aucune instruction de repositionnement n'est envoyée à la scène 3D.
- const introVisibility=(1-easing(5.18,5.40,progress)).toFixed(3);
- const detailsVisibility=easing(5.58,5.78,progress).toFixed(3);
+ const introVisibility=mobileReadingBay?'1':(1-easing(5.28,5.49,progress)).toFixed(3);
+ const detailsVisibility=mobileReadingBay?'1':easing(innerWidth>=1101?5.46:5.59,innerWidth>=1101?5.58:5.73,progress).toFixed(3);
  const intro=document.querySelector('#pack .offer-intro');
  const detail=document.querySelector('#pack .offer-outline');
  if(intro)intro.style.opacity=introVisibility;

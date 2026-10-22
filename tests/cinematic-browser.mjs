@@ -102,6 +102,8 @@ try{
     await page.waitForTimeout(1750);
     const report=await page.evaluate(()=>{
      const b=window.rotationScene.getKeyBounds();
+     const readingBay=document.querySelector('#keyLayer').getBoundingClientRect();
+     const mobile=innerWidth<=740;
      const checks=[];
      const selector='.interlude p,.interlude-top,.interlude-sign,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.footer-brand,.footer p,.footer div,.footer small';
      for(const el of document.querySelectorAll(selector)){
@@ -115,7 +117,7 @@ try{
       for(const r of range.getClientRects()){
        if(r.width<1||r.height<1||r.bottom<90||r.top>innerHeight-5)continue;
        const w=Math.max(0,Math.min(b.right,r.right)-Math.max(b.left,r.left));
-       const h=Math.max(0,Math.min(b.bottom,r.bottom)-Math.max(b.top,r.top));
+       const h=Math.max(0,Math.min(b.bottom,r.bottom)-Math.max(b.top,r.top,mobile?readingBay.bottom:0));
        if(w*h>95)checks.push({element:el.tagName,area:Math.round(w*h),text:el.textContent.trim().slice(0,30)});
       }
      }
@@ -138,6 +140,17 @@ try{
      await page.waitForTimeout(900);
      const coverage=await page.evaluate(()=>{
        const bounds=window.rotationScene?.getKeyBounds(),offenders=[];
+       const bay=document.querySelector('#keyLayer');
+       const bayRect=bay.getBoundingClientRect();
+       const bayStyle=getComputedStyle(bay);
+       const onMobile=innerWidth<=740;
+       if(onMobile){
+        const bg=bayStyle.backgroundColor;
+        const match=bg.match(/rgba?\(([^)]+)\)/);
+        const alpha=match&&match[1].split(',')[3];
+        if(!match||alpha!==undefined&&Number(alpha)<.999)
+          throw new Error('Reading bay must be opaque: '+bg);
+       }
        const all=document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign,.offer-top,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.offer-bottom,.footer-brand,.footer p,.footer div,.footer small');
        for(const el of all){
         if(!el.getClientRects().length)continue;
@@ -150,8 +163,11 @@ try{
         const range=document.createRange();range.selectNodeContents(el);
         for(const r of range.getClientRects()){
          if(r.width<1||r.height<1||r.bottom<95||r.top>innerHeight-10)continue;
+         // Sur mobile, le contenu est réellement masqué par la scène opaque :
+         // seules les parties visibles sous son bord inférieur comptent.
+         if(onMobile&&r.top<bayRect.bottom&&r.bottom<=bayRect.bottom)continue;
          const w=Math.max(0,Math.min(bounds.right,r.right)-Math.max(bounds.left,r.left));
-         const h=Math.max(0,Math.min(bounds.bottom,r.bottom)-Math.max(bounds.top,r.top));
+         const h=Math.max(0,Math.min(bounds.bottom,r.bottom)-Math.max(bounds.top,r.top,onMobile?bayRect.bottom:0));
          if(w*h>130)offenders.push({type:el.className||el.tagName,area:Math.round(w*h)});
         }
        }
