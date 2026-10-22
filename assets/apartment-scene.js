@@ -295,7 +295,8 @@ try{
   // L'orientation vers la serrure est une nouvelle pose uniquement après t=6.
   const lockX=innerWidth<=740?.54:1.20;
   const homeX=f.pos[0]*lateral,homeY=f.pos[1]+(innerWidth<700?1.2:0);
-  const lockY=innerWidth<=740?1.05:.31;
+  // Aligner la pointe de la clé avec l'entrée réelle de la serrure.
+  const lockY=innerWidth<=740?.76:-.09;
   const targetX=compact?0:lerp(homeX,lockX,approach);
   const targetY=compact?0:lerp(homeY,lockY,approach)+hoverLift;
   const targetZ=compact?0:lerp(0,1.85,approach)-.19*enter;

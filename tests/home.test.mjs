@@ -77,7 +77,7 @@ test('the store actually presents a product and an honest sales path',()=>{
 });
 
 test('the original route finishes in a real reversible 3D chest opening',()=>{
- for(const snippet of ['id="coffre"','id="vaultState"','OBJET 002 — LE COFFRE','intérieur vide'])assert.ok(html.toLowerCase().includes(snippet.toLowerCase()),snippet);
+ for(const snippet of ['id="coffre"','id="vaultState"','OBJET 002 — LE COFFRE','VOLONTAIREMENT VIDE'])assert.ok(html.toLowerCase().includes(snippet.toLowerCase()),snippet);
  for(const text of ['vaultChest','real-keyhole-surround','hinged-lid','empty-chest-floor','setVaultProgress','getVaultState','vaultLid.rotation.x=-1.58*open'])assert.ok(three.includes(text),text);
  assert.ok(ux.includes('const originalEnd='),'legacy final key pose must keep its exact scroll anchor');
  assert.ok(ux.includes('Math.min(6,progress)'),'old key choreography must stay clamped at step six');
