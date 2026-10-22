@@ -72,7 +72,7 @@ function measure(){
  const departure=1-easing(innerWidth<=740?4.12:4.32,innerWidth<=740?4.24:4.52,progress);
  const manifestoVisibility=Math.min(arrival,departure).toFixed(3);
  document.documentElement.style.setProperty('--manifest-visibility',manifestoVisibility);
- document.querySelectorAll('.interlude-top,.interlude p').forEach(node=>{
+ document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign').forEach(node=>{
   node.style.opacity=manifestoVisibility;
  });
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
