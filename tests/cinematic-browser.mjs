@@ -91,7 +91,7 @@ try{
     assert.equal(pos.stage,stage,'step tracking '+selector+': '+JSON.stringify(pos));
     assert.equal(pos.overlaps.length,0,'key must not cover text at '+selector+': '+JSON.stringify(pos));
     assert.ok(pos.bounds.width>35&&pos.bounds.height>50,'key must remain visible '+selector);
-    console.log('KEY_SAFE_ZONE_PASS '+JSON.stringify({width,stage,bounds:pos.bounds}));
+    console.log('KEY_SAFE_ZONE_PASS '+JSON.stringify({width,stage,bounds:pos.bounds,selected:pos.selected}));
    }
   }
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);

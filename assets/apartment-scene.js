@@ -134,8 +134,8 @@ try{
   controle:[[.38,.51,1],[.32,.5,.82],[.24,.52,.56]],
   solution:[[.72,.47,1],[.81,.36,.76],[.83,.25,.53]],
   interlude:[[.87,.83,.36],[.88,.22,.33],[.87,.73,.29],[.13,.82,.28],[.89,.55,.21]],
-  pack:[[.87,.22,.35],[.87,.83,.33],[.82,.15,.27],[.14,.83,.27],[.89,.51,.23]],
-  footer:[[.88,.26,.32],[.86,.83,.30],[.15,.23,.25],[.84,.44,.23]]
+  pack:[[.87,.21,.39],[.87,.83,.38],[.81,.17,.33],[.14,.84,.31],[.89,.53,.28]],
+  footer:[[.88,.26,.36],[.86,.83,.34],[.15,.23,.30],[.84,.44,.28]]
  };
  const box=new T.Box3(),vec=new T.Vector3(),corner=new T.Vector3();
  function boundsOfObject(){
@@ -193,7 +193,7 @@ try{
    const original=new T.Vector3(frame.pos[0],frame.pos[1]+(mobile?1.2:0),0).project(camera);
    choices=[[(original.x+1)/2,(1-original.y)/2,mobile?.79:1],...choices];
   }
-  const factors=regular?[1,.85,.70,.55,.39,.27,.20]:[1,.84,.67,.50];
+  const factors=regular?[1,.85,.70,.55,.39,.27,.20]:[1,.84,.67];
   let best=null;
   const oldPos=group.position.clone(),oldRot=group.rotation.clone(),oldScale=group.scale.x;
   for(const factor of factors){
@@ -201,7 +201,8 @@ try{
     const scale=s*factor,world=worldPositionAt(x,y);
     group.position.set(world.x,world.y,0);
     group.scale.setScalar(scale);
-    group.rotation.set(...frame.rot);
+    const turn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
+    group.rotation.set(frame.rot[0],frame.rot[1]+turn,frame.rot[2]);
     const bounds=boundsOfObject(),score=overlap(bounds,occupied);
     const candidate={x,y,scale,score};
     if(!best||score<best.score-.01)best=candidate;
@@ -263,7 +264,7 @@ try{
   const target=compact?{x:.5,y:.5,scale:1.04}:nextPose||{x:.7,y:.5,scale:.8};
   const dest=worldPositionAt(target.x,target.y);
   group.position.set(lerp(group.position.x,dest.x,ease),lerp(group.position.y,dest.y+hoverLift,ease),0);
-  const extraTurn={interlude:.57,pack:1.19,footer:1.72}[currentStage]||0;
+  const extraTurn={interlude:.57,pack:2.25,footer:3.08}[currentStage]||0;
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+extraTurn+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
