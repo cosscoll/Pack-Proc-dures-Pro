@@ -235,3 +235,13 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .interlude{min-height:330svh;padding-top:clamp(375px,45svh,480px)}
  .interlude p{font-size:clamp(35px,4.3vw,52px)}
 }
+
+/* Le manifeste suit le temps narratif du scroll sans déplacer la clé.
+   Il n'entre pas dans le champ pendant les traversées latérales. */
+@media(prefers-reduced-motion:no-preference){
+ .interlude-top,.interlude p{
+   opacity:var(--manifest-visibility,1);
+   transition:opacity .32s ease;
+ }
+}
+@media(prefers-reduced-motion:reduce){.interlude-top,.interlude p{opacity:1!important}}

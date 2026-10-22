@@ -105,6 +105,7 @@ try{
      const checks=[];
      const selector='.interlude p,.interlude-top,.interlude-sign,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.footer-brand,.footer p,.footer div,.footer small';
      for(const el of document.querySelectorAll(selector)){
+      if(Number.parseFloat(getComputedStyle(el).opacity)<=.15)continue;
       const range=document.createRange();range.selectNodeContents(el);
       for(const r of range.getClientRects()){
        if(r.width<1||r.height<1||r.bottom<90||r.top>innerHeight-5)continue;
@@ -135,6 +136,7 @@ try{
        const all=document.querySelectorAll('.interlude-top,.interlude p,.interlude-sign,.offer-top,.offer-intro h2,.offer-intro>p,.offer-stats,.offer-cta,.offer-outline .outline-caption,.offer-line,.offer-bottom,.footer-brand,.footer p,.footer div,.footer small');
        for(const el of all){
         if(!el.getClientRects().length)continue;
+        if(Number.parseFloat(getComputedStyle(el).opacity)<=.15)continue;
         const range=document.createRange();range.selectNodeContents(el);
         for(const r of range.getClientRects()){
          if(r.width<1||r.height<1||r.bottom<95||r.top>innerHeight-10)continue;

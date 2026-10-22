@@ -64,6 +64,12 @@ function measure(){
  }
  if(y>=scrollEnd-2)progress=anchors.length-1;
  window.rotationScene?.setProgress(progress);
+ // Le texte de l'interlude entre dans le champ lorsque la clé a atteint la gauche,
+ // puis se retire doucement avant sa traversée vers la droite.
+ const easing=(a,b,v)=>{const t=Math.max(0,Math.min(1,(v-a)/(b-a)));return t*t*(3-2*t);};
+ const arrival=easing(3.87,4.06,progress);
+ const departure=1-easing(4.32,4.52,progress);
+ document.documentElement.style.setProperty('--manifest-visibility',Math.min(arrival,departure).toFixed(3));
  // La clé suit une histoire continue de sept poses; le décor réserve des zones latérales.
  const route=[...chapters,document.querySelector('.interlude'),document.querySelector('#pack'),document.querySelector('.footer')].filter(Boolean);
  const focal=innerHeight*.54;
