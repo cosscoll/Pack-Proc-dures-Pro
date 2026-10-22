@@ -34,7 +34,7 @@ jobs:
                grep -Fq 'Les bonnes questions.' /tmp/pack.html &&
                grep -Fq 'href="./exemple-procedure.html"' /tmp/pack.html &&
                grep -Fq 'href="./pack-conciergerie.html"' /tmp/home.html &&
-               grep -Fq 'offre-commerciale-20261022-v23' /tmp/home.html; then
+               grep -Fq "$(sed -n 's/.*name="site-revision" content="\\([^"]*\\)".*/\\1/p' index.html | head -n1)" /tmp/home.html; then
               echo "PACK_HTTP_200_PUBLIC_OK"
               exit 0
             fi
