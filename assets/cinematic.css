@@ -43,10 +43,10 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
    ménagent une vraie respiration à droite, aussi pendant la vente et le footer. */
 @media(min-width:741px){
   .interlude{min-height:120svh;padding-top:60px;padding-bottom:74px;align-items:flex-start}
-  .interlude-top{width:min(48vw,730px);flex-wrap:wrap;gap:12px}
-  .interlude p{max-width:min(39vw,600px);width:39vw;font-size:clamp(50px,5.4vw,87px);line-height:1.03;
+  .interlude-top{width:min(35vw,540px);flex-wrap:wrap;gap:12px}
+  .interlude p{max-width:min(34vw,520px);width:34vw;font-size:clamp(47px,4.7vw,76px);line-height:1.03;
     overflow-wrap:normal;word-break:normal;margin:52px 0 70px;letter-spacing:-.042em}
-  .interlude-sign{margin-top:auto;max-width:40vw}
+  .interlude-sign{margin-top:auto;max-width:35vw}
   .interlude:before{left:59%;opacity:.45}
   .offer-section{padding-right:clamp(30px,7vw,125px)}
   .offer-top{width:100%;padding-right:0}
@@ -63,8 +63,8 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
 }
 @media(min-width:741px) and (max-width:1100px){
   .interlude{min-height:140svh;padding:35px 28px 45px}
-  .interlude p{max-width:40vw;width:40vw;font-size:clamp(42px,5.5vw,63px)}
-  .interlude-top{width:44vw}
+  .interlude p{max-width:34vw;width:34vw;font-size:clamp(39px,4.9vw,60px)}
+  .interlude-top{width:35vw}
   .offer-section{padding-inline:27px}
   .offer-main{width:49vw;padding:100px 0 95px}
   .offer-intro h2{font-size:clamp(53px,6.35vw,77px)}
