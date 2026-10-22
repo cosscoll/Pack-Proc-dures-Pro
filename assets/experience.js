@@ -79,7 +79,7 @@ function measure(){
  // Acte III : pendant que la clé traverse le pack, le texte d'introduction
  // s'efface puis les quatre usages apparaissent du côté libéré.
  // Aucune instruction de repositionnement n'est envoyée à la scène 3D.
- const introVisibility=mobileReadingBay?'1':(1-easing(5.28,5.49,progress)).toFixed(3);
+ const introVisibility=mobileReadingBay?'1':(1-easing(innerWidth>=1101?5.45:5.28,innerWidth>=1101?5.61:5.49,progress)).toFixed(3);
  const detailsVisibility=mobileReadingBay?'1':easing(innerWidth>=1101?5.73:5.59,innerWidth>=1101?5.88:5.73,progress).toFixed(3);
  const intro=document.querySelector('#pack .offer-intro');
  const detail=document.querySelector('#pack .offer-outline');

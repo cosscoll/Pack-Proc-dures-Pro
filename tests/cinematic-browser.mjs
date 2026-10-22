@@ -89,6 +89,14 @@ try{
     }));
     poseSamples.push({selector,targetStep,...snap});
    }
+   // The mobile key should remain fully visible inside its dedicated reading bay.
+   if(width===390){
+     for(const snap of poseSamples){
+       const b=snap.bounds;
+       assert.ok(b.left>=5&&b.right<=width-5&&b.top>=70&&b.bottom<=325,
+         'the mobile key must remain inside its bay: '+JSON.stringify(snap));
+     }
+   }
    for(let i=1;i<poseSamples.length;i++){
     assert.ok(poseSamples[i].rotation>poseSamples[i-1].rotation+.5,'key must keep rotating '+JSON.stringify(poseSamples));
     const sign=i===1?1:-1;

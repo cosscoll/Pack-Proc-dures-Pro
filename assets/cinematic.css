@@ -461,3 +461,14 @@ html,body{max-width:100%;overflow-x:clip}
  #pack .offer-stats strong{flex-shrink:0;font-size:clamp(43px,11vw,58px)}
  #pack .offer-stats span{min-width:0;font-size:11px;line-height:1.4;overflow-wrap:anywhere;color:#1f3829}
 }
+
+/* Lecture qui accompagne la clé : le CTA reste dans le champ pendant la
+   première moitié du pack, puis les usages occupent la colonne opposée. */
+@media(min-width:741px){
+ #pack .offer-intro{position:sticky;top:125px;z-index:9}
+ #pack .offer-outline{position:sticky;top:125px;z-index:9}
+}
+@media(max-width:740px){
+ /* Sur mobile le panneau opaque protège le texte : pas de sticky dans le pack. */
+ #pack .offer-intro,#pack .offer-outline{position:relative;top:auto}
+}

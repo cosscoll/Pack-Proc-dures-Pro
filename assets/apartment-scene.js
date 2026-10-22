@@ -197,7 +197,7 @@ try{
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
   camera.lookAt(0,compact?0:(innerWidth<700?0:0),0);
-  const size=compact?1.04:(innerWidth>740&&innerWidth<1100?.78:innerWidth<=740?.94:1.0);
+  const size=compact?1.04:(innerWidth>740&&innerWidth<1100?.78:innerWidth<=740?1.20:1.0);
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.
   rimlight.intensity=lerp(rimlight.intensity,chapter===2?4.4:3.1,ease);
