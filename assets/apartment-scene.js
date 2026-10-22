@@ -10,7 +10,7 @@ const motion=matchMedia('(prefers-reduced-motion: reduce)');
 let T=null,renderer=null,started=false,running=false,raf=0,chapter=0,targetProgress=0;
 const compact=wrapper.classList.contains('key-companion');
 const viewWidth=()=>compact?Math.max(wrapper.clientWidth,1):innerWidth;
-const viewHeight=()=>compact?Math.max(wrapper.clientHeight,1):innerHeight;
+const viewHeight=()=>compact?Math.max(wrapper.clientHeight,1):(innerWidth<=740?Math.max(document.getElementById('keyLayer')?.clientHeight||0,210):innerHeight);
 const dpr=()=>Math.min(devicePixelRatio||1,innerWidth<700?1.15:1.65);
 function fallbackOn(reason){
  wrapper.dataset.engine='fallback';wrapper.dataset.ready='false';
@@ -181,7 +181,7 @@ try{
   actual=lerp(actual,targetProgress,ease);
   const f=mixFrames(actual);
   const hoverLift=pointer.hover?.06:0;
-  group.position.set(lerp(group.position.x,compact?0:(innerWidth<700?.05:f.pos[0]),ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
+  group.position.set(lerp(group.position.x,compact?0:f.pos[0],ease),lerp(group.position.y,(compact?0:f.pos[1]+(innerWidth<700?1.2:0))+hoverLift,ease),0);
   group.rotation.set(
    lerp(group.rotation.x,f.rot[0]+(innerWidth>700?-pointer.y*.04:0),ease),
    lerp(group.rotation.y,f.rot[1]+(innerWidth>700?pointer.x*.16:0)+keyTurn,ease),
@@ -192,7 +192,7 @@ try{
   const targetX=compact?0:(innerWidth<700?.03:f.cam[0]),targetY=compact?0:(innerWidth<700?.85:f.cam[1]);
   camera.position.x=lerp(camera.position.x,targetX,ease);camera.position.y=lerp(camera.position.y,targetY,ease);
   camera.position.z=lerp(camera.position.z,compact?10.8:(innerWidth<700?11.6:f.cam[2]),ease);
-  camera.lookAt(0,compact?0:(innerWidth<700?.25:0),0);
+  camera.lookAt(0,compact?0:(innerWidth<700?0:0),0);
   const size=compact?1.04:(innerWidth<700?.79:1.0);
   group.scale.setScalar(lerp(group.scale.x,size,ease));
   // Stronger rim light on the control step, because light reveals scratches and cutouts.

@@ -77,7 +77,11 @@ try{
    assert.equal(timeline.placement,'scroll-storyboard');
    const poseSamples=[];
    for(const [selector,targetStep] of [['.interlude',4],['#pack',5],['.footer',6]]){
-    await page.locator(selector).scrollIntoViewIfNeeded();
+    await page.evaluate(({selector})=>{
+      const el=document.querySelector(selector);
+      const end=document.documentElement.scrollHeight-innerHeight;
+      scrollTo({top:selector==='.footer'?end:el.offsetTop,behavior:'instant'});
+    },{selector});
     await page.waitForTimeout(2000);
     const snap=await page.evaluate(()=>({
       ...window.rotationScene.getMotionState(),

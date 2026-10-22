@@ -173,12 +173,12 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
 /* ACTE II — la clé poursuit sa propre trajectoire : droite > gauche > droite > gauche.
    Le texte alterne de bord à chaque nouvelle section, jamais la clé selon le texte. */
 @media(min-width:741px){
- .interlude{min-height:135svh;padding-left:clamp(35px,6vw,100px);padding-right:clamp(35px,6vw,100px)}
+ .interlude{min-height:200svh;padding-left:clamp(35px,6vw,100px);padding-right:clamp(35px,6vw,100px)}
  .interlude-top,.interlude p,.interlude-sign{
   width:min(35vw,570px);max-width:min(35vw,570px);margin-left:auto;margin-right:0;
  }
  .interlude-top{justify-content:space-between}
- .interlude p{font-size:clamp(45px,5vw,83px);margin-top:clamp(140px,18vh,190px);margin-bottom:65px}
+ .interlude p{font-size:clamp(45px,5vw,83px);margin-top:60px;margin-bottom:65px}
  .interlude-sign{margin-top:auto}
  .interlude:before{left:51%}
  .offer-top{width:36vw;max-width:100%;flex-direction:column;align-items:flex-start;gap:12px}
@@ -199,6 +199,7 @@ body:has(.chapter-control.is-current) .world:before{background:linear-gradient(9
  .interlude p{font-size:clamp(40px,5.1vw,60px)}
  .offer-top,.offer-bottom{width:29vw}
  .footer{padding-left:54vw;padding-right:4vw;min-height:115svh}
+ .interlude{min-height:200svh}
  .footer-brand{font-size:clamp(48px,5.7vw,65px)}
 }
 @media(max-width:740px){
