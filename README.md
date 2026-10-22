@@ -21,3 +21,10 @@ Les pages et mises à jour de sprint doivent présenter uniquement des élément
 - Un contrôle navigateur vérifie la lisibilité en plusieurs positions de défilement du manifeste, de l'offre et du pied de page sur ordinateur, tablette et mobile.
 - Le menu et les liens de la procédure gratuite restent utilisables même si JavaScript ne charge pas.
 - Toujours vérifier la publication GitHub Pages avant d'annoncer la livraison ; pas de paiement actif.
+
+## Parcours éditorial de vente — 22 octobre 2026
+
+- L'accueil 3D présente une proposition de valeur et oriente vers [la fiche du premier pack](./pack-conciergerie.html), sans altérer la trajectoire, les scènes ou le modèle 3D.
+- La fiche expose les trois procédures pilotes documentées (P01, P05, P08), les sept registres, les formats prévus, des exemples d'usage, les limites et six réponses aux questions fréquentes.
+- Le parcours mène vers [la procédure gratuite P01](./exemple-procedure.html), pas vers un paiement fictif.
+- Prix de 49 € encore hypothétique ; validation métier, statut du vendeur, obligations et paiement à finaliser avant toute commercialisation.

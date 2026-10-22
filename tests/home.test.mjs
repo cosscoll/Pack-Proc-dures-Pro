@@ -64,3 +64,14 @@ test('continuous key rotation stays in the original seven poses and uses frame-i
  assert.match(three,/getReferencePose/);
  assert.equal((three.match(/\{rot:\[/g)||[]).length,7);
 });
+
+test('the store actually presents a product and an honest sales path',()=>{
+ const product=read('pack-conciergerie.html'),style=read('assets/pack-conciergerie.css');
+ assert.ok(html.includes('href="./pack-conciergerie.html"'));
+ for(const word of ['15 procédures','7 registres','49 €','AUCUN ACHAT OUVERT','DOCX','PDF','CSV','P01','P05','P08','Fiches logements','Passation d\'équipe'])assert.ok(product.toLowerCase().includes(word.toLowerCase()),word);
+ for(const link of ['./index.html','./exemple-procedure.html','./atelier-decisions.html'])assert.ok(product.includes('href="'+link+'"'),link);
+ assert.equal((product.match(/<details>/g)||[]).length,6);
+ assert.ok(style.includes('prefers-reduced-motion:reduce'));
+ assert.ok(!/stripe\.com|paypal\.com|type="email"|action=/.test(product),'do not offer checkout or collect leads before release');
+ assert.ok(html.includes('worldCanvas'),'original cinematic scene retained');
+});
