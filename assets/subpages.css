@@ -72,3 +72,6 @@ body.page--status footer{color:#d9decf;padding:25px;background:#18291f;width:100
 
 /* Contraste des informations secondaires sur la procédure pilote (WCAG AA). */
 body.page--sample .lab-head>p,body.page--sample .container:nth-child(6)>p{color:#354e40}
+
+/* L'insertion du visualiseur change l'index des conteneurs : selector stable. */
+body.page--sample main .container>p{color:#354e40}

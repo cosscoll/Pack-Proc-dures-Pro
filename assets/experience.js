@@ -56,6 +56,8 @@ function measure(){
  for(const part of route){
   if(part.getBoundingClientRect().top<=focal)stage=part.id||part.classList.contains('interlude')&&'interlude'||part.classList.contains('footer')&&'footer'||stage;
  }
+ const footerRect=document.querySelector('.footer')?.getBoundingClientRect();
+ if(footerRect&&footerRect.top<innerHeight*.83&&footerRect.bottom>innerHeight*.48)stage='footer';
  document.getElementById('world')?.setAttribute('data-stage',stage);
  window.rotationScene?.setStage(stage);
  scheduled=false;
