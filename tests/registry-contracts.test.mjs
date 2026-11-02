@@ -14,7 +14,7 @@ test('registre R01–R07 : schema exhaustif et champs reserves',()=>{
  for(const r of contracts.registries){
   assert.ok(r.name&&r.purpose);
   assert.ok(registryById(r.id)===r);
-  assert.ok(Object.values(r.fields).every(f=>['text','ref','enum','integer','date-time','version','sha256'].includes(f.type)));
+  assert.ok(Object.values(r.fields).every(f=>['text','ref','enum','integer','boolean','date-time','version','sha256'].includes(f.type)));
  }
  assert.equal(registryById('R99'),null);
 });
