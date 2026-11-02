@@ -82,3 +82,19 @@ test('noms et coordonnées de voyageurs jamais autorisés comme colonnes',()=>{
  const item={...row,property_ref:'LOG-001',property_label:'LOGEMENT-001',responsible_role:'coordinateur',checklist_version:'P04-v1'};
  for(const key of ['nom_voyageur','email_voyageur','code_acces','api_key'])assert.ok(validateRecord('R01',{...item,[key]:'x'}).includes('champ_interdit:'+key));
 });
+
+test('passation entre deux personnes de même rôle permise, pas vers soi-même',()=>{
+ const handoff={...row,handoff_ref:'HOF-001',rotation_ref:'ROT-001',sender_role:'coordinateur',receiver_role:'coordinateur',sender_actor_ref:'USR-001',receiver_actor_ref:'USR-002',pending_action_ref:'ACTION-001',ack_state:'acceptee',handoff_at:now};
+ assert.deepEqual(validateRecord('R05',handoff),[]);
+ includesError('R05',{...handoff,receiver_actor_ref:'USR-001'},'passation_a_soi_meme');
+});
+
+test('mission confirmée sans trace d’attribution : refus',()=>{
+ includesError('R02',{...rotation,assignment_ref:undefined},'affectation_sans_trace');
+});
+
+test('couverture des procédures par les registres proposés',()=>{
+ const covers=new Set(contracts.registries.flatMap(reg=>reg.related_procedures));
+ const expected=Array.from({length:15},(_,i)=>'P'+String(i+1).padStart(2,'0'));
+ assert.deepEqual([...covers].sort(),expected.sort());
+});
