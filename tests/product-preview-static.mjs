@@ -8,7 +8,9 @@ test('prototype isolated, noindex and no checkout',()=>{
  assert.match(page,/<meta name="robots" content="noindex,nofollow">/);
  assert.match(page,/id="coffre"/);
  assert.match(page,/id="worldCanvas"/);
- assert.ok(page.indexOf('id="coffre"')<page.indexOf('<main id="main">'));
+ assert.ok(page.indexOf('<main id="main">')<page.indexOf('id="coffre"'));
+ assert.ok(page.indexOf('id="coffre"')<page.indexOf('id="depart"'));
+ assert.equal((page.match(/<h1(?:\\s|>)/g)||[]).length,1,'exactly one H1, on opening scene');
  assert.match(page,/15 procédures/);
  assert.match(page,/7 registres/);
  assert.doesNotMatch(page,/https:\/\/buy\.stripe|https:\/\/checkout\.stripe/i);
