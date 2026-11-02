@@ -124,3 +124,19 @@ Les premiers contrôles axe-core sur les nouveautés ont échoué à cause de l'
 - GitHub public ne contient que des spécifications de formats et des tests, **jamais** le manuel complet ou l'archive premium.
 
 **Prochaine porte :** comparer les noms de colonnes à l'usage réel d'une conciergerie, obtenir des validations métier, tester véritablement les imports/outils, aligner versions et exports PDF, puis les obligations juridiques et la mise en vente. La PR #31 reste en brouillon non fusionné.
+
+## Lot autonome complémentaire — QA CSV V0.3, PDF et dossier relecteur
+
+**Dépôt GitHub (PR #31 en brouillon)**
+- Deux nouveaux fichiers code/test : `scripts/legacy-v03-qa.mjs` et `tests/legacy-v03-qa.test.mjs`.
+- **52/52 tests CI**, WebGL responsive et axe automatisée toujours au vert sur le commit `0b9b02d0...`. Run : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41427069897.
+- 12 sous-tests synthétiques C01–C12, neuf autres cas sécurité/intégrité; scénarios complets avec praticiens toujours **0/12**, relectures **0/22**.
+- Matrice P01–P15/R01–R07 ajoutée au dépôt (descriptif sans le contenu premium complet).
+
+**Fichiers privés livrés et enregistrés dans le dossier Drive du projet**
+- ZIP **V0.6.1 pré-recette**, 26 fichiers et manifeste vérifié : https://drive.google.com/file/d/1Ly4g0hTqStu-qNO3nnE_8QhHPiddRAak/view ; SHA-256 : `1b5dbbc48fe976c1af6cfb26d550fbb7b0f73825cec80418becb6a966508ba86`.
+- Le ZIP garde 15 SOP Word V0.6, ajoute PDF consultable 17p A4, sept CSV historiques intacts, sept exemples fictifs, rapport JSON et outillage de contrôle technique. L'exécution sur les exemples réels du ZIP donne **zéro erreur et un avertissement attendu** (passation R05 non accusée).
+- Dossier de relecture métier DOCX 5 pages : https://docs.google.com/document/d/16MgCJmIseTNvndWihvBPH7qfQNwk0ibh/edit ; PDF 5 pages : https://drive.google.com/file/d/10GzimyuAk2TasVmn909SAPVRMH6tfsgq/view ; audit automatique accessibilité DOCX = 0 anomalie.
+- Audit Drive déjà existant enrichi : https://docs.google.com/document/d/1mkZfp5byvoileQgg1zXSTvnfu9y34gB2qIAuSNBOuyY/edit.
+
+**Non fait :** pas de modification de l'original, pas de fusion ni mise en vente, pas de dépenses, pas d'automatisation Work/Codex, pas de test Excel réel. **Prochain travail bloquant :** revue indépendante des 22 pièces, décision de compatibilité historique/migration, puis politique commerciale/juridique et paiement en environnement de test autorisé.
