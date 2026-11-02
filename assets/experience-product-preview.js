@@ -105,6 +105,7 @@ function measure(){
  // deux nouvelles sections avant le footer. Après l'offre, ne jamais laisser
  // de texte faiblement opaque : le contraste doit redevenir nominal.
  const pastOffer=Boolean(pack&&y>=pack.offsetTop+pack.offsetHeight-innerHeight*.1);
+ document.body.classList.toggle('product-past-offer',pastOffer);
  const introVisibility=mobileReadingBay||pastOffer?'1':(1-easing(innerWidth>=1101?5.45:5.28,innerWidth>=1101?5.61:5.49,progress)).toFixed(3);
  const detailsVisibility=mobileReadingBay||pastOffer?'1':easing(innerWidth>=1101?5.73:5.59,innerWidth>=1101?5.88:5.73,progress).toFixed(3);
  const intro=document.querySelector('#pack .offer-intro');
