@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-02",
+  "product_code": "ROTATION-001",
+  "product_name": "Pack conciergerie — pilote",
+  "state": "NON_COMMERCIALISABLE",
+  "validation_policy": "Aucun item ne peut passer à validé sans relecteur indépendant et preuve de recette d'une version identifiée.",
+  "source": "docs/RECETTE_METIER_CONCIERGERIE_2026-11-02.md",
+  "requirements": [
+    {
+      "id": "P01",
+      "kind": "procedure",
+      "title": "Planifier une rotation entre deux séjours",
+      "scenario": "Deux horaires, intervenant, créneau; confirmation explicite; plan B si refus ou retard",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P02",
+      "kind": "procedure",
+      "title": "Surveiller les changements de réservations",
+      "scenario": "Modification de réservation => identification des rotations à revalider et notification au responsable",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P03",
+      "kind": "procedure",
+      "title": "Confirmer une mission à un intervenant",
+      "scenario": "Accord explicite horodaté ou escalade si absence de réponse avant le seuil interne",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P04",
+      "kind": "procedure",
+      "title": "Préparer la fiche opérationnelle d’un logement",
+      "scenario": "Instructions spécifiques utiles, non diffusion de secrets ou codes permanents dans un CSV partagé",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P05",
+      "kind": "procedure",
+      "title": "Vérifier qu’un logement est prêt",
+      "scenario": "Points de contrôle, écarts, personne habilitée à valider la remise en disponibilité",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P06",
+      "kind": "procedure",
+      "title": "Suivre le linge après chaque départ",
+      "scenario": "Traçabilité des lots et quantités, manquants, action de réapprovisionnement",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P07",
+      "kind": "procedure",
+      "title": "Contrôler et réapprovisionner les consommables",
+      "scenario": "Seuils et stocks convenus, preuve de relevé, alerte et responsable",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P08",
+      "kind": "procedure",
+      "title": "Traiter un incident avant l’arrivée",
+      "scenario": "Criticité, sécurisation sans action risquée, escalade et validation de résolution",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P09",
+      "kind": "procedure",
+      "title": "Gérer un objet oublié",
+      "scenario": "Signalement, garde, preuve de restitution, données minimales et durée de conservation décidée",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P10",
+      "kind": "procedure",
+      "title": "Traiter une difficulté d’accès au logement",
+      "scenario": "Distinguer cause, escalade vers personne habilitée, ne pas publier de code/clé maître",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P11",
+      "kind": "procedure",
+      "title": "Passer la main entre deux coordinateurs",
+      "scenario": "Liste des missions en cours, décisions en attente, propriétaire de la suite",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P12",
+      "kind": "procedure",
+      "title": "Traiter une réclamation de propriétaire",
+      "scenario": "Faits vs hypothèses, preuves limitées, interlocuteur autorisé, délais de retour",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P13",
+      "kind": "procedure",
+      "title": "Accueillir un nouvel intervenant",
+      "scenario": "Consignes et responsabilités, vérification de compréhension, accès proportionnés",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P14",
+      "kind": "procedure",
+      "title": "Planifier une intervention de maintenance",
+      "scenario": "Qualification, prestataire compétent, créneau, compte rendu, contrôle après action",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "P15",
+      "kind": "procedure",
+      "title": "Faire le bilan mensuel des rotations",
+      "scenario": "Indicateurs sources, incidents récurrents, actions correctives attribuées",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "non_teste",
+        "pdf": "non_teste",
+        "csv": "sans_objet",
+        "excel_real": "sans_objet"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R01",
+      "kind": "registre",
+      "title": "Fiches logements",
+      "scenario": "Identifiant interne, équipements et rôles; interdiction d'identifiants de serrure et de secrets",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R02",
+      "kind": "registre",
+      "title": "Suivi des rotations",
+      "scenario": "Référence, fenêtres départ/arrivée, affectation, confirmation, contrôleur, statut",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R03",
+      "kind": "registre",
+      "title": "Journal des anomalies",
+      "scenario": "Référence rotation, sévérité, responsable, délai, preuve de clôture",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R04",
+      "kind": "registre",
+      "title": "Suivi des stocks",
+      "scenario": "Référence logement, produit, niveau, seuil, commande, validation",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R05",
+      "kind": "registre",
+      "title": "Passation d'équipe",
+      "scenario": "Date, reprise, éléments en attente, décision et destinataire",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R06",
+      "kind": "registre",
+      "title": "Objets trouvés",
+      "scenario": "Référence objet, date, responsable, remise; minimisation données des voyageurs",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    },
+    {
+      "id": "R07",
+      "kind": "registre",
+      "title": "Journal des versions",
+      "scenario": "Fichier, date, auteur, version, modification, approbateur",
+      "status": "a_valider",
+      "source_version": null,
+      "sha256": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "evidence": [],
+      "format_tests": {
+        "docx": "sans_objet",
+        "pdf": "sans_objet",
+        "csv": "non_teste",
+        "excel_real": "non_teste"
+      },
+      "blockers": [
+        "validation_metier_independante",
+        "tests_formats_reels"
+      ]
+    }
+  ]
+}
