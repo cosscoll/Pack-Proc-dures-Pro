@@ -13,8 +13,8 @@ Version de travail liée à la PR #31 (DRAFT, non fusionnée).
 | MET-01 | Inventaire P01–P15/R01–R07 | **22 ENTRÉES INVENTORIÉES** | data/validation-conciergerie.json, 22 titres et scénarios; 0/22 validés | P0 |
 | MET-02 | Révisions par praticiens | **BLOQUÉ** | relecteurs qualifiés et preuves indépendantes sur 22 pièces | P0 |
 | MET-03 | Scénarios croisés métier | **12 PRÉPARÉS, 0 EXÉCUTÉ** | 12/12 scénarios réels acceptés, correctifs fermés | P0 |
-| MET-04 | Tests vrais formats DOCX/PDF/CSV/Excel | **NON TESTÉ** | dossier de QA reproductible et pièces versionnées | P0 |
-| MET-05 | Emballage du ZIP final sécurisé | **SPÉCIFIÉ** | SHA-256, manifeste et copies privées revus | P1 |
+| MET-04 | Tests vrais formats DOCX/PDF/CSV/Excel | **PARTIEL** : DOCX corrigé rendu visuellement (17 p.), 7 CSV contrôlés structurés, Excel réel et PDF final non testés | QA complète sur fichiers finaux et import Excel réel | P0 |
+| MET-05 | Emballage du ZIP final sécurisé | **BROUILLON PRIVÉ V0.6** : ZIP intègre DOCX corrigé et CSV historiques inchangés; pas de livraison finale | archive finale validée métier/juridique, testée et versionnée | P1 |
 | MARKET-01 | Entretiens conciergeries | **PROTOCOLE PRÉPARÉ** | 8–12 observations consenties, comptes rendus anonymisés | P1 |
 | MARKET-02 | Prix de vente définitif | **NON DÉCIDÉ** | coûts, TVA, concurrence, test terrain, décision écrite | P0 |
 | LEG-01 | Identité vendeur / conditions / licence | **NON VALIDÉ** | validation juridique documentée | P0 |
@@ -65,3 +65,12 @@ Version de travail liée à la PR #31 (DRAFT, non fusionnée).
 - [ ] Approbation écrite d'ouvrir les ventes.
 
 **Avancement sans ambiguïté :** aucun de ces trois jalons n'est entièrement clos au 02/11/2026. Les validations métiers, juridiques et commerciales restent à réaliser, pas à inventer.
+
+## Découverte vérifiée après analyse de la véritable archive V0.5.2
+Le ZIP interne du 15 octobre a été récupéré en lecture seule, ouvert, et ses **26 fichiers vérifiés par SHA-256**. Le manuel contient 15/15 procédures ; les sept CSV historiques ont **88 colonnes mais zéro ligne métier**. Leurs en-têtes V0.3 ne sont **pas compatibles directement** avec le nouveau schéma R01–R07 conçu en branche.
+
+- **Nouveau lot MET-06** : décider de la coexistence du CSV V0.3 historique et du contrat R01–R07 expérimental; préparer la migration sur copies contrôlées et tests de non-régression (NON VALIDÉ).
+- **Nouveau lot MET-07** : révision de travail V0.6 des trois procédures P01/P05/P08; cinq passages corrigés; 17 pages Word rendues et vérifiées, sans validation professionnelle (PRÉPARÉ).
+- **Nouveau lot MET-08** : exemples CSV séparés et fictifs pour sept registres, relations vérifiées sans double réservation; tests d'import dans les tableurs réels à faire (PARTIEL).
+- **Preuves** : `docs/AUDIT_ARCHIVE_SOURCE_2026-11-02.md`, `data/legacy-v03-csv-contract.json` et `tests/legacy-v03-csv.test.mjs`. Les fichiers révisés complets restent hors GitHub public.
+- **Décision de publication** : archive V0.6 privée et prototype en branche; accueil validé préservé, aucune vente.
