@@ -114,3 +114,19 @@ Les exigences préparées sont documentées dans les ressources **de travail**, 
 | Contrôle UX technique | `tests/product-preview-browser.mjs` | clé/coffre/WebGL réversibles, tests responsive, clavier, modes de repli |
 
 **Règle de preuve :** une suite de tests réussie ne ferme que les critères qu'elle couvre. Elle ne valide ni la qualité métier des documents, ni le rendu visuel sur téléphone réel, ni la conformité juridique, ni l'acceptation du propriétaire.
+
+## 10. Lot complémentaire — contrats métier, sources et recette accessibilité (02/11)
+Ce lot ne change **ni les originaux**, ni le statut non marchand du projet.
+
+- **Comparaison avec l'échantillon réel DOCX V03** : `docs/AUDIT_ECHANTILLON_DOCX_2026-11-02.md`, cinq écarts E01–E05 identifiés, dont sévérité P08, états de disponibilité P05 et ambiguïté à l'étape 7 P01. Le document original n'a pas été modifié.
+- **Contrats des sept registres** : `data/registry-contracts.json` (structure des champs, énumérations, références et protection des données) + `docs/CONTRATS_REGISTRES_R01_R07_2026-11-02.md`. Ce sont des schémas de recette, **pas les CSV définitifs**.
+- **Validateur synthétique** : `scripts/registry-contracts.mjs` et `tests/registry-contracts.test.mjs`. Contrôle un état « prêt » seulement si affectation, accord, intervention terminée, inspection et absence d'incident bloquant non vérifié. Distingue gravité (mineure/majeure/critique) et blocage de l'arrivée.
+- **Contenu commercial du prototype** : un inventaire progressif en quatre familles présente les **15 procédures et 7 registres**, en plus des cas P01/P05/P08, sans exposer les archives premium.
+- **Accessibilité** : tests `tests/product-preview-a11y.mjs` sur 3 sections × 3 formats, avec correction de la transparence persistante en fin d'offre et des contrastes du repère de chapitre et du sceau, dans le CSS/JS du prototype seulement.
+- **Preuve CI** : workflow `41417747815` du 02/11/2026 : 25/25 tests statiques réussis, WebGL2 validé à 1440/768/390, fallback à 320, coffre 3D réversible, 0 débordement/erreur JS sur parcours testé, 9 scans axe-core **sans violation automatique**.
+- **Lien de preuve** : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41417747815
+
+### À ne pas inférer des tests
+Un audit axe-core sans violation ne certifie pas la conformité RGAA/WCAG, les lecteurs d'écran, la lisibilité visuelle réelle, les performances GPU iPhone/Android ou la qualité de vente. La matrice R01–R07 reste non validée par des utilisateurs métiers; les CSV et Excel réels n'ont pas été testés, l'ancien manuel V0.2/ZIP V0.52 doit encore être confronté aux nouvelles spécifications, le tarif n'est pas approuvé et la boutique n'est pas autorisée.
+
+**Décision de diffusion :** prototype en PR brouillon, accueil officiel et fiche officielle inchangés. Toute intégration nécessite validation explicite du propriétaire.
