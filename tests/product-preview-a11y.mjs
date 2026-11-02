@@ -11,7 +11,7 @@ try {
   const r=await page.goto(new URL('prototype-pack-conciergerie-3d.html',base).toString(),{waitUntil:'domcontentloaded',timeout:35000});
   assert.equal(r?.status(),200);
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.querySelector('#world')?.dataset.engine),{timeout:35000});
-  const pages=[{label:'entrée',selector:'#coffre'},{label:'extraits',selector:'#preuve'}];
+  const pages=[{label:'entrée',selector:'#coffre'},{label:'inventaire',selector:'#inventaire'},{label:'extraits',selector:'#preuve'}];
   for(const step of pages){
    await page.locator(step.selector).scrollIntoViewIfNeeded();
    const report=await new AxeBuilder({page}).withTags(['wcag2a','wcag2aa','wcag21aa','wcag22aa']).analyze();
