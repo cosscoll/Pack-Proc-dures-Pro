@@ -45,3 +45,25 @@ Développement **sur branche séparée** `work/cdc-pack-pro-2026-11-02`, PR #31 
 
 ## Règle de mise en production
 La PR #31 reste DRAFT, ne doit pas être fusionnée avant approbation explicite. Le prototype n'est pas disponible sur le site public GitHub Pages.
+
+## Complément — poursuite du travail sur le cahier des charges (02/11/2026)
+Nouveaux livrables **non commerciaux**, tous dans la même PR #31 DRAFT :
+- `docs/CONFORMITE_COMMERCE_NUMERIQUE_2026-11-02.md` : matrice juridique B2B/B2C, fonctionnalité de rétractation en ligne en vigueur depuis juin 2026, calendrier DGFIP de facturation électronique applicable selon statut, source officielles et décisions laissées en attente.
+- `data/validation-conciergerie.json` : **22 entrées** P01–P15/R01–R07, chacune avec scénario, statut, relecteur/version/preuve/format; toutes `a_valider`.
+- `tests/validation-manifest.test.mjs` : vérifie le nombre et l'unicité des 22 pièces, interdit une validation sans preuve/empreinte/source/relecteur et assure l'absence d'archives premium.
+- `docs/SCENARIOS_ACCEPTATION_2026-11-02.md` : 12 cas transversaux P/R, dont non-confirmation, réservation avancée, logement non prêt et passation multi-intervenants. **0/12 exécutés**.
+- `docs/PLAN_REALISATION_CDC_2026-11-02.md` : 19 lots/portes, jalons et responsabilités identifiés.
+- `docs/CAHIER_DES_CHARGES_CONSOLIDE_2026-11-02.md` : annexe de traçabilité vers tous les tests et documents ci-dessus.
+- Page prototype : le coffre d'ouverture est désormais **dans la balise `main`**, avec un H1 unique en première scène. Styles typographiques préservés.
+- Test Playwright enrichi : ouverture **et fermeture inverse** au scroll, contrôle des **sept positions originales** de la clé.
+
+### Dernière recette entièrement achevée et vérifiée
+GitHub Actions : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41414829048
+- **7/7 tests statiques réussis**, y compris la matrice 22/22.
+- **WebGL2** : 1440, 768 et 390px; **repli reduced-motion** : 320px.
+- **Ouverture puis fermeture inverse du coffre réussies** sur les trois largeurs WebGL2.
+- **0 débordement horizontal et 0 erreur JavaScript** relevés pendant ce parcours automatisé.
+- **Pas de validation visuelle humaine**, de qualité métier, de compatibilité mobile physique, de prix ni de conformité juridique à déduire de ces résultats.
+
+### Invariants de sécurité et publication
+Comparaison `main` → branche de travail effectuée : l'accueil `index.html`, `assets/cinematic.css`, `assets/apartment-scene.js`, `assets/experience.js` et la fiche officielle `pack-conciergerie.html` restent inchangés. La PR #31 demeure un **brouillon non fusionné**, sans vente, checkout ni publication du prototype sur le site d'origine. Aucune automatisation ChatGPT créée ou réactivée.
