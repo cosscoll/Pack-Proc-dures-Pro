@@ -1,0 +1,48 @@
+name: Recette du prototype produit 3D — sans publication
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'prototype-pack-conciergerie-3d.html'
+      - 'assets/experience-product-preview.js'
+      - 'assets/product-preview.css'
+      - 'assets/product-preview.js'
+      - 'tests/product-preview-browser.mjs'
+      - 'tests/product-preview-static.mjs'
+      - '.github/workflows/verify-product-prototype.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prototype:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Contrôles du prototype isolé
+        run: |
+          node --check assets/experience-product-preview.js
+          node --check assets/product-preview.js
+          node --test tests/product-preview-static.mjs
+      - name: Installer Chromium + WebGL logiciel
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Recette locale HTTP et accessibilité fonctionnelle
+        run: |
+          python3 -m http.server 8787 --bind 127.0.0.1 >/tmp/product-prototype.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:8787/prototype-pack-conciergerie-3d.html >/dev/null; then break; fi
+            sleep 1
+          done
+          node tests/product-preview-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: captures-prototype-coffre-produit
+          path: screenshots/product-prototype-*.png
+          if-no-files-found: ignore
+          retention-days: 7
