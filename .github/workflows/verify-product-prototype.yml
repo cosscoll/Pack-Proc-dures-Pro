@@ -14,6 +14,7 @@ on:
       - 'data/registry-contracts.json'
       - 'scripts/registry-contracts.mjs'
       - 'tests/registry-contracts.test.mjs'
+      - 'tests/product-preview-a11y.mjs'
       - '.github/workflows/verify-product-prototype.yml'
   workflow_dispatch:
 permissions:
@@ -35,7 +36,7 @@ jobs:
           node --test tests/product-preview-static.mjs tests/validation-manifest.test.mjs tests/registry-contracts.test.mjs
       - name: Installer Chromium + WebGL logiciel
         run: |
-          npm install --no-save --no-audit --no-fund playwright@1.56.1
+          npm install --no-save --no-audit --no-fund playwright@1.56.1 @axe-core/playwright@4.10.2
           npx playwright install --with-deps chromium
       - name: Recette locale HTTP et accessibilité fonctionnelle
         run: |
@@ -45,6 +46,8 @@ jobs:
             sleep 1
           done
           node tests/product-preview-browser.mjs
+      - name: Auditer les contrastes et composants WCAG sur le prototype uniquement
+        run: node tests/product-preview-a11y.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
