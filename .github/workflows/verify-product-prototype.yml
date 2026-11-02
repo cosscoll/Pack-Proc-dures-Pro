@@ -9,6 +9,8 @@ on:
       - 'assets/product-preview.js'
       - 'tests/product-preview-browser.mjs'
       - 'tests/product-preview-static.mjs'
+      - 'tests/validation-manifest.test.mjs'
+      - 'data/validation-conciergerie.json'
       - '.github/workflows/verify-product-prototype.yml'
   workflow_dispatch:
 permissions:
@@ -26,7 +28,7 @@ jobs:
         run: |
           node --check assets/experience-product-preview.js
           node --check assets/product-preview.js
-          node --test tests/product-preview-static.mjs
+          node --test tests/product-preview-static.mjs tests/validation-manifest.test.mjs
       - name: Installer Chromium + WebGL logiciel
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1
