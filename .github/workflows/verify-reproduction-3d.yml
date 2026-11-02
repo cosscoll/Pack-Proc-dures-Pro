@@ -22,6 +22,11 @@ jobs:
           node --check reproduction-3d/demo.js
           node --check reproduction-3d/sources_exactes/assets/apartment-scene.js
           node --check reproduction-3d/verify-demo.mjs
+      - name: Essayer le vrai script du dossier outil sur un runner connecté
+        run: |
+          python3 reproduction-3d/outils_kit/outil_scripts/recuperer_sources.py
+          python3 reproduction-3d/outils_kit/outil_scripts/verifier_sources.py
+          python3 reproduction-3d/outils_kit/outil_scripts/tester_mathematiques.py
       - name: Installer Chromium et WebGL logiciel
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1
@@ -35,6 +40,22 @@ jobs:
           done
       - name: Rejouer le scroll, les sept poses, l'ouverture et la fermeture du coffre
         run: node reproduction-3d/verify-demo.mjs
+      - name: Assembler le mini-site autonome pour téléchargement
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          with ZipFile('reproduction-3d-site.zip','w',ZIP_DEFLATED) as f:
+              for p in sorted(Path('reproduction-3d').rglob('*')):
+                  if p.is_file(): f.write(p,p)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mini-site-reproduction-cle-coffre
+          path: reproduction-3d-site.zip
+          retention-days: 7
       - uses: actions/upload-artifact@v4
         if: always()
         with:
