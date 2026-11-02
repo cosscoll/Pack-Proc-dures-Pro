@@ -27,6 +27,8 @@ test('interactive tabs aria and valid resources',()=>{
  const dup=matches.filter((id,i)=>matches.indexOf(id)!==i);
  assert.deepEqual(dup,[],'IDs must be unique');
  for(const path of ['assets/cinematic.css','assets/apartment-scene.js','assets/experience-product-preview.js','assets/product-preview.css','assets/product-preview.js','exemple-procedure.html'])assert.ok(existsSync(path),'missing '+path);
+ assert.equal((page.match(/class="product-index__group"/g)||[]).length,4);
+ assert.equal((page.match(/<li><b>(?:P|R)\d\d<\/b>/g)||[]).length,22);
  for(const id of ['P01','P05','P08']){
    assert.match(page,new RegExp('aria-controls="panel'+id+'"'));
    assert.match(page,new RegExp('id="panel'+id+'"'));
