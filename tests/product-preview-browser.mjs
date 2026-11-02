@@ -17,6 +17,8 @@ try{
   const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:35000});
   assert.equal(response?.status(),200,'prototype HTTP 200');
   assert.equal(await page.locator('#coffre').count(),1);
+  assert.equal(await page.locator('main h1').count(),1,'unique page heading in main landmark');
+  assert.equal(await page.locator('main #coffre').count(),1,'opening scene must belong to main landmark');
   assert.equal(await page.locator('#worldCanvas').count(),1);
   assert.equal(await page.locator('.chapter[data-scene]').count(),4);
   assert.equal(await page.locator('[data-product-tab]').count(),3);
@@ -40,6 +42,15 @@ try{
    const opened=await page.evaluate(()=>window.rotationScene.getVaultState());
    assert.ok(opened.chestVisible,'chest visible');
    await page.screenshot({path:'screenshots/product-prototype-coffre-'+width+'.png',animations:'disabled'});
+   // Reversibilite : le couvercle revient a son etat ferme apres un scroll inverse.
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   await page.waitForFunction(()=>window.rotationScene?.getVaultState()?.open<.04,{timeout:18000});
+   const closed=await page.evaluate(()=>window.rotationScene.getVaultState());
+   assert.ok(closed.open<.04,'reverse scroll must close the chest');
+   // Aucune teleportation de la cle : le modele et ses poses restent stables.
+   const poses=await page.evaluate(()=>[0,1,2,3,4,5,6].map(i=>window.rotationScene.getReferencePose(i).x));
+   assert.deepEqual(poses.map(x=>Number(x.toFixed(2))),[1.43,1.65,-2.55,1.2,-2.7,2.4,-2.62]);
+   console.log('PRODUCT_VAULT_REVERSIBLE_OK '+JSON.stringify({width,open:Number(opened.open.toFixed(2)),closed:Number(closed.open.toFixed(2))}));
   } else {
    assert.equal(await page.locator('.vault-finale__fallback svg').count(),1);
   }
