@@ -12,6 +12,8 @@ on:
       - 'tests/validation-manifest.test.mjs'
       - 'data/validation-conciergerie.json'
       - 'data/registry-contracts.json'
+      - 'data/legacy-v03-csv-contract.json'
+      - 'tests/legacy-v03-csv.test.mjs'
       - 'scripts/registry-contracts.mjs'
       - 'tests/registry-contracts.test.mjs'
       - 'tests/product-preview-a11y.mjs'
@@ -33,7 +35,7 @@ jobs:
           node --check assets/experience-product-preview.js
           node --check assets/product-preview.js
           node --check scripts/registry-contracts.mjs
-          node --test tests/product-preview-static.mjs tests/validation-manifest.test.mjs tests/registry-contracts.test.mjs
+          node --test tests/product-preview-static.mjs tests/validation-manifest.test.mjs tests/registry-contracts.test.mjs tests/legacy-v03-csv.test.mjs
       - name: Installer Chromium + WebGL logiciel
         run: |
           npm install --no-save --no-audit --no-fund playwright@1.56.1 @axe-core/playwright@4.10.2
