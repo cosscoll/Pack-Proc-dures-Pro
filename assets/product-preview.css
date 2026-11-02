@@ -28,3 +28,9 @@ body:has(#coffre) .header-center{letter-spacing:.04em}
 @media(max-width:900px){.product-proof__layout{grid-template-columns:1fr;margin-top:55px;gap:45px}.product-proof__bottom{flex-direction:column;align-items:flex-start}}
 @media(max-width:740px){.product-proof{padding:85px 23px}.product-proof h2{font-size:clamp(54px,13vw,88px)}.product-proof__tabs button{grid-template-columns:27px minmax(0,1fr) 20px;padding:25px 5px;gap:12px}.product-proof__tabs button span{font-size:27px}.product-proof__panels{min-height:auto}.product-proof__panels h3{font-size:50px}.product-proof__bottom .primary-link{white-space:normal}.vault-finale__head{font-size:9px}}
 @media(prefers-reduced-motion:reduce){.product-proof__tabs button{transition:none}.product-proof__tabs button:hover,.product-proof__tabs button:focus-visible{transform:none}}
+
+/* Hiérarchie sémantique unique: le titre d'ouverture est H1. La typographie validée reste intacte. */
+.vault-finale h1{margin:25px 0;font:normal clamp(75px,6.5vw,122px)/.89 var(--serif);letter-spacing:-.05em}
+.vault-finale h1 em{font-weight:400;color:#ddb48b}
+.hero-chapter h2{font:normal clamp(78px,9.1vw,165px)/.81 var(--serif);letter-spacing:-.05em}
+@media(max-width:740px){.vault-finale h1{font-size:clamp(48px,11vw,86px)}.hero-chapter h2{font-size:clamp(62px,12vw,95px)}}
