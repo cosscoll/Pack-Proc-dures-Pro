@@ -69,3 +69,6 @@ body.product-past-offer #pack .offer-outline{opacity:1!important;transition:none
 /* Ajustements de contraste WCAG : uniquement sur le prototype, sans modifier l'accueil. */
 .rail-item.is-active>span{color:#16261d!important}
 #pack .offer-stamp small{color:#49311f!important}
+
+/* Un repère de chapitre actif ne passe jamais par un état faiblement contrasté. */
+.rail-item.is-active{opacity:1!important;transition:none!important}
