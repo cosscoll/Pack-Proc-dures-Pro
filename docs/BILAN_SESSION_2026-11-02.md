@@ -104,3 +104,23 @@ Les premiers contrôles axe-core sur les nouveautés ont échoué à cause de l'
 5. Intégration du prototype : **pas de fusion de la PR #31**, pas de publication commerciale.
 
 **Statut : progrès vérifié sur la spécification et le prototype, lancement toujours bloqué.**
+
+## Session supplémentaire — analyse des fichiers source réels et premier correctif privé V0.6
+**Source :** archive réelle V0.5.2 du 15/10 récupérée dans Drive. SHA-256 `81e610819733ae03302e37359e64a1f2f62c428c44ee8f7226fa6abd3160022b`. **26/26** contrôles d'intégrité des pièces de son manifeste réussis.
+
+**Constats reproductibles :**
+- Manuel `Manuel_15_procedures_BROUILLON.docx` : 15 procédures, toutes dotées de sept sections minimales (objectif, responsabilités, prérequis, déroulement, contrôles, exceptions, résultat). 15/15 sections vérifiées, sans approbation métier.
+- **7 CSV du pack V0.3 vides :** **88 colonnes** et **zéro ligne de données**. Ils restent des *modèles* ; la vente ne doit pas suggérer un outil de suivi prérempli.
+- L'ancien format n'a **pas les mêmes noms de colonnes** que le contrat expérimental `data/registry-contracts.json`. Table des 7 en-têtes et risques dans `data/legacy-v03-csv-contract.json`; tests CI dans `tests/legacy-v03-csv.test.mjs`.
+- Manuels, PDF et XLSX sources originaux conservés. Aucun test d'Excel réel effectué; 27 scénarios antérieurs dans les rapports de source ne sont pas des essais sur poste client.
+
+**Travail privé (non publiable dans le dépôt public) :**
+- V0.6 du manuel Word créée hors repo, 15 SOP conservées, **5 paragraphes clarifiés** dans P01, P05, P08. Versions individuelles de ces trois fiches portées à `0.6-r1`, les 12 autres restent `0.2`.
+- QA du DOCX : rendu vérifié sur **17 pages**, page orpheline P08 supprimée ; `a11y_audit.py` = **0 problème** (0 high, 0 medium, 0 low) ; 15/15 fiches possèdent les sept rubriques attendues.
+- Sept CSV historiques copiés **octet pour octet** ; sept CSV d'exemples fictifs séparés, liens logement/rotation/anomalie contrôlés et absence de deux rotations simultanées sur un même logement.
+- Archive `Pack_Procedures_Pro_V06_BROUILLON_INTERNE.zip` créée et manifestée, **non commercialisable**. SHA-256 `70cb7ef704201ce69b76c64b95997720b0f75c48d30cac1ebc738e1ef25faa9e`. Ni PDF V0.6 ni XLSX modifié inclus.
+- Audit sauvegardé dans le dossier Google Drive du projet :
+  https://docs.google.com/document/d/1mkZfp5byvoileQgg1zXSTvnfu9y34gB2qIAuSNBOuyY/edit
+- GitHub public ne contient que des spécifications de formats et des tests, **jamais** le manuel complet ou l'archive premium.
+
+**Prochaine porte :** comparer les noms de colonnes à l'usage réel d'une conciergerie, obtenir des validations métier, tester véritablement les imports/outils, aligner versions et exports PDF, puis les obligations juridiques et la mise en vente. La PR #31 reste en brouillon non fusionné.
