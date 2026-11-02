@@ -27,6 +27,10 @@ export function validateRecord(registryId,record){
    if(rules.required)errors.push('champ_requis:'+key);
    continue;
   }
+  if(rules.type==='boolean'){
+   if(typeof value!=='boolean')errors.push('booleen_invalide:'+key);
+   continue;
+  }
   if(rules.type==='integer'){
    if(!Number.isSafeInteger(value)||value<rules.min||value>rules.max)errors.push('entier_invalide:'+key);
    continue;
@@ -50,10 +54,11 @@ export function validateRecord(registryId,record){
   if(record.acceptance_state==='confirmee'&&!record.confirmation_ref)errors.push('confirmation_sans_trace');
   if(record.acceptance_state==='confirmee'&&!record.assignment_ref)errors.push('affectation_sans_trace');
   if(['en_cours','termine'].includes(record.work_state)&&record.acceptance_state!=='confirmee')errors.push('travail_sans_acceptation');
-  if(record.availability_state==='pret'&&(record.acceptance_state!=='confirmee'||record.work_state!=='termine'||record.inspection_state!=='conforme'||!record.inspector_role||!record.confirmation_ref||!record.assignment_ref))errors.push('pret_sans_preuves');
+  if(record.availability_state==='pret'&&(record.acceptance_state!=='confirmee'||record.work_state!=='termine'||record.inspection_state!=='conforme'||!record.inspector_role||!record.confirmation_ref||!record.assignment_ref||!record.inspection_ref||!record.inspection_at))errors.push('pret_sans_preuves');
   if(record.inspection_state==='non_conforme'&&record.availability_state==='pret')errors.push('non_conforme_declare_pret');
  }
  if(registryId==='R03'&&record.state==='verifiee'&&!record.verified_at)errors.push('verification_sans_date');
+ if(registryId==='R03'&&record.severity==='critique'&&record.blocks_arrival!==true)errors.push('critique_non_bloquant');
  if(registryId==='R04'&&typeof record.quantity==='number'&&typeof record.alert_threshold==='number'&&record.quantity<record.alert_threshold&&record.replenishment_state==='aucun')errors.push('seuil_franchi_sans_action');
  if(registryId==='R05'&&record.sender_actor_ref&&record.receiver_actor_ref&&record.sender_actor_ref===record.receiver_actor_ref)errors.push('passation_a_soi_meme');
  if(registryId==='R06'&&['restitue','clos'].includes(record.custody_state)&&!record.resolved_at)errors.push('objet_clos_sans_date');
@@ -63,7 +68,7 @@ export function validateRecord(registryId,record){
 
 export function validateReadiness(rotation,anomalies=[]){
  const errors=validateRecord('R02',rotation);
- const blockers=anomalies.filter(x=>x.rotation_ref===rotation.rotation_ref&&x.severity==='bloquante'&&x.state!=='verifiee');
+ const blockers=anomalies.filter(x=>x.rotation_ref===rotation.rotation_ref&&x.blocks_arrival===true&&x.state!=='verifiee');
  for(const incident of anomalies){
   if(incident.rotation_ref===rotation.rotation_ref)errors.push(...validateRecord('R03',incident).map(e=>'anomalie_'+incident.incident_ref+':'+e));
  }
