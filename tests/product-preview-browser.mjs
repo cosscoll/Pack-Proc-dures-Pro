@@ -55,6 +55,11 @@ try{
    assert.equal(await page.locator('.vault-finale__fallback svg').count(),1);
   }
   await page.locator('#preuve').scrollIntoViewIfNeeded();
+  if(width!==320){
+   await page.waitForFunction(()=>document.body.classList.contains('product-past-offer'),{timeout:6000});
+   const offerOpacity=await page.locator('#pack .offer-outline').evaluate(el=>Number(getComputedStyle(el).opacity));
+   assert.equal(offerOpacity,1,'offer text must recover full contrast after leaving offer');
+  }
   await page.locator('[data-product-tab="P05"]').click();
   assert.equal(await page.locator('[data-product-tab="P05"]').getAttribute('aria-selected'),'true');
   assert.equal(await page.locator('[data-product-panel="P05"]').isVisible(),true);
