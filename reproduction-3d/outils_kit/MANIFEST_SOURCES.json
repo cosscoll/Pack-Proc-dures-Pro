@@ -1,0 +1,20 @@
+{
+  "projet": "Pack Procédures Pro — clé 3D jusqu'au coffre",
+  "repository": "cosscoll/Pack-Proc-dures-Pro",
+  "commit_pinned": "e7270110d73b54d45c4d4ca1dfb14337c10edab7",
+  "page_originale": "index.html",
+  "page_prototype_produit": "prototype-pack-conciergerie-3d.html",
+  "note": "Les SHA ci-dessous sont des Git blob SHA-1, à vérifier avec `git hash-object` ou l'outil intégré.",
+  "files": {
+    "index.html": "59163fab473734aedf88d6c8bdd0f63417334c3b",
+    "assets/cinematic.css": "bd4fdaa2a20826591f45cb01d4b30f22afcac393",
+    "assets/apartment-scene.js": "fe96414d99765ca46c3c2e13450cd405982fdc09",
+    "assets/experience.js": "46ce02b3461bd3839e47b2b91b8da98d0cada0ce",
+    "prototype-pack-conciergerie-3d.html": "7e9c6d37ddbed471501c79e06a072542874df538",
+    "assets/experience-product-preview.js": "85736319e97755d816b7a42fd88d8b0a160b5bc7",
+    "assets/product-preview.css": "02b8752d27f02460f60749b817f5743c5ec0acd9",
+    "assets/product-preview.js": "1048178f4e84a63621346e5e2573ba4f12db38a7"
+  },
+  "threejs_url": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+  "license_dependency": "Three.js MIT ; voir les conditions du code du dépôt si réutilisation hors de ce projet"
+}

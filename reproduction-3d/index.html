@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#141c1a">
+<title>La clé — Laboratoire 3D | Test de reproductibilité</title>
+<meta name="description" content="Démonstration indépendante de la clé 3D et de l’ouverture du coffre, reconstruite depuis le dossier de reproduction.">
+<link rel="stylesheet" href="./demo.css">
+<script type="module" src="./sources_exactes/assets/apartment-scene.js"></script>
+<script defer src="./demo.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+<div class="world" id="world" data-engine="loading" data-ready="false" role="group" aria-label="Scène 3D de démonstration : une clé en bronze rejoint un coffre, pilotée par le défilement.">
+  <div class="world__grain"></div>
+  <div class="world-label" aria-live="polite">
+    <span id="worldIndex">LABORATOIRE / 001</span>
+    <strong id="worldTitle">Une clé. Un parcours.</strong>
+    <small id="worldHint">Faites défiler pour déplacer l’objet.</small>
+  </div>
+</div>
+<div class="key-layer" id="keyLayer" aria-hidden="true">
+  <div class="world-fallback" id="sceneFallback" aria-hidden="true">
+    <svg viewBox="0 0 480 720" xmlns="http://www.w3.org/2000/svg" role="presentation">
+      <defs><linearGradient id="bronze" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8e3ac"/><stop offset=".28" stop-color="#ab8450"/><stop offset=".6" stop-color="#ecd3a1"/><stop offset="1" stop-color="#78603a"/></linearGradient></defs>
+      <g transform="translate(235 330) rotate(-23)">
+        <rect x="61" y="-189" width="171" height="202" rx="33" fill="#443b2e" stroke="#be9b68" stroke-width="7" transform="rotate(17 146 -87)"/>
+        <text x="147" y="-75" fill="#d8ba86" font-family="Georgia" font-size="72">P.</text>
+        <path d="M-50 -126 A72 72 0 1 1 52 -126 L25 -97 A32 32 0 1 0 -26 -97Z" fill="url(#bronze)" stroke="#e4c88c" stroke-width="4"/>
+        <rect x="-22" y="-90" width="44" height="320" rx="5" fill="url(#bronze)" stroke="#eed6a0" stroke-width="4"/>
+        <path d="M22 116 H61 V148 H22 V175 H48 V203 H22 V232 H-22 V116Z" fill="url(#bronze)" stroke="#f3dcab" stroke-width="3"/>
+      </g>
+    </svg>
+  </div>
+  <canvas id="worldCanvas" aria-hidden="true"></canvas>
+</div>
+<header class="site-header">
+ <a class="brand" href="#act-0" aria-label="Retour au début">ATELIER <span>·</span> 3D</a>
+ <div class="header-center">EXPÉRIENCE RÉUTILISABLE / TEST INDÉPENDANT</div>
+ <a class="header-cta" href="#coffre">VOIR LE COFFRE <span>↘</span></a>
+</header>
+<nav class="section-rail" aria-label="Parcours de démonstration">
+  <a href="#act-0">01</a><a href="#act-1">02</a><a href="#act-2">03</a><a href="#act-3">04</a><a href="#coffre">05</a>
+</nav>
+<main id="main">
+ <section class="act act--intro chapter is-current" data-scene="0" id="act-0">
+   <div class="act-content" data-side="left">
+     <p class="kicker">DÉMONSTRATION / 01</p>
+     <h1>Le mouvement <em>comme langage.</em></h1>
+     <p class="lead">Ce site est un nouveau montage construit à partir du dossier outil. La clé 3D est exactement le modèle du projet d’origine, sans vidéo, sans fichier GLB et sans changement de ses sept poses.</p>
+     <a class="text-link" href="#act-1">DÉCOUVRIR LE PARCOURS <span>↓</span></a>
+   </div>
+   <p class="side-meta">OBJET UNIQUE / MOUVEMENT CONTINU</p>
+ </section>
+ <section class="act act--dark chapter" data-scene="1" id="act-1">
+   <div class="act-content" data-side="left">
+     <p class="kicker">DÉMONSTRATION / 02</p>
+     <h2>La clé quitte <em>son point de départ.</em></h2>
+     <p>En descendant, le modèle tourne et traverse progressivement l’écran. Le scroll indique la destination, tandis que la caméra et les poses rattrapent ce mouvement avec douceur.</p>
+   </div>
+   <p class="side-meta">ROTATION CONTINUE / INTERPOLATION LISSE</p>
+ </section>
+ <section class="act act--sage chapter" data-scene="2" id="act-2">
+   <div class="act-content" data-side="right">
+     <p class="kicker">DÉMONSTRATION / 03</p>
+     <h2>Un vrai modèle, <em>pas une image animée.</em></h2>
+     <p>La boucle de l’anneau, le panneton, le porte-clés et la texture du cuir sont construits dans Three.js. Ils changent de perspective lorsque la clé pivote.</p>
+   </div>
+   <p class="side-meta">GÉOMÉTRIES THREE.JS / MATIÈRES BRONZE & CUIR</p>
+ </section>
+ <section class="act act--dark chapter" data-scene="3" id="act-3">
+   <div class="act-content" data-side="left">
+     <p class="kicker">DÉMONSTRATION / 04</p>
+     <h2>Sept poses. <em>Une seule trajectoire.</em></h2>
+     <p>Le modèle alterne de gauche à droite en conservant sa rotation sur lui-même. Il n’est jamais téléporté d’une zone à l’autre : les sections lui ménagent de l’espace.</p>
+   </div>
+   <p class="side-meta">ESPACE RÉSERVÉ / CHORÉGRAPHIE STABLE</p>
+ </section>
+ <section class="interlude" id="manifeste" aria-label="Interlude de la démonstration">
+   <div class="interlude-copy"><p class="kicker">ACTE 02 / CONTINUITÉ</p><h2>La page suit <em>l’objet.</em></h2><p>La mise en page a été construite autour du mouvement, pas l’inverse. La clé continue à tourner pendant la transition entre deux ambiances.</p></div>
+ </section>
+ <section class="detail" id="atelier" aria-label="Détails de la reproduction">
+   <div class="detail-copy"><p class="kicker">ACTE 03 / MÉTHODE</p><h2>Le même code.<br><em>Un nouveau site.</em></h2><p>Cette page possède son propre HTML, son propre CSS et son propre contrôleur de scroll. Seul le module de sculpture 3D, intégralement vérifié, est réutilisé à l’identique.</p><a href="#coffre" class="text-link">PASSER À LA SERRURE <span>↓</span></a></div>
+ </section>
+ <section class="handoff" id="passage" aria-label="Transition vers le coffre">
+   <div class="handoff-copy"><p class="kicker">ACTE 04 / FINAL</p><h2>Un dernier <em>geste.</em></h2><p>Au-delà de la dernière pose, une seconde animation synchronisée prend le relais : la clé rejoint la serrure.</p></div>
+ </section>
+ <section class="vault-finale" id="coffre" aria-label="Démonstration de la clé ouvrant un coffre en 3D">
+   <div class="vault-sticky">
+     <div class="vault-top"><span>TEST DE REPRODUCTION</span><span>DERNIER ACTE / LE COFFRE</span></div>
+     <div class="vault-copy"><p class="kicker">FIN DE PARCOURS / OUVERTURE</p><h2>La clé trouve<br><em>sa serrure.</em></h2><p>Défilez lentement : le coffre entre dans le champ, la clé se positionne, tourne, puis le couvercle s’ouvre réellement.</p><p class="vault-guide">CONTINUER À DÉFILER POUR OUVRIR ↓</p></div>
+     <div class="vault-progress" aria-hidden="true"><span id="vaultMeter"></span></div>
+     <p class="vault-state" id="vaultState" role="status" aria-live="polite">LE COFFRE EST FERMÉ</p>
+     <div class="vault-fallback" aria-hidden="true"><svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg"><path d="M42 88 L180 48 318 88 306 229 54 229Z" fill="#634a32" stroke="#c6a070" stroke-width="8"/><path d="M42 88 L180 24 318 88 180 143Z" fill="#856044" stroke="#d8b17a" stroke-width="8"/><rect x="156" y="138" width="48" height="57" rx="8" fill="#dab77f"/><path d="M180 151v26" stroke="#2d322d" stroke-width="9"/></svg></div>
+   </div>
+ </section>
+</main>
+<footer class="foot"><span>ATELIER 3D / PREUVE DE REPRODUCTION</span><a href="#act-0">REVOIR DEPUIS LE DÉBUT ↑</a><span>TEST INDÉPENDANT · NON COMMERCIAL</span></footer>
+<div class="dev-hud" aria-label="Indicateur d'état de l'animation"><span id="engineState">CHARGEMENT DE LA 3D</span><span id="motionState">TRAJET 0.0 / 6.0</span><span id="chestState">COFFRE 0%</span></div>
+</body>
+</html>
