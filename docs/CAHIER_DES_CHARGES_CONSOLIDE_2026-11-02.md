@@ -153,3 +153,16 @@ Le paquet `Pack_Procedures_Pro_V06_BROUILLON_INTERNE.zip` est un **livrable priv
 2. Tester les imports et exports sur les logiciels réellement annoncés, dont Excel si promis.
 3. Faire valider chacune des 15 procédures, chacun des sept modèles, leurs statuts et leurs exceptions par les personnes compétentes.
 4. Finaliser les versions, la licence, les PDF et les tests de délivrance **avant** de considérer le pack marchand.
+
+## 12. Lot de pré-recette CSV/PDF et dossier de relecture indépendant — 02/11/2026
+
+**Travail effectivement réalisé sur la branche isolée, sans toucher à l'accueil ou à la page produit déjà approuvés :**
+- Nouveau module `scripts/legacy-v03-qa.mjs` : parse des fichiers CSV à en-têtes historiques V0.3, UTF-8 BOM, cellules échappées, contrôle des colonnes, contrôle anti-formule/secret, jointures logement/rotation/incident, recoupement de blocage, recoupement R05/R06/R07, stock sous seuil et indicateurs mensuels cohérents en mois local.
+- `tests/legacy-v03-qa.test.mjs` : **21/21 tests**, 12 correspondant à un sous-cas automatisable de C01–C12 et neuf contrôles supplémentaires. CI globale **52/52 tests**, succès prouvé via https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41427069897.
+- Contrôle effectué sur les **sept exemples fictifs** du ZIP de travail : **zéro erreur, un avertissement intentionnel** concernant l'accusé de réception manquant de R05.
+- PDF consultable du Word V0.6 : **17 pages A4**, texte sélectionnable, préflight sans avertissement et pages vérifiées visuellement; la finalisation juridique/métier reste hors de portée des tests.
+- Archive privée V0.6.1, **26 fichiers** contrôlés par manifeste SHA-256 : `1b5dbbc48fe976c1af6cfb26d550fbb7b0f73825cec80418becb6a966508ba86`. Téléchargement Drive : https://drive.google.com/file/d/1Ly4g0hTqStu-qNO3nnE_8QhHPiddRAak/view
+- Dossier de relecture métier indépendant prêt en **DOCX éditable 5 pages et PDF**. Il contient les 15 fiches, sept registres, douze scénarios et une fiche de décision duplicable. 0/22 validations effectivement obtenues. Word Drive : https://docs.google.com/document/d/16MgCJmIseTNvndWihvBPH7qfQNwk0ibh/edit ; PDF Drive : https://drive.google.com/file/d/10GzimyuAk2TasVmn909SAPVRMH6tfsgq/view
+- Matrice de relecture résumée sans diffuser les procédures complètes dans `docs/MATRICE_REVUE_15_PROCEDURES_2026-11-02.md`.
+
+**Portes non fermées :** 0/22 avis métier indépendants; 0/12 mises en situation métier complètes ; imports réellement testés dans Excel : NON ; refonte/migration V0.3 vers R01–R07 : NON ; obligations légales, prix et vente : NON. **CI technique verte ne signifie pas produit commercial approuvé.**
