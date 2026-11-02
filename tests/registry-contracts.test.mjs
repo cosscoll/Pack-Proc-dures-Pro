@@ -4,8 +4,8 @@ import {contracts,registryById,validateRecord,validateReadiness} from '../script
 
 const now='2026-11-02T09:00:00+01:00';
 const row={record_ref:'REC-001',updated_at:now};
-const rotation={...row,rotation_ref:'ROT-001',property_ref:'LOG-001',checkout_at:'2026-11-02T10:00:00+01:00',checkin_at:'2026-11-02T16:00:00+01:00',assignment_ref:'ASS-001',acceptance_state:'confirmee',work_state:'termine',inspection_state:'conforme',availability_state:'pret',inspector_role:'controleur_designe',confirmation_ref:'ACK-001'};
-const anomaly={...row,incident_ref:'INC-001',rotation_ref:'ROT-001',severity:'bloquante',state:'ouverte',assigned_role:'coordinateur',description_code:'EQUIP-001'};
+const rotation={...row,rotation_ref:'ROT-001',property_ref:'LOG-001',checkout_at:'2026-11-02T10:00:00+01:00',checkin_at:'2026-11-02T16:00:00+01:00',assignment_ref:'ASS-001',acceptance_state:'confirmee',work_state:'termine',inspection_state:'conforme',availability_state:'pret',inspector_role:'controleur_designe',confirmation_ref:'ACK-001',inspection_ref:'CHECK-001',inspection_at:now};
+const anomaly={...row,incident_ref:'INC-001',rotation_ref:'ROT-001',severity:'critique',blocks_arrival:true,state:'ouverte',assigned_role:'coordinateur',description_code:'EQUIP-001'};
 function includesError(id,record,error){assert.ok(validateRecord(id,record).includes(error),id+': '+error);}
 
 test('registre R01–R07 : schema exhaustif et champs reserves',()=>{
@@ -97,4 +97,22 @@ test('couverture des procédures par les registres proposés',()=>{
  const covers=new Set(contracts.registries.flatMap(reg=>reg.related_procedures));
  const expected=Array.from({length:15},(_,i)=>'P'+String(i+1).padStart(2,'0'));
  assert.deepEqual([...covers].sort(),expected.sort());
+});
+
+test('source P08: gravité critique exige impact bloquant; majeure peut aussi bloquer',()=>{
+ includesError('R03',{...anomaly,blocks_arrival:false},'critique_non_bloquant');
+ assert.deepEqual(validateRecord('R03',{...anomaly,severity:'majeure',blocks_arrival:true}),[]);
+ assert.ok(validateReadiness(rotation,[{...anomaly,severity:'majeure',blocks_arrival:true}]).includes('incident_bloquant_non_verifie'));
+ assert.deepEqual(validateReadiness(rotation,[{...anomaly,severity:'mineure',blocks_arrival:false}]),[]);
+});
+
+test('source P05: preuve et heure de contrôle indispensables au statut prêt',()=>{
+ includesError('R02',{...rotation,inspection_ref:undefined},'pret_sans_preuves');
+ includesError('R02',{...rotation,inspection_at:undefined},'pret_sans_preuves');
+ assert.deepEqual(validateRecord('R02',{...rotation,availability_state:'a_corriger',inspection_state:'non_conforme'}),[]);
+ assert.deepEqual(validateRecord('R02',{...rotation,availability_state:'bloque',inspection_state:'non_conforme'}),[]);
+});
+
+test('un indicateur de blocage doit rester booléen strict',()=>{
+ includesError('R03',{...anomaly,severity:'mineure',blocks_arrival:'non'},'booleen_invalide:blocks_arrival');
 });
