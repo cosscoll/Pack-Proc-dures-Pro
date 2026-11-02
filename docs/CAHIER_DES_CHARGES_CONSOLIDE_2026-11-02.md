@@ -130,3 +130,26 @@ Ce lot ne change **ni les originaux**, ni le statut non marchand du projet.
 Un audit axe-core sans violation ne certifie pas la conformité RGAA/WCAG, les lecteurs d'écran, la lisibilité visuelle réelle, les performances GPU iPhone/Android ou la qualité de vente. La matrice R01–R07 reste non validée par des utilisateurs métiers; les CSV et Excel réels n'ont pas été testés, l'ancien manuel V0.2/ZIP V0.52 doit encore être confronté aux nouvelles spécifications, le tarif n'est pas approuvé et la boutique n'est pas autorisée.
 
 **Décision de diffusion :** prototype en PR brouillon, accueil officiel et fiche officielle inchangés. Toute intégration nécessite validation explicite du propriétaire.
+
+## 11. Contrôle des véritables livrables et correctif V0.6 — 02/11/2026
+
+L'archive source interne a été récupérée en lecture seule depuis Google Drive : `Business01_Pack_Pilote_V052_INTERNE_2026-10-15.zip` (SHA-256 `81e610819733ae03302e37359e64a1f2f62c428c44ee8f7226fa6abd3160022b`). **26/26 fichiers** du manifeste interne ont passé la vérification de taille et d'empreinte.
+
+**Constat :** manuel **15/15** procédures V0.2, sept modèles CSV V0.3 **entièrement vierges**, soit **88 colonnes et 0 donnée métier**. Le contrat expérimental `data/registry-contracts.json` est **incompatible en import direct** avec les modèles V0.3. Toute page commerciale devra dire « sept modèles de registres à remplir », pas suggérer un outil déjà connecté aux données du client.
+
+**Correctif de travail hors du dépôt public :** manuel DOCX V0.6 avec cinq corrections de formulation et de traçabilité dans P01, P05, P08. P01/P05/P08 portent la version `0.6-r1`, les 12 autres restent `0.2`; document rendu et inspecté sur **17 pages**. Les sept CSV existants ont été conservés **octet pour octet**. Sept jeux d'exemples fictifs ont été contrôlés par leurs en-têtes et références croisées ; aucune utilisation dans Excel réel.
+
+Le paquet `Pack_Procedures_Pro_V06_BROUILLON_INTERNE.zip` est un **livrable privé d'examen**, pas un produit approuvé : aucun PDF V0.6, aucune certification, aucun chargement sur GitHub public, aucun paiement.
+
+**Trace durable :**
+- Audit des résultats et des risques : `docs/AUDIT_ARCHIVE_SOURCE_2026-11-02.md`.
+- Contrat source des 7 CSV : `data/legacy-v03-csv-contract.json`.
+- Tests anti-migration implicite : `tests/legacy-v03-csv.test.mjs`.
+- Audit interne également archivé dans le Drive Business 01 :
+  https://docs.google.com/document/d/1mkZfp5byvoileQgg1zXSTvnfu9y34gB2qIAuSNBOuyY/edit
+
+**Nouvelles portes obligatoires avant vente :**
+1. Comparer les fichiers finalisés aux véritables formats V0.3/V0.6, et décider des transformations de données avec un praticien.
+2. Tester les imports et exports sur les logiciels réellement annoncés, dont Excel si promis.
+3. Faire valider chacune des 15 procédures, chacun des sept modèles, leurs statuts et leurs exceptions par les personnes compétentes.
+4. Finaliser les versions, la licence, les PDF et les tests de délivrance **avant** de considérer le pack marchand.
