@@ -64,6 +64,18 @@ try{
   assert.equal(await page.locator('[data-product-tab="P08"]').getAttribute('aria-selected'),'true');
   await page.keyboard.press('Home');
   assert.equal(await page.locator('[data-product-tab="P01"]').getAttribute('aria-selected'),'true');
+  // Quatre familles de documents : 15 procédures et 7 registres dans le sommaire.
+  assert.equal(await page.locator('.product-index__group').count(),4);
+  assert.equal(await page.locator('.product-index__items li').count(),22);
+  const collections=page.locator('.product-index__group');
+  assert.equal(await collections.nth(0).getAttribute('open'),'');
+  await collections.nth(3).locator('summary').click();
+  assert.equal(await collections.nth(3).getAttribute('open'),'');
+  assert.equal(await collections.nth(3).locator('li').count(),7);
+  await collections.nth(3).locator('summary').click();
+  assert.equal(await collections.nth(3).getAttribute('open'),null);
+  await page.locator('#inventaire').scrollIntoViewIfNeeded();
+  await page.screenshot({path:'screenshots/product-prototype-inventaire-'+width+'.png',animations:'disabled'});
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
   assert.ok(overflow<=1,'no horizontal overflow '+width+': '+overflow);
   assert.deepEqual(errors,[],'no JS exceptions at '+width);
