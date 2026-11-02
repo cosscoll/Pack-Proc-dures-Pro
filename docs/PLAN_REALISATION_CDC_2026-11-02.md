@@ -10,11 +10,11 @@ Version de travail liée à la PR #31 (DRAFT, non fusionnée).
 | SITE-04 | Navigation et hiérarchie H1 | **CORRIGÉ DANS PROTOTYPE** | coffre inclus dans main, H1 unique, tests automatiques | P0 |
 | SITE-05 | Contrôle qualité sur Safari/iOS, Android GPU | **NON TESTÉ** | QA matérielle, lecteur d'écran, zoom et FPS sur appareils | P1 |
 | SITE-06 | Anomalie collision/clé invisible dans l'accueil public (run 39790975753) | **À REPRODUIRE** | prouver visibilité et absence de chevauchement sans altérer trajectoire validée | P1 |
-| MET-01 | Inventaire P01–P15/R01–R07 | **22 ENTRÉES INVENTORIÉES** | data/validation-conciergerie.json, 22 titres et scénarios; 0/22 validés | P0 |
+| MET-01 | Inventaire P01–P15/R01–R07 | **22 ENTRÉES INVENTORIÉES, MATRICE DE RELECTURE CRÉÉE** | data/validation-conciergerie.json, 22 titres et scénarios; 0/22 validés | P0 |
 | MET-02 | Révisions par praticiens | **BLOQUÉ** | relecteurs qualifiés et preuves indépendantes sur 22 pièces | P0 |
-| MET-03 | Scénarios croisés métier | **12 PRÉPARÉS, 0 EXÉCUTÉ** | 12/12 scénarios réels acceptés, correctifs fermés | P0 |
-| MET-04 | Tests vrais formats DOCX/PDF/CSV/Excel | **PARTIEL** : DOCX corrigé rendu visuellement (17 p.), 7 CSV contrôlés structurés, Excel réel et PDF final non testés | QA complète sur fichiers finaux et import Excel réel | P0 |
-| MET-05 | Emballage du ZIP final sécurisé | **BROUILLON PRIVÉ V0.6** : ZIP intègre DOCX corrigé et CSV historiques inchangés; pas de livraison finale | archive finale validée métier/juridique, testée et versionnée | P1 |
+| MET-03 | Scénarios croisés métier | **12/12 SOUS-TESTS SYNTHÉTIQUES VALIDÉS, 0/12 RECETTES MÉTIER COMPLÈTES** | 12/12 scénarios réels acceptés, correctifs fermés | P0 |
+| MET-04 | Tests vrais formats DOCX/PDF/CSV/Excel | **PARTIEL** : DOCX V0.6 rendu (17 p.), PDF de consultation V0.6 produit (17 p., sélectionnable, sans erreur de préflight), 7 CSV cohérents sur exemples fictifs; Excel réel et PDF commercial final non validés | QA complète sur fichiers finaux et import Excel réel | P0 |
+| MET-05 | Emballage du ZIP final sécurisé | **BROUILLON PRIVÉ V0.6.1** : ZIP intègre DOCX corrigé et CSV historiques inchangés; pas de livraison finale | archive finale validée métier/juridique, testée et versionnée | P1 |
 | MARKET-01 | Entretiens conciergeries | **PROTOCOLE PRÉPARÉ** | 8–12 observations consenties, comptes rendus anonymisés | P1 |
 | MARKET-02 | Prix de vente définitif | **NON DÉCIDÉ** | coûts, TVA, concurrence, test terrain, décision écrite | P0 |
 | LEG-01 | Identité vendeur / conditions / licence | **NON VALIDÉ** | validation juridique documentée | P0 |
@@ -74,3 +74,11 @@ Le ZIP interne du 15 octobre a été récupéré en lecture seule, ouvert, et se
 - **Nouveau lot MET-08** : exemples CSV séparés et fictifs pour sept registres, relations vérifiées sans double réservation; tests d'import dans les tableurs réels à faire (PARTIEL).
 - **Preuves** : `docs/AUDIT_ARCHIVE_SOURCE_2026-11-02.md`, `data/legacy-v03-csv-contract.json` et `tests/legacy-v03-csv.test.mjs`. Les fichiers révisés complets restent hors GitHub public.
 - **Décision de publication** : archive V0.6 privée et prototype en branche; accueil validé préservé, aucune vente.
+
+## Lot de travail autonome — contrôle approfondi des CSV historiques et PDF
+- **MET-09 / Réalisé techniquement** : ajout du validateur `scripts/legacy-v03-qa.mjs` (CSV historique réel à champs exacts, règles anti-injection, jointures R01/R02/R03/R05/R06/R07, recoupement des incidents, pas de double rotation). `tests/legacy-v03-qa.test.mjs` : **21/21 réussis**, dont C01–C12 partiellement.
+- **MET-10 / Réalisé techniquement** : PDF de consultation issu du Word corrigé, **17 pages A4**, texte sélectionnable, préflight sans avertissement; paquet privé de pré-recette **V0.6.1** avec manifeste SHA-256 **26 fichiers vérifiés**, jamais publié dans GitHub.
+- **MET-11 / Prêt à soumettre** : matrice de contrôle professionnelle pour P01–P15/R01–R07 dans `docs/MATRICE_REVUE_15_PROCEDURES_2026-11-02.md`; **0/22 relectures indépendantes** effectuées.
+- **État des CSV fictifs testés** : zéro erreur, un avertissement volontaire sur une passation non accusée R05; cela illustre le contrôle attendu, sans prouver l'utilisation réelle d'une conciergerie.
+- **Preuve technique** : run GitHub https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41427069897 = **52/52 tests au vert**, prototype 3D et accessibilité automatisée au vert.
+- **Aucune activation commerciale, automatisation, fusion de PR ou modification du site validé**.
