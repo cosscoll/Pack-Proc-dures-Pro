@@ -104,7 +104,8 @@
         "assignment_ref": {
           "type": "ref",
           "required": false,
-          "max_length": 48
+          "max_length": 48,
+          "description": "Trace opaque d'attribution de mission (obligatoire si mission confirmée)"
         },
         "acceptance_state": {
           "type": "enum",
@@ -331,6 +332,18 @@
         "handoff_at": {
           "type": "date-time",
           "required": true
+        },
+        "sender_actor_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48,
+          "description": "Identifiant pseudonymisé de la personne qui transmet, pas de nom"
+        },
+        "receiver_actor_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48,
+          "description": "Identifiant pseudonymisé de la personne qui reçoit, distinct de l'émetteur"
         }
       }
     },
