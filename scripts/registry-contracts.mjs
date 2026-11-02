@@ -48,13 +48,14 @@ export function validateRecord(registryId,record){
  if(registryId==='R02'){
   if(record.checkout_at&&record.checkin_at&&Number.isFinite(Date.parse(record.checkout_at))&&Number.isFinite(Date.parse(record.checkin_at))&&Date.parse(record.checkin_at)<=Date.parse(record.checkout_at))errors.push('arrivee_avant_depart');
   if(record.acceptance_state==='confirmee'&&!record.confirmation_ref)errors.push('confirmation_sans_trace');
+  if(record.acceptance_state==='confirmee'&&!record.assignment_ref)errors.push('affectation_sans_trace');
   if(['en_cours','termine'].includes(record.work_state)&&record.acceptance_state!=='confirmee')errors.push('travail_sans_acceptation');
-  if(record.availability_state==='pret'&&(record.acceptance_state!=='confirmee'||record.work_state!=='termine'||record.inspection_state!=='conforme'||!record.inspector_role||!record.confirmation_ref))errors.push('pret_sans_preuves');
+  if(record.availability_state==='pret'&&(record.acceptance_state!=='confirmee'||record.work_state!=='termine'||record.inspection_state!=='conforme'||!record.inspector_role||!record.confirmation_ref||!record.assignment_ref))errors.push('pret_sans_preuves');
   if(record.inspection_state==='non_conforme'&&record.availability_state==='pret')errors.push('non_conforme_declare_pret');
  }
  if(registryId==='R03'&&record.state==='verifiee'&&!record.verified_at)errors.push('verification_sans_date');
  if(registryId==='R04'&&typeof record.quantity==='number'&&typeof record.alert_threshold==='number'&&record.quantity<record.alert_threshold&&record.replenishment_state==='aucun')errors.push('seuil_franchi_sans_action');
- if(registryId==='R05'&&record.ack_state==='acceptee'&&record.sender_role===record.receiver_role)errors.push('passation_meme_role_a_qualifier');
+ if(registryId==='R05'&&record.sender_actor_ref&&record.receiver_actor_ref&&record.sender_actor_ref===record.receiver_actor_ref)errors.push('passation_a_soi_meme');
  if(registryId==='R06'&&['restitue','clos'].includes(record.custody_state)&&!record.resolved_at)errors.push('objet_clos_sans_date');
  if(registryId==='R07'&&record.approval_state==='approuve'&&!record.reviewer_role)errors.push('approbation_sans_relecteur');
  return [...new Set(errors)];
