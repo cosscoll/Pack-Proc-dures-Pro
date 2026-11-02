@@ -1,5 +1,7 @@
 # Scénarios d'acceptation croisés — ROTATION 001
-Version de préparation : 02/11/2026 · Jeu de données **100 % fictif** · Aucun test métier réel réalisé.
+Version de préparation : 02/11/2026 · Jeu de données **100 % fictif** · **12/12 sous-cas techniques synthétiques couverts en CI**, mais **aucun des 12 scénarios complets n’a été exécuté par un professionnel**.
+
+Les contrôles automatisés du script `scripts/legacy-v03-qa.mjs` et `tests/legacy-v03-qa.test.mjs` détectent notamment incident bloquant, chevauchement, prêt sans contrôle, passation sans accusé, incohérences entre fichiers. **Ils ne démontrent pas qu’un intervenant peut exécuter réellement chaque procédure P01–P15**; les scénarios complets C01–C12 restent à faire.
 
 ## Objectif
 Vérifier que le manuel P01–P15 et les registres R01–R07 s'utilisent ensemble sans contradiction ni double saisie inutile. Une procédure peut être parfaitement rédigée et malgré tout inutilisable si son résultat ne se retrouve pas dans le bon registre.
@@ -59,4 +61,4 @@ DÉCISION : [NON TESTÉ / REFUSÉ / ACCEPTÉ]
 - Tous les documents partagent la même numérotation et version du manifeste de livraison.
 - Rapport final signé, écarts classés et limites communiquées avant l'offre commerciale.
 
-**État au 02/11 : 0/12 cas exécutés.** Ceci est un protocole, non une attestation de conformité.
+**État au 02/11 : 12/12 sous-tests synthétiques exécutés et réussis ; 0/12 cas complets exécutés par des praticiens ; 0/22 documents validés.** Ceci est un protocole, non une attestation de conformité.
