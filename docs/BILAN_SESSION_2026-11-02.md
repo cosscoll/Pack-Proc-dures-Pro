@@ -67,3 +67,40 @@ GitHub Actions : https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41
 
 ### Invariants de sécurité et publication
 Comparaison `main` → branche de travail effectuée : l'accueil `index.html`, `assets/cinematic.css`, `assets/apartment-scene.js`, `assets/experience.js` et la fiche officielle `pack-conciergerie.html` restent inchangés. La PR #31 demeure un **brouillon non fusionné**, sans vente, checkout ni publication du prototype sur le site d'origine. Aucune automatisation ChatGPT créée ou réactivée.
+
+## Session complémentaire — consolidation métier et page produit (02/11/2026)
+**Objectif :** réduire l'écart entre cahier des charges, documents sources réels et prototype commercial, sans toucher à la version validée.
+
+### Source métier confrontée
+- Document Drive original `Business01_Echantillon_3_Procedures_A4_V03.docx` consulté en lecture seule : P01, P05 et P08, tous indiqués SOP V0.1, édités le 15/10. La nomenclature V03 du contenant n'établit pas la version métier du pack.
+- **5 écarts E01–E05** documentés, notamment gravité « critique/majeur/mineur » P08, états « prêt/à corriger/bloqué » P05 et mention du « dernier contrôle » dans la clôture de planification P01.
+- Archive V0.52 et manuel V0.2 non ouverts dans ce lot; aucune validation métier déduite de l'échantillon.
+
+### Produit : travail nouveau
+- `data/registry-contracts.json` : structure proposée des sept registres R01–R07, types/énumérations et liens P01–P15.
+- `scripts/registry-contracts.mjs` + `tests/registry-contracts.test.mjs` : gardes sur affectation, confirmation, inspection, incident bloquant, stock, passation, version, données minimales et injection de formule.
+- `docs/CONTRATS_REGISTRES_R01_R07_2026-11-02.md` : usage des champs et limites.
+- `docs/RELECTURE_P01_P05_P08_2026-11-02.md` et `docs/AUDIT_ECHANTILLON_DOCX_2026-11-02.md` : dossier de validation et divergences.
+- Prototype: nouveau sommaire natif en **quatre familles (15 procédures et 7 registres)**, toujours sans les fichiers premium.
+- Contrôle axe-core ajouté à l'intégration continue; corrections d'animations d'opacité et de contrastes faites uniquement dans les CSS/JS du prototype.
+
+### Recette finale de ce lot
+**GitHub Actions réussi :** https://github.com/cosscoll/Pack-Proc-dures-Pro/actions/runs/41417747815
+
+- **25 tests statiques passés**, 0 échec ;
+- WebGL2 / clé-coffre sur 1440, 768 et 390 px; mode réduit à 320 px ;
+- vérification de l'ouverture et de la fermeture réversible du coffre ;
+- inventaire interactif 22/22, bascule de P01/P05/P08 et clavier contrôlés ;
+- aucun débordement horizontal ni erreur JavaScript dans les parcours automatisés ;
+- **9 audits axe-core WCAG ciblés sans violation détectée** : 3 sections (coffre, inventaire, extraits) × 3 largeurs (1440, 390, 320).
+
+Les premiers contrôles axe-core sur les nouveautés ont échoué à cause de l'opacité d'un ancien groupe, du contraste du sceau et de la transition du repère actif. Les trois causes ont été corrigées **dans le prototype** avant la recette verte; ne pas cacher les anciens échecs de l'historique Actions.
+
+### Restent ouverts
+1. Relecture graphique humaine du prototype et appareils iOS/Android réels.
+2. 22/22 validations métier indépendantes et 12/12 scénarios fonctionnels sur les **fichiers finaux**.
+3. Import/export réel des CSV et contrôle Microsoft Excel, PDF/DOCX finaux et manifestes SHA.
+4. Prix, B2B/B2C, identité fiscale/juridique, contrats et paiements sandbox à valider.
+5. Intégration du prototype : **pas de fusion de la PR #31**, pas de publication commerciale.
+
+**Statut : progrès vérifié sur la spécification et le prototype, lancement toujours bloqué.**
