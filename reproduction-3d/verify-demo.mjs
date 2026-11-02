@@ -57,9 +57,10 @@ try{
    assert.equal(opened.chestVisible,true);
    await page.screenshot({path:'screenshots/reproduction-3d-coffre-'+width+'.png',animations:'disabled',fullPage:false});
    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
-   await page.waitForFunction(()=>window.rotationScene?.getVaultState()?.open<.04,{timeout:18000});
+   await page.waitForFunction(()=>{const v=window.rotationScene?.getVaultState();const t=window.rotationScene?.getMotionState();return v&&t&&v.progress<.006&&v.chestVisible===false&&t.actual<.05;},null,{timeout:18000});
    const reverse=await page.evaluate(()=>window.rotationScene.getVaultState());
-   assert.ok(reverse.open<.04,'scroll inverse = coffre fermé');
+   assert.equal(reverse.chestVisible,false,'le coffre doit entièrement disparaître après retour');
+   assert.ok(reverse.open<.01,'scroll inverse = coffre fermé');
    console.log('DEMO_KEY_CHEST_REVERSIBLE_OK '+JSON.stringify({width,open:opened.open,closed:reverse.open}));
   }else{
    assert.equal(await page.locator('.vault-fallback svg').count(),1);
