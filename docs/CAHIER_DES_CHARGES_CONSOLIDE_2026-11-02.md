@@ -97,3 +97,20 @@ Ces sources n'équivalent pas à une validation juridique.
 - **Pack validé :** matrice 22/22 signée, toutes réserves bloquantes corrigées et archives vérifiées.
 - **Boutique opérationnelle :** revue juridique complète, prix validé, sandbox de bout en bout, puis autorisation expresse d'activer le réel.
 - **Vente vérifiée :** commande réelle autorisée, paiement confirmé, facture/confirmation et livraison tracées, demande de remboursement/retrait testée.
+
+## 9. Traçabilité vérifiable du cahier des charges — complément du 02/11
+Les exigences préparées sont documentées dans les ressources **de travail**, non dans une offre commercialisable.
+
+| Sujet | Source de travail | Critère de clôture |
+|---|---|---|
+| Roadmap / priorités | `docs/PLAN_REALISATION_CDC_2026-11-02.md` | jalons 1, 2 et 3 et dépendances fermés |
+| Inventaire des pièces | `data/validation-conciergerie.json` | P01–P15, R01–R07; relecteur, version, SHA, preuve et tests formats |
+| Test automatisé de l'inventaire | `tests/validation-manifest.test.mjs` | tout statut « valide » exige preuves de version et formats |
+| Matrice métier | `docs/RECETTE_METIER_CONCIERGERIE_2026-11-02.md` | revue professionnelle 22/22 |
+| Cas end-to-end | `docs/SCENARIOS_ACCEPTATION_2026-11-02.md` | 12/12 scénarios testés sur fichiers finaux |
+| Marché et prix | `docs/VALIDATION_OFFRE_PRIX_2026-11-02.md` | besoins et tarifs vérifiés avant décision |
+| Obligations légales | `docs/CONFORMITE_COMMERCE_NUMERIQUE_2026-11-02.md` | statut B2B/B2C, rétractation, facturation, RGPD et licence validés |
+| Paiement et livraison | `docs/SPEC_PAIEMENT_LIVRAISON_NON_ACTIVE_2026-11-02.md` | 18 tests sandbox officiels, aucune activation sans autorisation |
+| Contrôle UX technique | `tests/product-preview-browser.mjs` | clé/coffre/WebGL réversibles, tests responsive, clavier, modes de repli |
+
+**Règle de preuve :** une suite de tests réussie ne ferme que les critères qu'elle couvre. Elle ne valide ni la qualité métier des documents, ni le rendu visuel sur téléphone réel, ni la conformité juridique, ni l'acceptation du propriétaire.
