@@ -1,0 +1,67 @@
+# Plan d'exécution du cahier des charges — état contrôlé 02/11/2026
+Version de travail liée à la PR #31 (DRAFT, non fusionnée).
+
+## Portes et dépendances
+| ID | Lot | État constaté | Preuve / critère de clôture | Priorité |
+|---|---|---|---|---|
+| SITE-01 | Accueil 3D préservé | **PRÉSERVÉ** | Aucun des fichiers approuvés n'est modifié dans la PR #31 | P0 |
+| SITE-02 | Page produit clé → coffre | **PROTOTYPE** | Rendu WebGL / scrolling réversible / responsive validés en CI; revue esthétique propriétaire en attente | P0 |
+| SITE-03 | Extraits P01/P05/P08 interactifs | **PROTOTYPE TESTÉ** | Onglets clavier et liens P01 testés en CI | P0 |
+| SITE-04 | Navigation et hiérarchie H1 | **CORRIGÉ DANS PROTOTYPE** | coffre inclus dans main, H1 unique, tests automatiques | P0 |
+| SITE-05 | Contrôle qualité sur Safari/iOS, Android GPU | **NON TESTÉ** | QA matérielle, lecteur d'écran, zoom et FPS sur appareils | P1 |
+| SITE-06 | Anomalie collision/clé invisible dans l'accueil public (run 39790975753) | **À REPRODUIRE** | prouver visibilité et absence de chevauchement sans altérer trajectoire validée | P1 |
+| MET-01 | Inventaire P01–P15/R01–R07 | **22 ENTRÉES INVENTORIÉES** | data/validation-conciergerie.json, 22 titres et scénarios; 0/22 validés | P0 |
+| MET-02 | Révisions par praticiens | **BLOQUÉ** | relecteurs qualifiés et preuves indépendantes sur 22 pièces | P0 |
+| MET-03 | Scénarios croisés métier | **12 PRÉPARÉS, 0 EXÉCUTÉ** | 12/12 scénarios réels acceptés, correctifs fermés | P0 |
+| MET-04 | Tests vrais formats DOCX/PDF/CSV/Excel | **NON TESTÉ** | dossier de QA reproductible et pièces versionnées | P0 |
+| MET-05 | Emballage du ZIP final sécurisé | **SPÉCIFIÉ** | SHA-256, manifeste et copies privées revus | P1 |
+| MARKET-01 | Entretiens conciergeries | **PROTOCOLE PRÉPARÉ** | 8–12 observations consenties, comptes rendus anonymisés | P1 |
+| MARKET-02 | Prix de vente définitif | **NON DÉCIDÉ** | coûts, TVA, concurrence, test terrain, décision écrite | P0 |
+| LEG-01 | Identité vendeur / conditions / licence | **NON VALIDÉ** | validation juridique documentée | P0 |
+| LEG-02 | Parcours B2C rétractation en ligne | **SPÉCIFIÉ, NON DÉPLOYÉ** | champs, accusé et preuves conformes si B2C | P0 |
+| LEG-03 | Facturation électronique 2026/2027 | **PÉRIMÈTRE À ARBITRER** | statut assujetti, canal, opérateur agréé, e-reporting | P0 |
+| PAY-01 | Checkout & webhooks PSP | **SPÉCIFIÉ, NON BRANCHÉ** | tests sandbox 18/18, sécurité et approbation explicite | P0 |
+| PAY-02 | Livraison automatique | **SPÉCIFIÉ, NON BRANCHÉ** | archives privées, jetons expirables, remboursement/reprise testés | P0 |
+| LAUNCH-01 | Publication finale et mesure | **INTERDITE À CE STADE** | accord explicite après fermeture des portes précédentes | P0 |
+
+## Ce qui peut avancer sans aucune intervention
+- Démonstration non marchande du pack et corrections de code **dans le prototype isolé seulement**.
+- Renforcer les tests HTTP / clavier / reduced-motion / scroll aller-retour / cohérence des poses 3D.
+- Affiner les fiches de recette métier et rédiger les jeux de cas **fictifs**.
+- Contrôler les nomenclatures, inventaires et intégrité sans exposer les archives premium.
+- Préparer les formulaires d'entretiens et la documentation du parcours marchand, sans envoyer ni engager de dépense.
+
+## Ce qui réclamera une décision ou une preuve extérieure
+- Approbation finale du design produit.
+- Audit par des praticiens réels de la conciergerie et tests logiciels annoncés.
+- Identité et statut du vendeur, territoire, B2B/B2C, prix TTC et licence.
+- Configuration d'un PSP et décision d'activer le sandbox puis le réel.
+- Publication et prospection : pas d'initiative autonome sans autorisation commerciale.
+
+## Critère de jalon 1 : « prototype de page produit à soumettre »
+- [x] Clé et coffre au début, sur branche séparée.
+- [x] 3 extraits interactifs.
+- [x] WebGL2/320 reduced-motion, zéro débordement dans Chromium CI.
+- [x] Ouverture 3D du coffre; fermeture inverse couverte par recette.
+- [x] Accueil et fiche originale inchangés.
+- [ ] Revue humaine des captures desktop/mobile.
+- [ ] Vérification Safari/Android matériel.
+- [ ] Réglage fin du tempo, des interactions hover et des zones de texte selon revue.
+
+## Critère de jalon 2 : « pack pilote prêt pour validation professionnelle »
+- [x] 22 références listées et associées à un scénario.
+- [x] 12 cas transversaux de tests préparés.
+- [ ] Inventaire des fichiers réels avec versions et SHA de chaque entrée.
+- [ ] Couverture de 15 procédures et 7 registres par revue métier indépendante.
+- [ ] Tests réels DOCX/PDF/CSV et tableur.
+- [ ] Rapport correctifs + versions figées.
+
+## Critère de jalon 3 : « autorisation de mise en vente »
+- [ ] Qualité métier du produit attestée.
+- [ ] Coût et prix final approuvés.
+- [ ] Conformité vendeur/CGV/RGPD/rétractation/facturation validée selon champ.
+- [ ] 18 cas PSP sandbox testés sur infrastructure autorisée.
+- [ ] Licence, support, remboursement, livraison, emails contractuels prêts.
+- [ ] Approbation écrite d'ouvrir les ventes.
+
+**Avancement sans ambiguïté :** aucun de ces trois jalons n'est entièrement clos au 02/11/2026. Les validations métiers, juridiques et commerciales restent à réaliser, pas à inventer.
