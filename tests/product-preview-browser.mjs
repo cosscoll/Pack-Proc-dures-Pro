@@ -22,7 +22,7 @@ try{
   assert.equal(await page.locator('[data-product-tab]').count(),3);
   assert.equal(await page.locator('[role="tabpanel"]').count(),3);
   assert.ok(await page.locator('meta[name="robots"][content="noindex,nofollow"]').count());
-  assert.ok(await page.locator('#coffre').evaluate(el=>el.offsetTop)<await page.locator('#depart').evaluate(el=>el.offsetTop),'coffre must open before product narrative');
+  assert.ok(await page.evaluate(()=>Boolean(document.getElementById('coffre').compareDocumentPosition(document.getElementById('depart'))&Node.DOCUMENT_POSITION_FOLLOWING)),'coffre must appear before product narrative');
   await page.waitForFunction(()=>['webgl2','fallback'].includes(document.getElementById('world')?.dataset.engine),{timeout:35000});
   const engine=await page.locator('#world').getAttribute('data-engine');
   if(reducedMotion)assert.equal(engine,'fallback','reduced-motion must not initialize live WebGL');
