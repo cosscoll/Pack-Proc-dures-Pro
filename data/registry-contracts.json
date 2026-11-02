@@ -142,7 +142,9 @@
           "type": "enum",
           "required": true,
           "values": [
-            "non_pret",
+            "non_evalue",
+            "a_corriger",
+            "bloque",
             "pret"
           ]
         },
@@ -159,6 +161,17 @@
           "type": "ref",
           "required": false,
           "max_length": 48
+        },
+        "inspection_ref": {
+          "type": "ref",
+          "required": false,
+          "max_length": 48,
+          "description": "Preuve opaque du contrôle qualité; nécessaire pour déclarer prêt"
+        },
+        "inspection_at": {
+          "type": "date-time",
+          "required": false,
+          "description": "Date/heure du contrôle final; distincte de la date de confirmation P01"
         }
       }
     },
@@ -191,7 +204,7 @@
           "values": [
             "mineure",
             "majeure",
-            "bloquante"
+            "critique"
           ]
         },
         "state": {
@@ -222,6 +235,11 @@
           "type": "ref",
           "required": true,
           "max_length": 48
+        },
+        "blocks_arrival": {
+          "type": "boolean",
+          "required": true,
+          "description": "Impact bloquant sur la remise à disposition, distinct de la gravité; critique implique true"
         }
       }
     },
