@@ -15,3 +15,8 @@ jobs:
         run: node --version
       - name: Check page and interactions
         run: node --test tests/home.test.mjs
+      - name: Contrôler les preuves avant commercialisation (données fictives seulement)
+        run: |
+          node --test tests/qualify-pack.test.mjs
+          node scripts/qualify-pack.mjs > /tmp/etat-pack-conciergerie.json
+          node -e "const x=require('/tmp/etat-pack-conciergerie.json'); console.log('Produit validé:',x.product_ready,'Commercialisation autorisée:',x.commercial_ready,'Documents:',x.files_validated+'/'+x.files_total,'Scénarios:',x.cases_accepted+'/'+x.cases_total)"
