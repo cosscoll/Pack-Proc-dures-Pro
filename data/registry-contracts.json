@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-02",
+  "product": "ROTATION-001",
+  "status": "specification_preparatoire_non_validee",
+  "note": "Schémas techniques des colonnes proposés pour la recette. Ne constituent ni les registres premium définitifs ni une attestation de fonctionnement dans un tableur réel.",
+  "forbidden_columns": [
+    "password",
+    "code_acces",
+    "access_code",
+    "cle_secrete",
+    "api_key",
+    "adresse_voyageur",
+    "telephone_voyageur",
+    "email_voyageur",
+    "nom_voyageur",
+    "token",
+    "iban"
+  ],
+  "common_fields": {
+    "record_ref": {
+      "type": "ref",
+      "required": true,
+      "max_length": 48,
+      "description": "Identifiant opaque de la ligne, jamais un nom ou une donnée personnelle"
+    },
+    "updated_at": {
+      "type": "date-time",
+      "required": true,
+      "description": "Date de dernière modification, ISO 8601 avec fuseau"
+    }
+  },
+  "registries": [
+    {
+      "id": "R01",
+      "name": "Fiches logements",
+      "purpose": "Référencer un bien sans codes d'accès ni coordonnées personnelles",
+      "related_procedures": [
+        "P04",
+        "P05",
+        "P07",
+        "P10",
+        "P13"
+      ],
+      "fields": {
+        "property_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "property_label": {
+          "type": "text",
+          "required": false,
+          "max_length": 60
+        },
+        "responsible_role": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "proprietaire_mandant"
+          ]
+        },
+        "checklist_version": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        }
+      }
+    },
+    {
+      "id": "R02",
+      "name": "Suivi des rotations",
+      "purpose": "Distinguer affectation, confirmation, intervention, contrôle et état prêt",
+      "related_procedures": [
+        "P01",
+        "P02",
+        "P03",
+        "P05",
+        "P08",
+        "P11",
+        "P15"
+      ],
+      "fields": {
+        "rotation_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "property_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "checkout_at": {
+          "type": "date-time",
+          "required": true
+        },
+        "checkin_at": {
+          "type": "date-time",
+          "required": true
+        },
+        "assignment_ref": {
+          "type": "ref",
+          "required": false,
+          "max_length": 48,
+          "description": "Trace opaque d'attribution de mission (obligatoire si mission confirmée)"
+        },
+        "acceptance_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "non_proposee",
+            "proposee",
+            "confirmee",
+            "refusee"
+          ]
+        },
+        "work_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "non_planifie",
+            "planifie",
+            "en_cours",
+            "termine",
+            "annule"
+          ]
+        },
+        "inspection_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "non_controle",
+            "en_attente",
+            "conforme",
+            "non_conforme"
+          ]
+        },
+        "availability_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "non_evalue",
+            "a_corriger",
+            "bloque",
+            "pret"
+          ]
+        },
+        "inspector_role": {
+          "type": "enum",
+          "required": false,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "controleur_designe"
+          ]
+        },
+        "confirmation_ref": {
+          "type": "ref",
+          "required": false,
+          "max_length": 48
+        },
+        "inspection_ref": {
+          "type": "ref",
+          "required": false,
+          "max_length": 48,
+          "description": "Preuve opaque du contrôle qualité; nécessaire pour déclarer prêt"
+        },
+        "inspection_at": {
+          "type": "date-time",
+          "required": false,
+          "description": "Date/heure du contrôle final; distincte de la date de confirmation P01"
+        }
+      }
+    },
+    {
+      "id": "R03",
+      "name": "Journal des anomalies",
+      "purpose": "Garder la trace des anomalies et de leur résolution indépendamment du statut de rotation",
+      "related_procedures": [
+        "P05",
+        "P08",
+        "P10",
+        "P12",
+        "P14",
+        "P15"
+      ],
+      "fields": {
+        "incident_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "rotation_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "severity": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "mineure",
+            "majeure",
+            "critique"
+          ]
+        },
+        "state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "ouverte",
+            "attribuee",
+            "en_cours",
+            "corrigee",
+            "verifiee"
+          ]
+        },
+        "assigned_role": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "prestataire_habilite"
+          ]
+        },
+        "verified_at": {
+          "type": "date-time",
+          "required": false
+        },
+        "description_code": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "blocks_arrival": {
+          "type": "boolean",
+          "required": true,
+          "description": "Impact bloquant sur la remise à disposition, distinct de la gravité; critique implique true"
+        }
+      }
+    },
+    {
+      "id": "R04",
+      "name": "Suivi des stocks",
+      "purpose": "Tracer les niveaux sans utiliser d'achats automatiques ou d'informations personnelles",
+      "related_procedures": [
+        "P06",
+        "P07",
+        "P15"
+      ],
+      "fields": {
+        "stock_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "property_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "item_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "quantity": {
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 1000000
+        },
+        "alert_threshold": {
+          "type": "integer",
+          "required": true,
+          "min": 0,
+          "max": 1000000
+        },
+        "replenishment_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "aucun",
+            "a_etudier",
+            "decide",
+            "effectue"
+          ]
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "name": "Passation d'équipe",
+      "purpose": "Créer une passation explicite des tâches ouvertes entre rôles",
+      "related_procedures": [
+        "P03",
+        "P08",
+        "P10",
+        "P11",
+        "P12",
+        "P13"
+      ],
+      "fields": {
+        "handoff_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "rotation_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "sender_role": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "prestataire_habilite"
+          ]
+        },
+        "receiver_role": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "prestataire_habilite"
+          ]
+        },
+        "pending_action_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "ack_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "en_attente",
+            "acceptee",
+            "refusee"
+          ]
+        },
+        "handoff_at": {
+          "type": "date-time",
+          "required": true
+        },
+        "sender_actor_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48,
+          "description": "Identifiant pseudonymisé de la personne qui transmet, pas de nom"
+        },
+        "receiver_actor_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48,
+          "description": "Identifiant pseudonymisé de la personne qui reçoit, distinct de l'émetteur"
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "name": "Objets trouvés",
+      "purpose": "Tracer un objet oublié via références minimales, sans nom de voyageur",
+      "related_procedures": [
+        "P09"
+      ],
+      "fields": {
+        "object_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "property_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "category": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "textile",
+            "electronique",
+            "document",
+            "accessoire",
+            "autre"
+          ]
+        },
+        "found_at": {
+          "type": "date-time",
+          "required": true
+        },
+        "custody_role": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "prestataire_habilite"
+          ]
+        },
+        "custody_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "signale",
+            "stocke",
+            "transfert_en_cours",
+            "restitue",
+            "clos"
+          ]
+        },
+        "retention_rule_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "resolved_at": {
+          "type": "date-time",
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "name": "Journal des versions",
+      "purpose": "Pouvoir retracer les modifications des documents sans exposer de données métier",
+      "related_procedures": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15"
+      ],
+      "fields": {
+        "artifact_ref": {
+          "type": "ref",
+          "required": true,
+          "max_length": 48
+        },
+        "version": {
+          "type": "version",
+          "required": true
+        },
+        "sha256": {
+          "type": "sha256",
+          "required": true
+        },
+        "approval_state": {
+          "type": "enum",
+          "required": true,
+          "values": [
+            "brouillon",
+            "a_revoir",
+            "approuve",
+            "obsolete"
+          ]
+        },
+        "reviewer_role": {
+          "type": "enum",
+          "required": false,
+          "values": [
+            "coordinateur",
+            "responsable_site",
+            "expert_metier"
+          ]
+        },
+        "revision_at": {
+          "type": "date-time",
+          "required": true
+        }
+      }
+    }
+  ]
+}

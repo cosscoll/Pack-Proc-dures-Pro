@@ -1,0 +1,45 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {parseCsv,parseRegistryCsv,validateLegacyPack,summarizeLegacyMonth} from '../scripts/legacy-v03-qa.mjs';
+const schema=JSON.parse(readFileSync(new URL('../data/legacy-v03-csv-contract.json',import.meta.url),'utf8'));
+const row=(id,values={})=>Object.fromEntries(schema.registries.find(x=>x.id===id).columns.map(k=>[k,values[k]??'']));
+const t='2026-11-02T10:00:00+01:00',t2='2026-11-02T16:00:00+01:00',
+ t3='2026-11-03T10:00:00+01:00',t4='2026-11-03T16:00:00+01:00';
+function fixtures(){
+ return {
+  R01:[row('R01',{id_logement:'LOG-01',version:'V0.3',maj_le:t,referent_ref:'RESP01',type_logement:'T2'})],
+  R02:[
+   row('R02',{id_rotation:'ROT-01',id_logement:'LOG-01',depart_prevu_local:t,arrivee_prevue_locale:t2,fuseau_horaire:'Europe/Paris',intervenant_ref:'TEAM01',statut_mission:'CONFIRMEE',confirmation_mission_le:'2026-11-02T09:00:00+01:00',statut_preparation:'TERMINE',controleur_ref:'CTRL01',controle_effectue_le:'2026-11-02T12:00:00+01:00',statut_controle:'CONFORME',anomalies_bloquantes_ouvertes:'0',statut_final:'PRET',validateur_ref:'RESP01',validation_finale_le:'2026-11-02T12:05:00+01:00',prochaine_action:'aucune',responsable_action:'RESP01',derniere_maj_le:'2026-11-02T12:10:00+01:00'}),
+   row('R02',{id_rotation:'ROT-02',id_logement:'LOG-01',depart_prevu_local:t3,arrivee_prevue_locale:t4,fuseau_horaire:'Europe/Paris',intervenant_ref:'TEAM02',statut_mission:'CONFIRMEE',confirmation_mission_le:'2026-11-03T09:00:00+01:00',statut_preparation:'EN_COURS',statut_controle:'NON_CONTROLE',anomalies_bloquantes_ouvertes:'1',statut_final:'BLOQUE',prochaine_action:'recontrole',responsable_action:'RESP01'})
+  ],
+  R03:[row('R03',{id_incident:'INC-01',id_rotation:'ROT-02',id_logement:'LOG-01',signalee_le:'2026-11-03T11:00:00+01:00',type:'equipement',gravite:'critique',description_factuelle:'controle_et_securisation',impact_arrivee:'BLOQUE',decideur_ref:'RESP01',action_decidee:'contacter_professionnel',responsable_action:'TEAM02',echeance_locale:t4,statut:'OUVERT'})],
+  R04:[row('R04',{id_logement:'LOG-01',controle_le:t,article:'linge',unite:'lot',stock_constate:'2',seuil_local:'4',quantite_a_reapprovisionner:'2',action_decidee:'REAPPROVISIONNER',responsable_ref:'RESP01',statut:'A_TRAITER',maj_le:t})],
+  R05:[row('R05',{transmission_le:'2026-11-03T12:00:00+01:00',coordinateur_sortant_ref:'COORD01',coordinateur_entrant_ref:'COORD02',id_rotation:'ROT-02',statut_factuel:'BLOQUE',priorite:'HAUTE',prochaine_action:'recontrole',responsable_action:'RESP02',echeance_locale:t4,accuse_reception_le:'2026-11-03T12:05:00+01:00'})],
+  R06:[row('R06',{id_objet:'OBJ-01',id_logement:'LOG-01',constate_le:'2026-11-02T11:00:00+01:00',description_minimale:'accessoire',responsable_ref:'RESP01',lieu_garde_securise_reference:'GARDE01',decision_restitution:'A_DECIDER',statut:'EN_GARDE',date_limite_traitement:'2026-12-02'})],
+  R07:[row('R07',{id_document:'P01',version_precedente:'V0.2',nouvelle_version:'V0.6-r1',modification:'clarification',motif:'precision',redacteur_ref:'RED01',statut_validation:'EN_REVISION',prochaine_revue:'2026-11-16'})]
+ };
+}
+const codes=x=>new Set(validateLegacyPack(x).errors.map(e=>e.code));
+const good=()=>{const r=validateLegacyPack(fixtures());assert.deepEqual(r.errors,[]);return r};
+test('C01 affectation et preuve de confirmation avant prêt',()=>{const d=fixtures();assert.equal(good().valid,true);d.R02[0].confirmation_mission_le='';assert.ok(codes(d).has('mission_confirmee_sans_date'));});
+test('C02 arrivée avancée: refuse les créneaux qui se superposent pour un même logement',()=>{const d=fixtures();d.R02[1].depart_prevu_local='2026-11-02T14:00:00+01:00';d.R02[1].arrivee_prevue_locale='2026-11-02T18:00:00+01:00';assert.ok(codes(d).has('rotations_superposees'));});
+test('C03 mission non confirmée ne peut être déclarée prête',()=>{const d=fixtures();d.R02[0].statut_mission='PROPOSEE';assert.ok(codes(d).has('pret_sans_mission_confirmee'));});
+test('C04 prestation achevée ne rend pas une rotation prête avec anomalie bloquante',()=>{const d=fixtures();const r=d.R02[1];Object.assign(r,{statut_preparation:'TERMINE',statut_controle:'CONFORME',controleur_ref:'CTRL02',controle_effectue_le:'2026-11-03T12:00:00+01:00',statut_final:'PRET',validateur_ref:'RESP01',validation_finale_le:'2026-11-03T12:05:00+01:00'});assert.ok(codes(d).has('pret_malgre_incident_bloquant'));});
+test('C05 confidentialité: rejette un code accès introduit en description et des colonnes secrètes',()=>{const d=fixtures();d.R01[0].consignes_non_sensibles='code d’accès: 1234';d.R01[0].password='abcd';const result=codes(d);assert.ok(result.has('secret_potentiel'));assert.ok(result.has('colonne_non_autorisee'));});
+test('C06 objet trouvé: garde traçable, clôture uniquement datée',()=>{const d=fixtures();d.R06[0].statut='CLOTURE';assert.ok(codes(d).has('objet_clos_sans_date'));d.R06[0].cloture_le='2026-11-05T14:00:00+01:00';assert.ok(!codes(d).has('objet_clos_sans_date'));});
+test('C07 sous-seuil: approvisionnement quantifié, responsable et action',()=>{const d=fixtures();d.R04[0].quantite_a_reapprovisionner='1';assert.ok(codes(d).has('reapprovisionnement_insuffisant'));d.R04[0].quantite_a_reapprovisionner='2';assert.ok(!codes(d).has('reapprovisionnement_insuffisant'));});
+test('C08 maintenance: clôture d’incident exige recontrôle distinct',()=>{const d=fixtures();d.R03[0].statut='CLOTURE';assert.ok(codes(d).has('cloture_sans_verification'));d.R03[0].resolution_verifiee_le='2026-11-03T14:00:00+01:00';d.R03[0].cloture_le='2026-11-03T14:05:00+01:00';d.R02[1].anomalies_bloquantes_ouvertes='0';assert.equal(validateLegacyPack(d).valid,true);});
+test('C09 réclamation avec escalade: personne responsable exigée',()=>{const d=fixtures();d.R05[0].responsable_action='';assert.ok(codes(d).has('action_sans_responsable'));});
+test('C10 changement coordinateur: passation à soi-même interdite et non-réponse signalée',()=>{const d=fixtures();d.R05[0].coordinateur_entrant_ref='COORD01';assert.ok(codes(d).has('passation_a_soi_meme'));d.R05[0].coordinateur_entrant_ref='COORD02';d.R05[0].accuse_reception_le='';const result=validateLegacyPack(d);assert.equal(result.valid,true);assert.ok(result.warnings.some(x=>x.code==='passation_non_accusee'));});
+test('C11 consignes intervenants: injection CSV dans une fiche refusée',()=>{const d=fixtures();d.R01[0].consignes_non_sensibles=' =HYPERLINK("https://example.test")';assert.ok(codes(d).has('injection_tableur'));});
+test('C12 indicateurs reproductibles et regroupés par mois LOCAL',()=>{const d=fixtures();const a=summarizeLegacyMonth(d,'2026-11');assert.deepEqual(a,{month:'2026-11',rotations:2,ready:1,blocked:1,other:0,incident_count:1,blocking_incidents_open:1,stock_alerts:1,pending_handoffs:0,objects_found:1});assert.equal(a.rotations,a.ready+a.blocked+a.other);});
+test('intégrité CSV BOM, accents, points-virgules cités et guillemets doubles',()=>{const parsed=parseCsv('\uFEFFa;b;c\r\n"Bonjour; ici";"il dit ""bonjour""";été\r\n');assert.deepEqual(parsed.header,['a','b','c']);assert.deepEqual(parsed.rows[0].values,['Bonjour; ici','il dit "bonjour"','été']);});
+test('rejet CSV non conforme: ligne tronquée, en-tête incorrect, quote non fermée',()=>{const cfg=schema.registries.find(x=>x.id==='R01');assert.throws(()=>parseRegistryCsv('R01',cfg.columns.join(';')+'\nabc\n'),/largeur_invalide/);assert.throws(()=>parseRegistryCsv('R01','id;nom\na;b'),/entete_incompatible/);assert.throws(()=>parseCsv('a;b\n"nope;b'),/guillemet_non_ferme/);});
+test('anti-régression: impossible de masquer un incident déclaré bloquant avec le compteur à zéro',()=>{const d=fixtures();d.R02[1].anomalies_bloquantes_ouvertes='0';assert.ok(codes(d).has('nombre_anomalies_incoherent'));});
+test('anti-régression: dossier incident ne doit pas référencer un autre logement',()=>{const d=fixtures();d.R01.push(row('R01',{id_logement:'LOG-02'}));d.R03[0].id_logement='LOG-02';assert.ok(codes(d).has('incident_mauvais_logement'));});
+test('anti-régression: contrôle doit précéder validation finale',()=>{const d=fixtures();d.R02[0].validation_finale_le='2026-11-02T11:00:00+01:00';assert.ok(codes(d).has('validation_avant_controle'));});
+test('anti-régression: fichier R07 ne peut attester une approbation sans relecteur',()=>{const d=fixtures();d.R07[0].statut_validation='APPROUVE';assert.ok(codes(d).has('approbation_sans_preuve'));});
+test('anti-régression: incident critique avec arrivée non bloquée est incohérent',()=>{const d=fixtures();d.R03[0].impact_arrivee='SANS_IMPACT';assert.ok(codes(d).has('critique_declassee_sans_impact'));});
+test('anti-régression: doublon de référence de rotation interdit',()=>{const d=fixtures();d.R02.push({...d.R02[0]});assert.ok(codes(d).has('identifiant_duplique'));});
+test('anti-régression: valeurs d’un mois ne doivent pas basculer à cause de l’UTC',()=>{const d=fixtures();d.R02[0].depart_prevu_local='2026-11-30T23:30:00-10:00';d.R02[0].arrivee_prevue_locale='2026-12-01T03:00:00-10:00';assert.equal(summarizeLegacyMonth(d,'2026-11').rotations,2);});

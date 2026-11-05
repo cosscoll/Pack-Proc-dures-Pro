@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-05",
+  "source": "docs/SCENARIOS_ACCEPTATION_2026-11-02.md",
+  "policy": "Aucun scenario accepte sans 2 preuves privees (nominal/exception) et relecteur independant",
+  "cases": [
+    {
+      "id": "C01",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C02",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C03",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C04",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C05",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C06",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C07",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C08",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C09",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C10",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C11",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    },
+    {
+      "id": "C12",
+      "status": "non_teste",
+      "documents": [],
+      "reviewer": null,
+      "reviewed_at": null,
+      "nominal": null,
+      "exception": null
+    }
+  ]
+}

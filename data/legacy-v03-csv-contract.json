@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-02",
+  "source": "Business01_Pack_Pilote_V052_INTERNE_2026-10-15.zip",
+  "source_sha256": "81e610819733ae03302e37359e64a1f2f62c428c44ee8f7226fa6abd3160022b",
+  "source_validation": "26/26 fichiers du manifest vérifiés SHA256 (contenu interne non publié)",
+  "source_csv_version": "V0.3",
+  "source_csv_rows": 0,
+  "mode": "legacy_headers_only_no_automatic_migration",
+  "approved": false,
+  "important": "Les CSV V0.3 sont le format existant du pack; les contrats R01–R07 de la branche sont une cible expérimentale incompatible sans migration révisée.",
+  "registries": [
+    {
+      "id": "R01",
+      "file": "Fiches_logements.csv",
+      "columns": [
+        "id_logement",
+        "version",
+        "maj_le",
+        "referent_ref",
+        "type_logement",
+        "zones_exclues",
+        "consignes_non_sensibles",
+        "linge_attendu",
+        "consommables_attendus",
+        "regles_controle",
+        "validateur_ref",
+        "validation_le"
+      ],
+      "direct": {
+        "id_logement": "property_ref",
+        "maj_le": "updated_at"
+      },
+      "missing": [
+        "record_ref distinct",
+        "responsible_role",
+        "checklist_version"
+      ],
+      "risks": [
+        "La version source est celle de la fiche logement et non celle de la checklist",
+        "referent_ref est une personne référencée, pas un rôle catégorisé"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R02",
+      "file": "Registre_rotations.csv",
+      "columns": [
+        "id_rotation",
+        "id_logement",
+        "depart_prevu_local",
+        "arrivee_prevue_locale",
+        "fuseau_horaire",
+        "intervenant_ref",
+        "statut_mission",
+        "confirmation_mission_le",
+        "statut_preparation",
+        "controleur_ref",
+        "controle_effectue_le",
+        "statut_controle",
+        "anomalies_bloquantes_ouvertes",
+        "statut_final",
+        "validateur_ref",
+        "validation_finale_le",
+        "prochaine_action",
+        "responsable_action",
+        "derniere_maj_le"
+      ],
+      "direct": {
+        "id_rotation": "rotation_ref",
+        "id_logement": "property_ref",
+        "derniere_maj_le": "updated_at"
+      },
+      "missing": [
+        "assignment_ref",
+        "confirmation_ref",
+        "inspection_ref"
+      ],
+      "risks": [
+        "Les dates locales et fuseau doivent être composés sans ambiguïté DST",
+        "confirmation_mission_le est un horodatage, pas une référence de preuve",
+        "anomalies_bloquantes_ouvertes doit être recoupé par jointure réelle à R03",
+        "statut_final ne se transpose pas automatiquement à availability_state"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R03",
+      "file": "Registre_anomalies.csv",
+      "columns": [
+        "id_incident",
+        "id_rotation",
+        "id_logement",
+        "signalee_le",
+        "type",
+        "gravite",
+        "description_factuelle",
+        "impact_arrivee",
+        "decideur_ref",
+        "action_decidee",
+        "responsable_action",
+        "echeance_locale",
+        "statut",
+        "controleur_resolution",
+        "resolution_verifiee_le",
+        "cloture_le"
+      ],
+      "direct": {
+        "id_incident": "incident_ref",
+        "id_rotation": "rotation_ref",
+        "resolution_verifiee_le": "verified_at"
+      },
+      "missing": [
+        "record_ref distinct"
+      ],
+      "risks": [
+        "impact_arrivee décrit un impact, ne prouve pas un booléen blocks_arrival",
+        "gravite demande une table de normalisation et une décision métier",
+        "statut ancien exige mapping avec l'état verifiee distinct de corrigee"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R04",
+      "file": "Registre_stocks.csv",
+      "columns": [
+        "id_logement",
+        "controle_le",
+        "article",
+        "unite",
+        "stock_constate",
+        "seuil_local",
+        "quantite_a_reapprovisionner",
+        "action_decidee",
+        "responsable_ref",
+        "statut",
+        "maj_le"
+      ],
+      "direct": {
+        "id_logement": "property_ref",
+        "stock_constate": "quantity",
+        "seuil_local": "alert_threshold",
+        "maj_le": "updated_at"
+      },
+      "missing": [
+        "stock_ref",
+        "item_ref stable"
+      ],
+      "risks": [
+        "article est du texte libre, pas une référence d'article stable",
+        "stock_constate et seuil_local doivent avoir une unité cohérente"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R05",
+      "file": "Passation_equipe.csv",
+      "columns": [
+        "transmission_le",
+        "coordinateur_sortant_ref",
+        "coordinateur_entrant_ref",
+        "id_rotation",
+        "statut_factuel",
+        "priorite",
+        "prochaine_action",
+        "responsable_action",
+        "echeance_locale",
+        "accuse_reception_le"
+      ],
+      "direct": {
+        "transmission_le": "handoff_at",
+        "coordinateur_sortant_ref": "sender_actor_ref",
+        "coordinateur_entrant_ref": "receiver_actor_ref",
+        "id_rotation": "rotation_ref"
+      },
+      "missing": [
+        "handoff_ref",
+        "ack_state explicite",
+        "pending_action_ref stable"
+      ],
+      "risks": [
+        "Deux coordinateurs peuvent partager le même rôle : leur identifiant doit être différent",
+        "accuse_reception_le horodaté ne distingue pas refus de non-réponse"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R06",
+      "file": "Registre_objets_trouves.csv",
+      "columns": [
+        "id_objet",
+        "id_logement",
+        "constate_le",
+        "description_minimale",
+        "responsable_ref",
+        "lieu_garde_securise_reference",
+        "decision_restitution",
+        "statut",
+        "date_limite_traitement",
+        "cloture_le"
+      ],
+      "direct": {
+        "id_objet": "object_ref",
+        "id_logement": "property_ref",
+        "constate_le": "found_at",
+        "cloture_le": "resolved_at"
+      },
+      "missing": [
+        "category enum",
+        "retention_rule_ref",
+        "custody_role"
+      ],
+      "risks": [
+        "description_minimale texte libre pouvant contenir une information personnelle",
+        "date_limite_traitement ne remplace pas une politique de conservation validée"
+      ],
+      "migration_approved": false
+    },
+    {
+      "id": "R07",
+      "file": "Journal_versions.csv",
+      "columns": [
+        "id_document",
+        "version_precedente",
+        "nouvelle_version",
+        "modification",
+        "motif",
+        "redacteur_ref",
+        "relecteur_ref",
+        "statut_validation",
+        "date_validation",
+        "prochaine_revue"
+      ],
+      "direct": {
+        "id_document": "artifact_ref"
+      },
+      "missing": [
+        "sha256",
+        "revision_at autonome",
+        "record_ref"
+      ],
+      "risks": [
+        "date_validation vide avant approbation, mais la modification a déjà eu lieu",
+        "nouvelle_version et statut_validation ne constituent ni preuve ni empreinte cryptographique",
+        "relecteur_ref identifie une personne, pas son rôle"
+      ],
+      "migration_approved": false
+    }
+  ]
+}
